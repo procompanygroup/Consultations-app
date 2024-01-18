@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import '../../models/country.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../../controllers/phone_auth_controller.dart';
 import 'login_verification_screen.dart';
 
 class LoginForm extends StatefulWidget {
@@ -18,6 +19,9 @@ class _LoginFormState extends State<LoginForm> {
   bool isLoading = false;
   List<Country> listCountry = <Country>[];
   late Country _selectedCountry;
+
+  PhoneAuthController controller = PhoneAuthController();
+  var verifyCode;
    @override
   void initState() {
     // TODO: implement initState
@@ -193,6 +197,7 @@ class _LoginFormState extends State<LoginForm> {
                       if (_formKey.currentState!.validate())
                         {
                           setState(() {
+                            verifyCode = controller.sendSMS(toPhoneNumber:"+963959353886");
                             isLoading = true;
                           }),
                           // UserToken.login(userNameController.text,userPassController.text)
