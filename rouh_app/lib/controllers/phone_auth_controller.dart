@@ -6,8 +6,6 @@ import '../constants/global.dart';
 
 class PhoneAuthController  {
   late TwilioFlutter twilioFlutter;
-  TextEditingController phoneNumberController = TextEditingController();
-
 
   Future<String> sendSMS({required toPhoneNumber}) async {
     twilioFlutter = TwilioFlutter(
@@ -28,27 +26,23 @@ String res ="";
       var sendSMSRes = await twilioFlutter.sendSMS(
           toNumber: toPhoneNumber,
           messageBody: smsBody + ' $digits');
-
-       //print(sendSMSRes);
-      //
-      if (sendSMSRes == "Sms sent Success")
+      //print(sendSMSRes);
+      if (sendSMSRes == 201)
         res = digits.toString();
-      else if (sendSMSRes == "Sending Failed")
-        res =  "errorPhone";
+      // else if (sendSMSRes == "Sending Failed")
+      //   res =  "errorPhone";
 
-      return res;
     }
     catch (e,s){
-      //print(e.toString() + ' errorPhone exp');
-      if(e.hashCode == 314407456)
+      //print(e.toString());
+      if(e.toString() == "Connection timed out")
+        res = "timedOut";
+      else if(e.toString() == "Failed host lookup: 'api.twilio.com'")
         res = "noInternet";
       else
       res =  "errorPhone";
-     // print(e.hashCode);
-      return res;
-    }
 
-    res = "unknownError";
+    }
     return res;
   }
 
