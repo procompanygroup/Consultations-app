@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../models/country.dart';
 import '../../mystyle/button_style.dart';
@@ -63,120 +64,193 @@ class _LoginFormState extends State<LoginForm> {
                   fontSize: 24,
                   color:mysecondarycolor
               ),),
-            Divider(
-                color: Colors.grey
-            ),
-
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                child: DropdownButtonFormField<Country>(
-                  validator: (value) => value == null ? 'field required' : null,
-                  //isDense: true,
-                  hint: Text('Choose'),
-                  value: _selectedCountry,
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: TextStyle(color: Colors.grey),
-                  // underline: Container(
-                  //   height: 2,
-                  //   color: Colors.grey,
-                  // ),
-                  onChanged: (Country? newValue) {
-                    setState(() {
-                      _selectedCountry = newValue!;
-                    });
-                  },
-                  items:
-                  listCountry.map<DropdownMenuItem<Country>>((Country value) {
-                    return DropdownMenuItem<Country>(
-                      value: value,
-                      child: Text(value.name!),
-                    );
-                  }).toList(),
-                  decoration: InputDecoration(
-                      errorStyle: TextStyle(fontSize: 0),
-
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      filled: true,
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15.0),
-                      hintStyle: TextStyle(color: Colors.grey),
-                      labelText: "Country",
-                      fillColor: Colors.grey.shade50),
-                ),
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Divider(
+                  color: Colors.grey
+              ),
             ),
 
-
-          Stack(
-            children: [
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(fontSize: 0),
-
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        filled: true,
-                        contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15,end: 15,bottom: 15),
-                        hintStyle: TextStyle(color: Colors.grey),
-                        labelText: "Phone Number",
-                        fillColor: Colors.grey.shade50,
-                        // // hide maxLength
-                        // counterStyle: TextStyle(height: double.minPositive,),
-                        // counterText: ""
-
-                    ),
-                    keyboardType: TextInputType.number,
-                    // maxLength: 10,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(10)
-                    ],
-                    // obscureText: true,
-                    // enableSuggestions: false,
-                    // autocorrect: false,
-                  )),
-              // Positioned(
-              //   bottom: 0,
-              //   top: 0,
-              //   left: 0,
-              //   right: 0,
-              //   child:
-                Container(
-                  height: 70,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                    child: Row(
-                        children: <Widget>[
-                          Text(_selectedCountry.dialCode!,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: myprimercolor
-                            ),),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10 ),
-                            child: VerticalDivider(
-                                // color: Colors.grey
-                                color: Colors.grey
-                            ),
+            // select country
+            Stack(
+              children: [
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: DropdownButtonFormField<Country>(
+                      validator: (value) => value == null ? 'field required' : null,
+                      //isDense: true,
+                      hint: Text('Choose'),
+                      value: _selectedCountry,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      isExpanded: true,
+                      style: TextStyle(color: Colors.grey),
+                      // underline: Container(
+                      //   height: 2,
+                      //   color: Colors.grey,
+                      // ),
+                      onChanged: (Country? newValue) {
+                        setState(() {
+                          _selectedCountry = newValue!;
+                        });
+                      },
+                      decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
-                        ],
+                          filled: true,
+                          // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
+                          contentPadding: EdgeInsetsDirectional.only( start: 60, top: 5,end: 10,bottom: 5),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          // labelText: "Country",
+                          hintText: "Country",
+                          fillColor: Colors.grey.shade50),
+                      items:
+                      listCountry.map<DropdownMenuItem<Country>>((Country value) {
+                        return DropdownMenuItem<Country>(
+                          value: value,
+                          child: Text(value.name!),
+                        );
+                      }).toList(),
+                    ),
+                ),
+               Positioned(
+                 bottom: 0,
+                 top: 0,
+                 child: Padding(
+                   padding: EdgeInsetsDirectional.only(start: 25,),
+                   child: Row(
+                     children: <Widget>[
+                       SvgPicture.asset('assets/svg/syria-flag.svg',
+                         width: 50,
+                         height: 30,
+                       ),
+                       Padding(
+                         padding: const EdgeInsets.symmetric(vertical: 15 ),
+                         child: VerticalDivider(
+                           // color: Colors.grey
+                             color: Colors.grey
+                         ),
+                       ),
+                     ],
+                   ),
+                 ),
+               )
+                ],
+            ),
+
+          // phone number
+            Directionality(
+              textDirection: TextDirection.ltr,
+            child: Stack(
+              children: [
+                // phone number without code
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      //style: TextStyle(fontSize: 12),
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(fontSize: 0),
+
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          filled: true,
+                          contentPadding: EdgeInsetsDirectional.only( start: 70, top: 5,end: 60,bottom: 5),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          // labelText: "Phone Number",
+                          hintText: "Phone Number",
+                          fillColor: Colors.grey.shade50,
+                          // // hide maxLength
+                          // counterStyle: TextStyle(height: double.minPositive,),
+                          // counterText: ""
+            
+                      ),
+                      keyboardType: TextInputType.number,
+                      // maxLength: 10,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(10)
+                      ],
+                      // obscureText: true,
+                      // enableSuggestions: false,
+                      // autocorrect: false,
+                    )),
+                // code number
+                Positioned(
+                  bottom: 0,
+                  top: 0,
+                  //   left: 0,
+                  left: 0,
+                  //   child:
+                  child:  Padding(
+                    padding: EdgeInsets.only(left: 25,),
+                    child:  Container(
+                      width: 65,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                          Text(_selectedCountry.dialCode!,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: myprimercolor
+                                ),),
+                            Padding(
+                                  padding: const EdgeInsets.only(left: 0, top: 10,right: 10, bottom: 10),
+                                  child: VerticalDivider(
+                                    // color: Colors.grey
+                                      color: Colors.grey
+                                ),
+                              ),
+                          ],
+                        ),
                     ),
                   ),
                 ),
-          ],),
+                // icon number
+                Positioned(
+                  bottom: 0,
+                  top: 0,
+                //   left: 0,
+                  right: 0,
+                //   child:
+                  child:  Padding(
+                      padding: EdgeInsets.only(right: 25,),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15 ),
+                            child: VerticalDivider(
+                              // color: Colors.grey
+                                color: Colors.grey
+                            ),
+                          ),
+                          Container(
+                            width: 30,
+                            child: SvgPicture.asset('assets/svg/mobile-phone-icon.svg',
+                              width: 50,
+                              height: 30,
+                            ),
+                          ),
 
+                        ],
+                      ),
+                    ),
+                  ),
+            // )
+            
+            ],),
+          ),
+
+            // login button
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 10.0, vertical: 5.0),
