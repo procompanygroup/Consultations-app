@@ -105,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                           horizontal: 15, vertical: 15.0),
                       hintStyle: TextStyle(color: Colors.grey),
                       labelText: "Country",
-                      fillColor: Colors.white),
+                      fillColor: Colors.grey.shade50),
                 ),
             ),
 
@@ -128,10 +128,10 @@ class _LoginFormState extends State<LoginForm> {
                           borderRadius: BorderRadius.circular(25.0),
                         ),
                         filled: true,
-                        contentPadding: EdgeInsets.only(left: 60, top: 15,right: 15,bottom: 15),
+                        contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15,end: 15,bottom: 15),
                         hintStyle: TextStyle(color: Colors.grey),
                         labelText: "Phone Number",
-                        fillColor: Colors.white,
+                        fillColor: Colors.grey.shade50,
                         // // hide maxLength
                         // counterStyle: TextStyle(height: double.minPositive,),
                         // counterText: ""

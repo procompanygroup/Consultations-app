@@ -43,7 +43,7 @@ with SingleTickerProviderStateMixin{
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/splashBackground.jpg"),
+            image: AssetImage("assets/images/splash_background.jpg"),
             fit: BoxFit.cover,
             // fit: BoxFit.fitHeight,
           ),

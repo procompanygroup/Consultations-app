@@ -38,16 +38,34 @@ class LoginScreen extends StatelessWidget {
                         BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
                       // border: Border.all(color: Colors.grey),
                     gradient: LinearGradient(
-                      colors: [Color(0xff023056),myprimercolor],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      colors: [Color(0xff022440),Color(0xff015DAC)],
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft  ,
                     )
                   ),
                   child: Center(
                     child: Image(
-                        image: AssetImage("assets/images/logo.png"),
-                        height: (bodyHeight * 0.60) * 0.5,
-                        fit: BoxFit.cover,
+                        image: AssetImage("assets/images/logo_background.png"),
+                        // height: (bodyHeight * 2 ),
+                          width: screenWidth,
+                        fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: bodyHeight * 0.60,
+                  width: screenWidth,
+                  // decoration: BoxDecoration(
+                  //   borderRadius:
+                  //   BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
+                  //   color: myprimercolor,
+                  //   // border: Border.all(color: Colors.grey)
+                  // ),
+                  child: Center(
+                    child: Image(
+                      image: AssetImage("assets/images/logo.png"),
+                      height: (bodyHeight * 0.60) * 0.5,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -66,7 +84,16 @@ class LoginScreen extends StatelessWidget {
                             borderRadius:
                             BorderRadius.all(Radius.circular(25)),
                             color: Colors.white,
-                            // border: Border.all(color: Colors.grey)
+                             border: Border.all(color: Colors.grey.shade200),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.03),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+
                           ),
                           child:  LoginForm()),
                   ),
