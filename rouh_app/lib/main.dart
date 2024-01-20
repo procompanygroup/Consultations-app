@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'mystyle/constantsColors.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/login/login_verification_screen.dart';
@@ -33,17 +34,28 @@ class MyApp extends StatelessWidget {
         //   textTheme: ButtonTextTheme.primary, //  <-- dark text for light background
         // )
       ),
+
+      locale: const Locale('ar'),
+      supportedLocales: const [
+        Locale('ar'),
+        Locale('en'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       routes: {
         //   // When navigating to the "/" route, build the FirstScreen widget.
         '/splashScreen': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
+        '/loginVerification': (context) => const LoginVerificationScreen(),
         // '/service': (context) => const ServiceScreen(),
         // '/experts': (context) => const ExpertsScreen(),
         // '/profile': (context) => const ProfileScreen(),
         // '/record': (context) => const RecordScreen(),
         // '/playerAudio': (context) => const PlayerAudioScreen(),
         // '/recordAndPlay': (context) => const RecordAndPlayScreen(),
-        '/loginVerification': (context) => const LoginVerificationScreen(),
 
         //   // When navigating to the "/second" route, build the SecondScreen widget.
         //   '/order/profile': (context) => const ProfileScreen(),
