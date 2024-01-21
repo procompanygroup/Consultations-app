@@ -21,7 +21,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   int _start = 30;
   late Timer _timer;
   String start = "30";
-  bool isEnable = false;
+  bool resendButtonisEnable = false;
   void startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
@@ -29,7 +29,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
       (Timer timer) {
         setState(() {
           if (_start <= 0) {
-            isEnable = true;
+            resendButtonisEnable = true;
             timer.cancel();
           } else {
             _start--;
@@ -299,7 +299,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: mysecondarycolor,
-                          fontSize: 26,
+                          fontSize: 20,
                         ),
                       ),
                     ),
@@ -312,15 +312,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                           fontSize: 18,
                           decoration: TextDecoration.underline),
                     ),
-                    onPressed: isEnable
-                        ? () {
+                    onPressed: resendButtonisEnable? () {
                       setState(() {
                         _start = 30;
-                        isEnable = false;
+                        resendButtonisEnable = false;
                       });
                       startTimer();
-                    }
-                        : null,
+                    }: () {},
                   ),
                   Padding(
                     padding:
