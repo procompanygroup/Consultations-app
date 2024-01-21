@@ -160,13 +160,14 @@ class _LoginFormState extends State<LoginForm> {
                               horizontal: 10.0, vertical: 5.0),
                           child: TextFormField(
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
+                              if (value == null || value.isEmpty || value.length <10) {
                                 return 'Please enter some text';
                               }
                               return null;
                             },
                             onChanged: (value) {
                               _phoneNumber = value;
+                              _formKey.currentState!.validate();
                               // print(_phoneNumber);
                             },
                             //style: TextStyle(fontSize: 12),
