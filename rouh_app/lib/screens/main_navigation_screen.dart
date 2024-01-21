@@ -19,6 +19,18 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     const List<Widget> _pages = <Widget>[
+      Text(
+        'Index 0: Home',
+      ),
+      Text(
+        'Index 1: Business',
+      ),
+      Text(
+        'Index 2: School',
+      ),
+      Text(
+        'Index 3: Settings',
+      ),
       // HomeScreen(),
       // ServiceScreen(),
       // ExpertsScreen(),
@@ -39,22 +51,22 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           items: const <BottomNavigationBarItem>[
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.home,size: 35),
-            //   label: 'home',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.account_circle,size: 35) ,
-            //   label: 'sercice',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.people,size: 35) ,
-            //   label: 'experts',
-            // ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.people,size: 35) ,
-            //   label: 'profile',
-            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home,size: 35),
+              label: 'home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle,size: 35) ,
+              label: 'sercice',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people,size: 35) ,
+              label: 'experts',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people,size: 35) ,
+              label: 'profile',
+            ),
           ],
           type: BottomNavigationBarType.fixed,
 
