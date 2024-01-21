@@ -193,18 +193,18 @@ class _LoginFormState extends State<LoginForm> {
                   child:  Padding(
                     padding: EdgeInsets.only(left: 25,),
                     child:  Container(
-                      width: 65,
+                      width: 60,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                           Text(_selectedCountry.dialCode!,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    // fontSize: 16,
                                     color: myprimercolor
                                 ),),
                             Padding(
-                                  padding: const EdgeInsets.only(left: 0, top: 10,right: 10, bottom: 10),
+                                  padding: const EdgeInsets.only(left: 0, top: 15,right: 10, bottom: 15),
                                   child: VerticalDivider(
                                     // color: Colors.grey
                                       color: Colors.grey
