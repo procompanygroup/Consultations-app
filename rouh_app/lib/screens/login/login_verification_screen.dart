@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
@@ -16,10 +17,44 @@ class LoginVerificationScreen extends StatefulWidget {
 }
 
 class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
+  int _start = 30;
+  late Timer _timer;
+  String start = "30";
+  bool isEnable = false;
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        setState(() {
+          if (_start <= 0) {
+            isEnable = true;
+            timer.cancel();
+          } else {
+            _start--;
+            start = _start.toString().padLeft(2, "0");
+          }
+        });
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:  false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: myprimercolor,
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -249,7 +284,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
               padding: const EdgeInsets.all(10.0),
               child: Center(
                 child: Text(
-                  "30:00",
+                  "00:$start",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: mysecondarycolor,
@@ -266,9 +301,15 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                     fontSize: 20,
                     decoration: TextDecoration.underline),
               ),
-              onPressed: () {
-
-              },
+              onPressed: isEnable
+                  ? () {
+                      setState(() {
+                        _start = 30;
+                        isEnable = false;
+                      });
+                      startTimer();
+                    }
+                  : null,
             ),
             Padding(
               padding:
@@ -289,8 +330,6 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (_) => MainNavigationScreen()));
-
-
                   },
                 ),
               ),
