@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'mystyle/constantsColors.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/login/login_verification_screen.dart';
+import 'screens/main_navigation_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() {
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         // '/record': (context) => const RecordScreen(),
         // '/playerAudio': (context) => const PlayerAudioScreen(),
         // '/recordAndPlay': (context) => const RecordAndPlayScreen(),
+         '/mainNavigation': (context) => const MainNavigationScreen(),
 
         //   // When navigating to the "/second" route, build the SecondScreen widget.
         //   '/order/profile': (context) => const ProfileScreen(),
