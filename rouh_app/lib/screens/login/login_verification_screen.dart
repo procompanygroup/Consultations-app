@@ -57,13 +57,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
-            -
-            MediaQuery.of(context).padding.top // safe area
+           // - MediaQuery.of(context).padding.top // safe area
         // - AppBar().preferredSize.height //AppBar
         );
 
     return Scaffold(
-       resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
+      /*
       backgroundColor: myprimercolor,
       appBar: AppBar(
         toolbarHeight: bodyHeight * 0.20,
@@ -77,294 +77,323 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
         ),
         elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(50), topRight: Radius.circular(50)),
-          border: Border.all(color: Colors.grey),
-          color: Colors.white,
-        ),
-        child: Column(
+      */
+      body: Stack(
           children: [
-            Container(
-              height: (bodyHeight * 0.80) * 0.33,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 25),
-                child: SvgPicture.asset('assets/svg/shield-lock-line-icon.svg',
-                    color: Colors.grey.shade300, semanticsLabel: 'Label'),
-              ),
+          Container(
+          height: bodyHeight * 0.30,
+          width: screenWidth,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff015DAC) , Color(0xff022440)],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft  ,
+              )
+          ),
+           child: Padding(
+             padding:  EdgeInsets.all(MediaQuery.of(context).padding.top),
+             child: Row(
+               children: [
+                 Text("Title Here with style")
+               ],
+             ),
+           ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
+            Padding(
+              padding:  EdgeInsets.only(top:bodyHeight * 0.20 ),
+              child: Container(
+                height: bodyHeight * 0.80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+                  border: Border.all(color: Colors.grey),
+                  color: Colors.white,
+                ),
+                child:  Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Center(
-                        child: Text(
-                          "Please enter the verification code for the number",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: myprimercolor,
-                            fontSize: 18,
-                          ),
-                        ),
+                    Container(
+                      height: (bodyHeight * 0.80) * 0.33,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 25),
+                        child: SvgPicture.asset('assets/svg/shield-lock-line-icon.svg',
+                            color: Colors.grey.shade300, semanticsLabel: 'Label'),
                       ),
                     ),
-                    Form(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
                           children: [
-                            SizedBox(
-                              height: 60,
-                              width: 45,
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin1) {},
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Center(
+                                child: Text(
+                                  "Please enter the verification code for the number",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: myprimercolor,
+                                    fontSize: 18,
                                   ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: "0",
-                                  fillColor: Colors.grey.shade100,
                                 ),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: 60,
-                              width: 45,
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin2) {},
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: "0",
-                                  fillColor: Colors.grey.shade100,
+                            Form(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 25),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      height: 60,
+                                      width: 45,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin1) {},
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintText: "0",
+                                          fillColor: Colors.grey.shade100,
+                                        ),
+                                        style:
+                                            Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 60,
+                                      width: 45,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin2) {},
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintText: "0",
+                                          fillColor: Colors.grey.shade100,
+                                        ),
+                                        style:
+                                            Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 60,
+                                      width: 45,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin3) {},
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintText: "0",
+                                          fillColor: Colors.grey.shade100,
+                                        ),
+                                        style:
+                                            Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 60,
+                                      width: 45,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin4) {},
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintText: "0",
+                                          fillColor: Colors.grey.shade100,
+                                        ),
+                                        style:
+                                            Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 60,
+                                      width: 45,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin5) {},
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintText: "0",
+                                          fillColor: Colors.grey.shade100,
+                                        ),
+                                        style:
+                                            Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 60,
+                                      width: 45,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin6) {},
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          hintText: "0",
+                                          fillColor: Colors.grey.shade100,
+                                        ),
+                                        style:
+                                            Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: 60,
-                              width: 45,
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin3) {},
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Center(
+                                child: Text(
+                                  "00:$start",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: mysecondarycolor,
+                                    fontSize: 20,
                                   ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: "0",
-                                  fillColor: Colors.grey.shade100,
                                 ),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: 60,
-                              width: 45,
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin4) {},
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: "0",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
+                            TextButton(
+                              child: Text(
+                                "Resend verification code",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 18,
+                                    decoration: TextDecoration.underline),
                               ),
+                              onPressed: resendButtonisEnable
+                                  ? () {
+                                      setState(() {
+                                        _start = 30;
+                                        resendButtonisEnable = false;
+                                      });
+                                      startTimer();
+                                    }
+                                  : () {},
                             ),
-                            SizedBox(
-                              height: 60,
-                              width: 45,
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin5) {},
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 10.0),
+                              child: Container(
+                                width: double.infinity,
+                                child: TextButton(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 5),
+                                    child: Text(
+                                      'Confirm',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
                                   ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: "0",
-                                  fillColor: Colors.grey.shade100,
+                                  style: bs_flatFill(context),
+                                  onPressed: () async {
+              
+                                    // dina
+                                     const storage = FlutterSecureStorage();
+                                     // for write
+                                    await storage.write(
+                                        key: 'token', value: token); // Save token
+                                     // for read
+                                    String? storedToken =
+                                        await storage.read(key: 'token');
+                                    // for test
+                                    print(storedToken);
+              
+                                     Navigator.pushAndRemoveUntil(
+                                         context,
+                                         MaterialPageRoute(
+                                             builder: (_) => MainNavigationScreen()),
+                                             (route) =>
+                                         route.settings.name ==
+                                             '/mainNavigation');
+              
+              
+              
+                                  },
                                 ),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 60,
-                              width: 45,
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  if (value.length == 1) {
-                                    FocusScope.of(context).nextFocus();
-                                  }
-                                },
-                                onSaved: (pin6) {},
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  hintText: "0",
-                                  fillColor: Colors.grey.shade100,
-                                ),
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(1),
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Center(
-                        child: Text(
-                          "00:$start",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: mysecondarycolor,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      child: Text(
-                        "Resend verification code",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18,
-                            decoration: TextDecoration.underline),
-                      ),
-                      onPressed: resendButtonisEnable
-                          ? () {
-                              setState(() {
-                                _start = 30;
-                                resendButtonisEnable = false;
-                              });
-                              startTimer();
-                            }
-                          : () {},
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      child: Container(
-                        width: double.infinity,
-                        child: TextButton(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: Text(
-                              'Confirm',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                          style: bs_flatFill(context),
-                          onPressed: () async {
-
-                            // dina
-                             const storage = FlutterSecureStorage();
-                             // for write
-                            await storage.write(
-                                key: 'token', value: token); // Save token
-                             // for read
-                            String? storedToken =
-                                await storage.read(key: 'token');
-                            // for test
-                            print(storedToken);
-
-                             Navigator.pushAndRemoveUntil(
-                                 context,
-                                 MaterialPageRoute(
-                                     builder: (_) => MainNavigationScreen()),
-                                     (route) =>
-                                 route.settings.name ==
-                                     '/mainNavigation');
-
-
-
-                          },
                         ),
                       ),
                     ),
@@ -374,7 +403,6 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
             ),
           ],
         ),
-      ),
     );
   }
 }
