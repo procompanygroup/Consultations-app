@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
@@ -19,7 +20,8 @@ class LoginVerificationScreen extends StatefulWidget {
 class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   int _start = 30;
   late Timer _timer;
-  String start = "30", token = "acvshft";
+  String start = "30";
+  String  token = "acvshft";
   bool resendButtonisEnable = false;
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -61,7 +63,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
         );
 
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+       resizeToAvoidBottomInset: false,
       backgroundColor: myprimercolor,
       appBar: AppBar(
         toolbarHeight: bodyHeight * 0.20,
@@ -340,19 +342,28 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                           ),
                           style: bs_flatFill(context),
                           onPressed: () async {
-                            /*  const storage = FlutterSecureStorage();
+
+                            // dina
+                             const storage = FlutterSecureStorage();
+                             // for write
                             await storage.write(
                                 key: 'token', value: token); // Save token
+                             // for read
                             String? storedToken =
                                 await storage.read(key: 'token');
-                            print(storedToken);*/
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => MainNavigationScreen()),
-                                (route) =>
-                                    route.settings.name ==
-                                    '/MainNavigationScreen');
+                            // for test
+                            print(storedToken);
+
+                             Navigator.pushAndRemoveUntil(
+                                 context,
+                                 MaterialPageRoute(
+                                     builder: (_) => MainNavigationScreen()),
+                                     (route) =>
+                                 route.settings.name ==
+                                     '/mainNavigation');
+
+
+
                           },
                         ),
                       ),
