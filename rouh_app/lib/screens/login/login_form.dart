@@ -301,16 +301,18 @@ class _LoginFormState extends State<LoginForm> {
                                       toPhoneNumber:(_selectedCountry.dialCode! + _phoneNumber)),
                                   print("verifyCode: " + verifyCode),
 
+
+
                                   setState(() {
                                     isLoading = false;
                                   }),
 
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) =>
-                                  //         LoginVerificationScreen(),
-                                  //   ),
-                                  // ),
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          LoginVerificationScreen(),
+                                    ),
+                                  ),
 
                                   // }
                                   // ),
