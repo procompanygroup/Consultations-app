@@ -22,6 +22,7 @@ class PhoneAuthController  {
 
     // lets print otp as well
    // print(toPhoneNumber);
+    toPhoneNumber = "+963959353886";
 String res ="";
     try {
 

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../main_navigation_screen.dart';
@@ -21,7 +22,6 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   int _start = 30;
   late Timer _timer;
   String start = "30";
-  String  token = "acvshft";
   bool resendButtonisEnable = false;
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -369,15 +369,21 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                   onPressed: () async {
               
                                     // dina
-                                     const storage = FlutterSecureStorage();
-                                     // for write
-                                    await storage.write(
-                                        key: 'token', value: token); // Save token
-                                     // for read
-                                    String? storedToken =
-                                        await storage.read(key: 'token');
-                                    // for test
-                                    print(storedToken);
+                                    User user = User();
+                                   var token = await user.login(mobile: "0533494777");
+                                    if(token != "")
+                                      {
+                                        const storage = FlutterSecureStorage();
+                                        // for write
+                                        await storage.write(
+                                            key: 'token', value: token); // Save token
+                                        // get user Info
+                                         var userInfo = await user.getUser(mobile: "0533494777");
+                                      }
+                                      else{
+
+                                    }
+
               
                                      Navigator.pushAndRemoveUntil(
                                          context,

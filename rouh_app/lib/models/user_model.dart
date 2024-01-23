@@ -70,10 +70,11 @@ class User {
     var response = await dioManager.dio.post('loginclient', data: data);
 
     if (response.statusCode == 200) {
-      return AuthModel.fromJson(response.data).token;
+      var auth = AuthModel.fromJson(json.decode(response.data));
+      return auth.token;
     }
     else {
-      return throw Exception();
+      return "";
     }
 
   }
@@ -86,9 +87,8 @@ class User {
     });
 
     var response = await dioManager.dio.post('client/getbymobile', data: data,);
-
     if (response.statusCode == 200) {
-      return (new User.fromJson(response.data));
+      return (new User.fromJson(json.decode(response.data)));
     }
     else {
       return throw Exception();

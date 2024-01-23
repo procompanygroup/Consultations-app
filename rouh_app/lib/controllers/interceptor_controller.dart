@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-
-import '../constants/global.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiInterceptor extends Interceptor {
 
@@ -11,16 +10,19 @@ class ApiInterceptor extends Interceptor {
   // });
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     // get from shared preferences
-    var clientToken = token;
+    const storage = FlutterSecureStorage();
+    String? storedToken =
+        await storage.read(key: 'token');
+
     options.headers.addAll({
       "Content-Type": "application/json",
     });
     // get token from the storage
-    if (clientToken != null) {
+    if (storedToken != null) {
       options.headers.addAll({
-        "Authorization": "Bearer ${clientToken}",
+        "Authorization": "Bearer ${storedToken}",
       });
     }
     return super.onRequest(options, handler);
