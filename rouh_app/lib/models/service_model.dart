@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import '../controllers/dio_manager_controller.dart';
 
-class Service {
+class AppService {
   //Instance variables
   String? name;
   String? desc;
@@ -13,7 +13,7 @@ class Service {
   DioManager dioManager = DioManager();
 
   //Constructor
-  Service(
+  AppService(
       { name, desc, icon, is_active, image,}) {
     name = name;
     desc = desc;
@@ -22,8 +22,8 @@ class Service {
     image = image;
   }
 
-  factory Service.fromJson(Map<String, dynamic> parsedJson) {
-    return Service(
+  factory AppService.fromJson(Map<String, dynamic> parsedJson) {
+    return AppService(
         name: parsedJson['name'],
         desc: parsedJson['desc'],
         icon: parsedJson['icon'],
@@ -40,4 +40,19 @@ class Service {
         'is_active': is_active,
         'image': image,
       };
+
+  Future<List<AppService>?> allServices() async {
+
+    var response = await dioManager.dio.post('client/service/viewall', );
+    if (response.statusCode == 200) {
+      Iterable l = json.decode(response.data);
+      List<AppService> services = List<AppService>.from(l.map((model)=> AppService.fromJson(model)));
+
+      return services;
+    }
+    else {
+      return throw Exception();
+    }
+
+  }
 }
