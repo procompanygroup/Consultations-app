@@ -18,25 +18,26 @@ class User {
 
    DioManager dioManager= DioManager() ;
   //Constructor
-  User({ id,user_name,email,mobile,nationality,birthdate,gender,marital_status,is_active,image}) {
-    id = id;
-    user_name = user_name;
-    email = email;
-    mobile =mobile;
-    nationality =nationality;
-    birthdate = birthdate;
-    gender = gender;
-    marital_status = marital_status;
-    is_active = is_active;
-    image = image;
-  }
+  User({ this.id,this.user_name,this.email,this.mobile,this.nationality,this.birthdate,this.gender,this.marital_status,this.is_active,this.image}) ;
+  // {
+  //   id = id;
+  //   user_name = user_name;
+  //   email = email;
+  //   mobile =mobile;
+  //   nationality =nationality;
+  //   birthdate = birthdate;
+  //   gender = gender;
+  //   marital_status = marital_status;
+  //   is_active = is_active;
+  //   image = image;
+  // }
 
   factory User.fromJson(Map<String, dynamic> parsedJson) {
     return User(
         id: parsedJson['id'],
         user_name: parsedJson['user_name'],
         mobile: parsedJson['mobile'],
-        birthdate: parsedJson['birthdate'],
+        birthdate: DateTime.tryParse(parsedJson['birthdate']),
         email: parsedJson['email'],
         gender: parsedJson['gender'],
         image: parsedJson['image'],
@@ -88,7 +89,7 @@ class User {
 
     var response = await dioManager.dio.post('client/getbymobile', data: data,);
     if (response.statusCode == 200) {
-      return (new User.fromJson(json.decode(response.data)));
+      return User.fromJson(json.decode(response.data));
     }
     else {
       return throw Exception();
