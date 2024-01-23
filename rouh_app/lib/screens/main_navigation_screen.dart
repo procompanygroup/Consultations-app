@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'sercice/service_screen.dart';
+
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
@@ -19,9 +21,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     const List<Widget> _pages = <Widget>[
-      Text(
-        'Index 0: Home',
-      ),
+      ServiceScreen(),
       Text(
         'Index 1: Business',
       ),
