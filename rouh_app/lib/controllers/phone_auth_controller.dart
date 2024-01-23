@@ -1,3 +1,4 @@
+// import 'dart:js_util';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -23,10 +24,11 @@ class PhoneAuthController  {
    // print(toPhoneNumber);
 String res ="";
     try {
+
       var sendSMSRes = await twilioFlutter.sendSMS(
           toNumber: toPhoneNumber,
           messageBody: smsBody + ' $digits');
-      //print(sendSMSRes);
+
       if (sendSMSRes == 201)
         res = digits.toString();
       // else if (sendSMSRes == "Sending Failed")
