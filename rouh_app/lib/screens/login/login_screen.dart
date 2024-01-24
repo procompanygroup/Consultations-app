@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import 'login_form.dart';
@@ -44,12 +46,26 @@ class LoginScreen extends StatelessWidget {
                     )
                   ),
                   child: Center(
-                    child: Image(
+                    child:
+                    Image(
                         image: AssetImage("assets/images/logo_background.png"),
                         // height: (bodyHeight * 2 ),
                           width: screenWidth,
                         fit: BoxFit.fitWidth,
+                      // color: Color(0xff0d69ff).withOpacity(1.0),
+                      // color: Colors.black.withOpacity(0.13),
+                      // colorBlendMode: BlendMode.overlay,
                     ),
+                    /*
+                    SvgPicture.asset(
+                      'assets/svg/logo.svg',
+                      width: screenWidth,
+                      fit: BoxFit.fitWidth,
+                      // height: 30,
+                      color: Colors.black.withOpacity(0.05),
+                      // colorBlendMode: BlendMode.overlay,
+                    ),
+                    */
                   ),
                 ),
                 Container(
