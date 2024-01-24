@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                           EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                       child: DropdownButtonFormField<Country>(
                         validator: (value) =>
-                            value == null ? 'field required' : null,
+                            value == null ? '' : null,
                         //isDense: true,
                         hint: Text('Choose'),
                         value: _selectedCountry,
@@ -171,7 +171,7 @@ class _LoginFormState extends State<LoginForm> {
                               if (value == null ||
                                   value.isEmpty ||
                                   value.length < 9) {
-                                return 'Please enter some text';
+                                return '';
                               }
                               return null;
                             },
@@ -203,9 +203,6 @@ class _LoginFormState extends State<LoginForm> {
                               // labelText: "Phone Number",
                               hintText: "Phone Number",
                               fillColor: Colors.grey.shade50,
-                              // // hide maxLength
-                              // counterStyle: TextStyle(height: double.minPositive,),
-                              // counterText: ""
                             ),
                             keyboardType: TextInputType.number,
                             // maxLength: 10,
