@@ -159,6 +159,7 @@ class _LoginFormState extends State<LoginForm> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 5.0),
                           child: TextFormField(
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
@@ -169,12 +170,13 @@ class _LoginFormState extends State<LoginForm> {
                             },
                             onChanged: (value) {
                               _phoneNumber = value;
-                              _formKey.currentState!.validate();
+                              //_formKey.currentState!.validate();
                               // print(_phoneNumber);
                             },
                             //style: TextStyle(fontSize: 12),
                             decoration: InputDecoration(
-                              errorStyle: TextStyle(fontSize: 0),
+                              //test the height
+                              errorStyle: TextStyle(fontSize: 0,height: 0),
 
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0),
@@ -220,7 +222,7 @@ class _LoginFormState extends State<LoginForm> {
                                   _selectedCountry.dialCode!,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12,
+                                      fontSize: 14,
                                       color: myprimercolor),
                                 ),
                                 Padding(
