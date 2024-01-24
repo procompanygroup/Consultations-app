@@ -70,8 +70,8 @@ class _LoginFormState extends State<LoginForm> {
                       color: mysecondarycolor),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Divider(color: Colors.grey),
+                  padding: const EdgeInsets.only(left:10 ,right: 10, bottom: 10.0),
+                  child: Divider(color: Colors.grey.shade300),
                 ),
 
                 // select country
@@ -104,6 +104,13 @@ class _LoginFormState extends State<LoginForm> {
                             errorStyle: TextStyle(fontSize: 0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300,
+                                // width: 2.0,
+                              ),
                             ),
                             filled: true,
                             // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
@@ -140,7 +147,7 @@ class _LoginFormState extends State<LoginForm> {
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               child: VerticalDivider(
                                   // color: Colors.grey
-                                  color: Colors.grey),
+                                  color: Colors.grey.shade300),
                             ),
                           ],
                         ),
@@ -163,7 +170,7 @@ class _LoginFormState extends State<LoginForm> {
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
-                                  value.length < 10) {
+                                  value.length < 9) {
                                 return 'Please enter some text';
                               }
                               return null;
@@ -181,6 +188,13 @@ class _LoginFormState extends State<LoginForm> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0),
                               ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade300,
+                                  // width: 2.0,
+                                ),
+                              ),
                               filled: true,
                               contentPadding: EdgeInsetsDirectional.only(
                                   start: 70, top: 5, end: 60, bottom: 5),
@@ -196,7 +210,7 @@ class _LoginFormState extends State<LoginForm> {
                             keyboardType: TextInputType.number,
                             // maxLength: 10,
                             inputFormatters: [
-                              LengthLimitingTextInputFormatter(10)
+                              LengthLimitingTextInputFormatter(9)
                             ],
                             // obscureText: true,
                             // enableSuggestions: false,
@@ -230,7 +244,7 @@ class _LoginFormState extends State<LoginForm> {
                                       left: 0, top: 15, right: 10, bottom: 15),
                                   child: VerticalDivider(
                                       // color: Colors.grey
-                                      color: Colors.grey),
+                                      color: Colors.grey.shade300),
                                 ),
                               ],
                             ),
@@ -255,7 +269,7 @@ class _LoginFormState extends State<LoginForm> {
                                     const EdgeInsets.symmetric(vertical: 15),
                                 child: VerticalDivider(
                                     // color: Colors.grey
-                                    color: Colors.grey),
+                                    color: Colors.grey.shade300),
                               ),
                               Container(
                                 width: 30,

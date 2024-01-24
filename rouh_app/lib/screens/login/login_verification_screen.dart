@@ -147,7 +147,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
                             child: Center(
                               child: Text(
                                 "Please enter the verification code for the number",
@@ -187,6 +187,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey.shade300,
+                                                  // width: 2.0,
+                                                ),
                                               ),
                                               filled: true,
                                               hintStyle: TextStyle(color: Colors.grey),
@@ -228,6 +235,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10.0),
                                               ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey.shade300,
+                                                  // width: 2.0,
+                                                ),
+                                              ),
                                               filled: true,
                                               hintStyle: TextStyle(color: Colors.grey),
                                               hintText: "0",
@@ -267,6 +281,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey.shade300,
+                                                  // width: 2.0,
+                                                ),
                                               ),
                                               filled: true,
                                               hintStyle: TextStyle(color: Colors.grey),
@@ -308,6 +329,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10.0),
                                               ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey.shade300,
+                                                  // width: 2.0,
+                                                ),
+                                              ),
                                               filled: true,
                                               hintStyle: TextStyle(color: Colors.grey),
                                               hintText: "0",
@@ -348,6 +376,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10.0),
                                               ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey.shade300,
+                                                  // width: 2.0,
+                                                ),
+                                              ),
                                               filled: true,
                                               hintStyle: TextStyle(color: Colors.grey),
                                               hintText: "0",
@@ -387,6 +422,13 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: Colors.grey.shade300,
+                                                  // width: 2.0,
+                                                ),
                                               ),
                                               filled: true,
                                               hintStyle: TextStyle(color: Colors.grey),
