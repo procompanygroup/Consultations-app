@@ -159,206 +159,229 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                               ),
                             ),
                           ),
-                          Form(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25),
+                          Container(
+                            width: screenWidth,
+                            child: Form(
+
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                    height: 60,
-                                    width: 45,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-                                      },
-                                      onSaved: (pin1) {},
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child:
+                                    SizedBox(
+                                      height: 45,
+                                      width: 30,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin1) {},
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            hintStyle: TextStyle(color: Colors.grey),
+                                            hintText: "0",
+                                            fillColor: Colors.grey.shade100,
+                                            contentPadding: EdgeInsets.only(
+                                              bottom: 45 / 2,  // HERE THE IMPORTANT PART
+                                            )
                                         ),
-                                        filled: true,
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: "0",
-                                        fillColor: Colors.grey.shade100,
+                                        style:
+                                        Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
                                       ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                      keyboardType: TextInputType.number,
-                                      textAlign: TextAlign.center,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(1),
-                                        FilteringTextInputFormatter.digitsOnly,
-                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 60,
-                                    width: 45,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-                                      },
-                                      onSaved: (pin2) {},
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child:
+                                    SizedBox(
+                                      height: 45,
+                                      width: 30,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin2) {},
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            hintStyle: TextStyle(color: Colors.grey),
+                                            hintText: "0",
+                                            fillColor: Colors.grey.shade100,
+                                            contentPadding: EdgeInsets.only(
+                                              bottom: 45 / 2,  // HERE THE IMPORTANT PART
+                                            )
                                         ),
-                                        filled: true,
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: "0",
-                                        fillColor: Colors.grey.shade100,
+                                        style:
+                                        Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
                                       ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                      keyboardType: TextInputType.number,
-                                      textAlign: TextAlign.center,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(1),
-                                        FilteringTextInputFormatter.digitsOnly,
-                                      ],
                                     ),
+
                                   ),
-                                  SizedBox(
-                                    height: 60,
-                                    width: 45,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-                                      },
-                                      onSaved: (pin3) {},
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: SizedBox(
+                                      height: 45,
+                                      width: 30,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin3) {},
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            hintStyle: TextStyle(color: Colors.grey),
+                                            hintText: "0",
+                                            fillColor: Colors.grey.shade100,
+                                            contentPadding: EdgeInsets.only(
+                                              bottom: 45 / 2,  // HERE THE IMPORTANT PART
+                                            )
                                         ),
-                                        filled: true,
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: "0",
-                                        fillColor: Colors.grey.shade100,
+                                        style:
+                                        Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
                                       ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                      keyboardType: TextInputType.number,
-                                      textAlign: TextAlign.center,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(1),
-                                        FilteringTextInputFormatter.digitsOnly,
-                                      ],
                                     ),
+
                                   ),
-                                  SizedBox(
-                                    height: 60,
-                                    width: 45,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-                                      },
-                                      onSaved: (pin4) {},
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: SizedBox(
+                                      height: 45,
+                                      width: 30,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin4) {},
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            hintStyle: TextStyle(color: Colors.grey),
+                                            hintText: "0",
+                                            fillColor: Colors.grey.shade100,
+                                            contentPadding: EdgeInsets.only(
+                                              bottom: 45 / 2,  // HERE THE IMPORTANT PART
+                                            )
                                         ),
-                                        filled: true,
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: "0",
-                                        fillColor: Colors.grey.shade100,
+                                        style:
+                                        Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
                                       ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                      keyboardType: TextInputType.number,
-                                      textAlign: TextAlign.center,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(1),
-                                        FilteringTextInputFormatter.digitsOnly,
-                                      ],
                                     ),
+
                                   ),
-                                  SizedBox(
-                                    height: 60,
-                                    width: 45,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-                                      },
-                                      onSaved: (pin5) {},
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: SizedBox(
+                                      height: 45,
+                                      width: 30,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin5) {},
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            hintStyle: TextStyle(color: Colors.grey),
+                                            hintText: "0",
+                                            fillColor: Colors.grey.shade100,
+                                            contentPadding: EdgeInsets.only(
+                                              bottom: 45 / 2,  // HERE THE IMPORTANT PART
+                                            )
                                         ),
-                                        filled: true,
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: "0",
-                                        fillColor: Colors.grey.shade100,
+                                        style:
+                                        Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
                                       ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                      keyboardType: TextInputType.number,
-                                      textAlign: TextAlign.center,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(1),
-                                        FilteringTextInputFormatter.digitsOnly,
-                                      ],
                                     ),
+
                                   ),
-                                  SizedBox(
-                                    height: 60,
-                                    width: 45,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-                                      },
-                                      onSaved: (pin6) {},
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: SizedBox(
+                                      height: 45,
+                                      width: 30,
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          if (value.length == 1) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                        onSaved: (pin6) {},
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            hintStyle: TextStyle(color: Colors.grey),
+                                            hintText: "0",
+                                            fillColor: Colors.grey.shade100,
+                                            contentPadding: EdgeInsets.only(
+                                              bottom: 45 / 2,  // HERE THE IMPORTANT PART
+                                            )
                                         ),
-                                        filled: true,
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintText: "0",
-                                        fillColor: Colors.grey.shade100,
+                                        style:
+                                        Theme.of(context).textTheme.headlineSmall,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
                                       ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                      keyboardType: TextInputType.number,
-                                      textAlign: TextAlign.center,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(1),
-                                        FilteringTextInputFormatter.digitsOnly,
-                                      ],
                                     ),
-                                  ),
+                                  )
                                 ],
                               ),
                             ),
