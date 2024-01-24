@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../controllers/phone_auth_controller.dart';
 import '../../models/country.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../controllers/phone_auth_controller.dart';
 import 'login_verification_screen.dart';
 
 class LoginForm extends StatefulWidget {
@@ -21,7 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   List<Country> listCountry = <Country>[];
   late Country _selectedCountry;
   late String _phoneNumber;
-
+  late String fullNumber;
   PhoneAuthController controller = PhoneAuthController();
   var verifyCode;
 
@@ -160,7 +160,9 @@ class _LoginFormState extends State<LoginForm> {
                               horizontal: 10.0, vertical: 5.0),
                           child: TextFormField(
                             validator: (value) {
-                              if (value == null || value.isEmpty || value.length <10) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  value.length < 10) {
                                 return 'Please enter some text';
                               }
                               return null;
@@ -180,7 +182,8 @@ class _LoginFormState extends State<LoginForm> {
                               filled: true,
                               contentPadding: EdgeInsetsDirectional.only(
                                   start: 70, top: 5, end: 60, bottom: 5),
-                              hintStyle: TextStyle(color: Colors.grey),
+                              hintStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
                               // labelText: "Phone Number",
                               hintText: "Phone Number",
                               fillColor: Colors.grey.shade50,
@@ -217,7 +220,7 @@ class _LoginFormState extends State<LoginForm> {
                                   _selectedCountry.dialCode!,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      // fontSize: 16,
+                                      fontSize: 12,
                                       color: myprimercolor),
                                 ),
                                 Padding(
@@ -286,38 +289,46 @@ class _LoginFormState extends State<LoginForm> {
                         style: bs_flatFill(context),
                         // onPressed: () {},
 
-                        onPressed:isLoading? () {} :
-                            () async => {
-                              if (_formKey.currentState!.validate())
-                                {
-                                  setState(() {
-                                    isLoading = true;
-                                  }),
+                        onPressed: isLoading
+                            ? () {}
+                            : () async => {
+                                  if (_formKey.currentState!.validate())
+                                    {
+                                      setState(() {
+                                        isLoading = true;
+                                      }),
 
-                                  // print(_selectedCountry.dialCode! + _phoneNumber ),
-                                  print("Send messager"),
+                                      // print(_selectedCountry.dialCode! + _phoneNumber ),
+                                      print("Send messager"),
+                                      fullNumber = _selectedCountry.dialCode! +
+                                          _phoneNumber,
+                                      verifyCode = await controller.sendSMS(
+                                          toPhoneNumber: (fullNumber)),
+                                      print("verifyCode: " + verifyCode),
+                                      /*    if (verifyCode == 'timedOut')
+                                        {message = "Time Out"}
+                                      else if (verifyCode == 'noInternet')
+                                        {message = "No Internet"}
+                                      else if (verifyCode == 'errorPhone')
+                                        {message = "Error Phone"}*/
+                                      // else
+                                      setState(() {
+                                        isLoading = false;
+                                      }),
 
-                                  verifyCode = await controller.sendSMS(
-                                      toPhoneNumber:(_selectedCountry.dialCode! + _phoneNumber)),
-                                  print("verifyCode: " + verifyCode),
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              LoginVerificationScreen(
+                                                  verifyCode: verifyCode,
+                                                  fullNumber: fullNumber),
+                                        ),
+                                      ),
 
-
-
-                                  setState(() {
-                                    isLoading = false;
-                                  }),
-
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          LoginVerificationScreen(),
-                                    ),
-                                  ),
-
-                                  // }
-                                  // ),
-                                },
-                            }),
+                                      // }
+                                      // ),
+                                    },
+                                }),
                   ),
                 ),
               ],
@@ -330,10 +341,9 @@ class _LoginFormState extends State<LoginForm> {
               top: 0,
               right: 0,
               bottom: 0,
-              child:  Center(
-                child: CircularProgressIndicator()
-                // child: Text("Hello")
-              ),
+              child: Center(child: CircularProgressIndicator()
+                  // child: Text("Hello")
+                  ),
             )
         ],
       ),
