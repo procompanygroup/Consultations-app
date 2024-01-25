@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // import 'package:record/record.dart';
 // import 'package:audioplayers/audioplayers.dart';
@@ -18,7 +19,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
   final pageController = PageController(viewportFraction: 0.7, keepPage: true);
   List<Service> serviceList = [
     Service(
-        name: "Service_1",
+        name: "طاقة الشفاء",
         desc: "desc",
         image: "https://picsum.photos/200/300?random=1",
         favorite: false),
@@ -47,11 +48,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
-            -
-            MediaQuery.of(context).padding.top // safe area
-            -
-            AppBar().preferredSize.height //AppBar
+            -MediaQuery.of(context).padding.top // safe area
+            -AppBar().preferredSize.height //AppBar
+        - 20 // padding bottom
         );
 
     final pages = List.generate(
@@ -62,7 +63,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 border: Border.all(color: Colors.white, width: 0.3),
                 color: Colors.white,
               ),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
               child: Stack(
                 children: [
                   Column(
@@ -87,7 +88,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           style: TextStyle(
                               fontSize: 18,
                               color: myprimercolor,
-                              fontWeight: FontWeight.bold),
+                              // fontWeight: FontWeight.bold
+                          ),
                         ),
                       )
                     ],
@@ -145,79 +147,108 @@ class _ServiceScreenState extends State<ServiceScreen> {
       // appBar: AppBar(
       //   title: Text("Player Audio Screen"),
       // ),
-      body: Container(
-        color: myprimercolor,
-        child: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Stack(
-                children: [
-                  // Top
-                  Container(
-                    // height: bodyHeight * 0.25,
-                    width: screenWidth,
-                    child: Center(
-                      child: Image(
-                        image: AssetImage("assets/images/logo.png"),
+      body: Stack(
+        children: [
+          Container(
+            height: screenHeight ,
+            width: screenWidth,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xff022440),Color(0xff015DAC)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter  ,
+                )
+            ),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SvgPicture.asset(
+                'assets/svg/logo.svg',
+                width: screenWidth,
+                fit: BoxFit.cover,
+                color: Colors.black.withOpacity(0.05),
+              ),
+
+            ),
+
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Stack(
+                    children: [
+                      // Top
+                      Container(
+                        width: screenWidth,
                         height: (bodyHeight * 0.25),
-                        fit: BoxFit.cover,
+                        child: Padding(
+                          padding:  EdgeInsets.only(left: 10,top: ((bodyHeight * 0.25) * 0.2 ),right: 10,bottom: 10),
+                          child: Center(
+                            child: Image(
+                              image: AssetImage("assets/images/logo.png"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.only( top: 20,end: 20,),
+                            child: ElevatedButton(
+                              child: Icon(
+                                Icons.notifications,
+                                color: myprimercolor,
+                                size: 35,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: CircleBorder(),
+                                padding: EdgeInsets.all(5),
+                                backgroundColor: Colors.white, // <-- Button color
+                                // foregroundColor: Colors.red, // <-- Splash color
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: PageView.builder(
+                        controller: pageController,
+                        // itemCount: pages.length,
+                        itemBuilder: (_, index) {
+                          return pages[index % pages.length];
+                        },
                       ),
                     ),
                   ),
-
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 15,
-                      top: 15,
-                    ),
-                    child: ElevatedButton(
-                      child: Icon(
-                        Icons.notifications,
-                        color: myprimercolor,
-                        size: 35,
+                    padding: const EdgeInsets.all(10.0),
+                    child: SmoothPageIndicator(
+                      controller: pageController,
+                      count: pages.length,
+                      effect: const WormEffect(
+                        activeDotColor: mysecondarycolor,
+                        dotHeight: 10,
+                        dotWidth: 10,
+                         type: WormType.thinUnderground,
                       ),
-                      style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(5),
-                        backgroundColor: Colors.white, // <-- Button color
-                        // foregroundColor: Colors.red, // <-- Splash color
-                      ),
-                      onPressed: () {},
                     ),
-                  )
+                  ),
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    color: myprimercolor,
-                    child: PageView.builder(
-                      controller: pageController,
-                      // itemCount: pages.length,
-                      itemBuilder: (_, index) {
-                        return pages[index % pages.length];
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SmoothPageIndicator(
-                  controller: pageController,
-                  count: pages.length,
-                  effect: const WormEffect(
-                    activeDotColor: mysecondarycolor,
-                    dotHeight: 10,
-                    dotWidth: 10,
-                     type: WormType.thinUnderground,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
