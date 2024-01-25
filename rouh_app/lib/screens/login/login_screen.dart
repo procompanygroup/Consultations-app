@@ -47,6 +47,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child:
+                        /*
                     Image(
                         image: AssetImage("assets/images/logo_background.png"),
                         // height: (bodyHeight * 2 ),
@@ -56,16 +57,16 @@ class LoginScreen extends StatelessWidget {
                       // color: Colors.black.withOpacity(0.13),
                       // colorBlendMode: BlendMode.overlay,
                     ),
-                    /*
+                    */
                     SvgPicture.asset(
                       'assets/svg/logo.svg',
                       width: screenWidth,
                       fit: BoxFit.fitWidth,
                       // height: 30,
                       color: Colors.black.withOpacity(0.05),
-                      // colorBlendMode: BlendMode.overlay,
+                      //colorBlendMode: BlendMode.overlay,
                     ),
-                    */
+
                   ),
                 ),
                 Container(
