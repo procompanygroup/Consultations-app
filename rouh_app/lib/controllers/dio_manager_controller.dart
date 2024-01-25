@@ -9,8 +9,9 @@ class DioManager {
 
   DioManager._privateConstructor(){
     var headers = {
-      'Content-Type': 'application/json',
+      'content-type': 'application/json',
       'accept': 'application/json',
+      'connection': 'keep-alive',
     };
     dio = Dio(
       BaseOptions(
@@ -26,6 +27,9 @@ class DioManager {
       ),
     );
 
+    // addInterceptors(Dio dio) {
+    //   dio.interceptors.add(ApiInterceptor(dio: dio));
+    // }
     dio.interceptors.add(
       ApiInterceptor(),
     );

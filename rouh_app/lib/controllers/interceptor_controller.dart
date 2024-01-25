@@ -3,28 +3,29 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiInterceptor extends Interceptor {
 
+  //Dio dio = Dio();
   // final ApiInterceptor requestRetrier;
   //
   // ApiInterceptor({
-  //  required this.requestRetrier,
+  //  required this.dio,
   // });
 
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     // get from shared preferences
     const storage = FlutterSecureStorage();
-    String? storedToken =
-        await storage.read(key: 'token');
+   var accessToken =await storage.read(key: 'token');
 
-    options.headers.addAll({
-      "Content-Type": "application/json",
-    });
+    // options.headers.addAll({
+    //   'content-type': 'application/json',
+    // });
+   options.headers['Authorization'] = 'Bearer $accessToken';
     // get token from the storage
-    if (storedToken != null) {
-      options.headers.addAll({
-        "Authorization": "Bearer ${storedToken}",
-      });
-    }
+    // if (accessToken != null) {
+    //   options.headers.addAll({
+    //     'authorization': 'Bearer ${accessToken}',
+    //   });
+    // }
     return super.onRequest(options, handler);
   }
 
@@ -36,9 +37,11 @@ class ApiInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     // Check if the user is unauthorized.
+
     if (err.response?.statusCode == 401) {
       // Refresh the user's authentication token.
-      //await refreshToken();
+      //this.accessToken =await storage.read(key: 'token');
+     // _retry(err.requestOptions);
       // Retry the request.
       try {
        // handler.resolve(await _retry(err.requestOptions));
@@ -56,7 +59,7 @@ class ApiInterceptor extends Interceptor {
   // Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
   //   // Create a new `RequestOptions` object with the same method, path, data, and query parameters as the original request.
   //   // get from shared preferences
-  //   var clientToken = token;
+  //   var clientToken = this.accessToken;
   //   final options = Options(
   //     method: requestOptions.method,
   //     headers: {
