@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../controllers/dio_manager_controller.dart';
+import 'auth_model.dart';
 
 class User {
   //Instance variables
@@ -67,11 +68,12 @@ class User {
       "mobile": mobile
     });
 
-    var response = await dioManager.dio.post('loginclient', data: data);
+    var response = await dioManager.dio.post('loginclient',
+        data: data,
+       );
 
     if (response.statusCode == 200) {
-
-      return response.data;
+      return AuthModel.fromJson(json.decode(response.data)).token;
     }
     else {
       return "";
@@ -87,14 +89,13 @@ class User {
     });
 
     var response = await dioManager.dio.post('client/getbymobile', data: data,);
-    print(response.statusMessage);
     if (response.statusCode == 200) {
-      // return User.fromJson(json.decode(response.data));
-      return User.fromJson(response.data);
+      return User.fromJson(json.decode(response.data));
+     // return User.fromJson(response.data);
     }
-    else {
-      return throw Exception();
-    }
+     else {
+       return throw Exception();
+     }
 
   }
 }
