@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-
+        // Set Noto Kufi Arabic as the default app font.
+        fontFamily: 'Noto Kufi Arabic',
         // Define the default brightness and colors.
         colorScheme: ColorScheme.fromSeed(
           seedColor: mysecondarycolor,
