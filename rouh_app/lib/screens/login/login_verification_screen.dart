@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rouh_app/models/service_model.dart';
 
+import '../../controllers/phone_auth_controller.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
@@ -14,6 +16,7 @@ class LoginVerificationScreen extends StatefulWidget {
   final fullNumber, verifyCode;
   const LoginVerificationScreen({Key? key, this.fullNumber, this.verifyCode})
       : super(key: key);
+
 
   @override
   State<LoginVerificationScreen> createState() =>
@@ -25,6 +28,9 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   late Timer _timer;
   String start = "30";
   bool resendButtonisEnable = false;
+  String toPhoneNumber ="0533497777";
+  String verifyCode="";
+  PhoneAuthController controller = PhoneAuthController();
   void startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
@@ -476,7 +482,10 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                   decoration: TextDecoration.underline),
                             ),
                             onPressed: resendButtonisEnable
-                                ? () {
+                                ? () async {
+
+                               verifyCode = await controller.sendSMS(
+                                  toPhoneNumber: (toPhoneNumber));
                                     setState(() {
                                       _start = 30;
                                       resendButtonisEnable = false;
@@ -504,17 +513,18 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                   // dina
                                   User user = User();
                                   var token =
-                                      await user.login(mobile: "0533494777");
-                                  if (token != "") {
+                                       await user.login(mobile: toPhoneNumber);
+                                  // print(token);
+                                   if (token != "") {
                                     const storage = FlutterSecureStorage();
                                     // for write
-                                    await storage.write(
-                                        key: 'token',
-                                        value: token); // Save token
+                                     await storage.write(
+                                         key: 'token',
+                                         value: token); // Save token
                                     // get user Info
                                     var userInfo = await user.getUser(
-                                        mobile: "0533494777");
-                                  } else {}
+                                        mobile: toPhoneNumber);
+                                   } else {}
 
                                   Navigator.pushAndRemoveUntil(
                                       context,
