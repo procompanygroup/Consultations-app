@@ -59,8 +59,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   Future<void> fillServiceList() async {
      print(isLoading);
-     print( await appService.allServices());
-     // serviceList = await appService.allServices();
+     //print( await appService.allServices());
+      serviceList = await appService.allServices();
+     for (var i = 0; i < serviceList.length; i++) {
+       print(serviceList[i].name);
+       print(serviceList[i].desc);
+       print(serviceList[i].image);
+     }
      isLoading =false;
      print(isLoading);
 /*
