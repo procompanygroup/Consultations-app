@@ -26,13 +26,19 @@ class Service {
   }
 
   factory Service.fromJson(dynamic parsedJson) {
+    var tmpServiceInputs;
+    if(parsedJson["inputservices"] != null)
+      {
+         tmpServiceInputs = convertListToModel(ServiceInput.fromJson, parsedJson["inputservices"]);
+      }
     return Service(
     name: parsedJson['name'],
     desc: parsedJson['desc'],
     icon: parsedJson['icon'],
     image: parsedJson['image'],
      is_active: parsedJson['is_active'],
-     serviceInputs : convertListToModel(ServiceInput.fromJson, parsedJson["inputservices"]),
+
+     serviceInputs : tmpServiceInputs,
      );
   }
 
@@ -48,7 +54,7 @@ class Service {
   Future<List<Service>> allServices() async {
 
     var response = await dioManager.dio.post('client/service/viewall', );
-    print(response.data);
+
     if (response.statusCode == 200) {
       var services = convertListToModel<Service>(Service.fromJson,jsonDecode(response.data));
       return services;
