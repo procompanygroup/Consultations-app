@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rouh_app/models/service_value_model.dart';
 
 // import 'package:record/record.dart';
 // import 'package:audioplayers/audioplayers.dart';
@@ -68,7 +69,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
      }
      
      var serviceInput = await appService.getServiceInputs(serviceId: 1);
-     print(serviceInput!.serviceInputs![0].input?.name);
+     print(serviceInput!.serviceInputs![0].id);
+
+     ServiceValue serviceValue = ServiceValue();
+     var serviceVlues =await serviceValue.generateInputValues(serviceInputs:serviceInput.serviceInputs);
+     print(serviceVlues![0].inputservice_id);
+
      isLoading =false;
      print(isLoading);
 /*
