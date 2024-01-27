@@ -66,6 +66,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
        print(serviceList[i].desc);
        print(serviceList[i].image);
      }
+     
+     var serviceInput = await appService.getServiceInputs(serviceId: 1);
+     print(serviceInput!.serviceInputs![0].input?.name);
      isLoading =false;
      print(isLoading);
 /*

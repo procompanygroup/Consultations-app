@@ -17,13 +17,7 @@ class Service {
 
   //Constructor
   Service(
-      { this.name, this.desc, this.icon, this.is_active, this.image,this.serviceInputs}) {
-    // name = name;
-    // desc = desc;
-    // icon = icon;
-    // is_active = is_active;
-    // image = image;
-  }
+      { this.name, this.desc, this.icon, this.is_active, this.image,this.serviceInputs}) ;
 
   factory Service.fromJson(dynamic parsedJson) {
     var tmpServiceInputs;
@@ -65,7 +59,7 @@ class Service {
 
   }
 
-  Future<Service?> getSrviceInputs({
+  Future<Service?> getServiceInputs({
     required int serviceId,
   }) async {
 

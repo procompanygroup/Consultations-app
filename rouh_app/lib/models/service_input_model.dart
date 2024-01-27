@@ -79,9 +79,7 @@ class InputValues{
   int? input_id;
 
   //Constructor
-  InputValues({ this.id, this.value, this.input_id, }) {
-
-  }
+  InputValues({ this.id, this.value, this.input_id, });
 
   factory InputValues.fromJson(dynamic parsedJson) {
   return InputValues(
