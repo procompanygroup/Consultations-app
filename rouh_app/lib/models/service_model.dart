@@ -4,7 +4,7 @@ import 'package:rouh_app/models/service_input_model.dart';
 
 import '../controllers/dio_manager_controller.dart';
 
-class AppService {
+class Service {
   //Instance variables
   String? name;
   String? desc;
@@ -16,7 +16,7 @@ class AppService {
   DioManager dioManager = DioManager();
 
   //Constructor
-  AppService(
+  Service(
       { this.name, this.desc, this.icon, this.is_active, this.image,this.serviceInputs}) {
     // name = name;
     // desc = desc;
@@ -25,8 +25,8 @@ class AppService {
     // image = image;
   }
 
-  factory AppService.fromJson(dynamic parsedJson) {
-    return AppService(
+  factory Service.fromJson(dynamic parsedJson) {
+    return Service(
     name: parsedJson['name'],
     desc: parsedJson['desc'],
     icon: parsedJson['icon'],
@@ -45,11 +45,12 @@ class AppService {
         'image': image,
       };
 
-  Future<List<AppService>?> allServices() async {
+  Future<List<Service>> allServices() async {
 
     var response = await dioManager.dio.post('client/service/viewall', );
+    print(response.data);
     if (response.statusCode == 200) {
-      var services = convertListToModel<AppService>(AppService.fromJson,jsonDecode(response.data));
+      var services = convertListToModel<Service>(Service.fromJson,jsonDecode(response.data));
       return services;
     }
     else {
@@ -58,7 +59,7 @@ class AppService {
 
   }
 
-  Future<AppService?> getSrviceInputs({
+  Future<Service?> getSrviceInputs({
     required int serviceId,
   }) async {
 
@@ -68,7 +69,7 @@ class AppService {
 
     var response = await dioManager.dio.post('client/service/getinputform',data: data );
     if (response.statusCode == 200) {
-      var service = AppService.fromJson(json.decode(response.data));
+      var service = Service.fromJson(json.decode(response.data));
 
       return service;
     }

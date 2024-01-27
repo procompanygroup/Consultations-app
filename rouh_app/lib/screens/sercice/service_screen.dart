@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../models/service_model.dart';
 import '../../mystyle/constantsColors.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -17,33 +18,49 @@ class ServiceScreen extends StatefulWidget {
 class _ServiceScreenState extends State<ServiceScreen> {
   // final controller = PageController(viewportFraction: 0.8, keepPage: true);
   final pageController = PageController(viewportFraction: 0.7, keepPage: true);
-  List<Service> serviceList = [
-    Service(
-        name: "طاقة الشفاء",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=1",
-        favorite: false),
-    Service(
-        name: "Service_2",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=2",
-        favorite: true),
-    Service(
-        name: "Service_3",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=3",
-        favorite: false),
-    Service(
-        name: "Service_4",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=4",
-        favorite: true),
-    Service(
-        name: "Service_5",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=5",
-        favorite: false),
-  ];
+  Service appService = Service();
+  late List<Service> serviceList = [];
+
+  // List<Service> serviceList = [
+  //   Service(
+  //       name: "طاقة الشفاء",
+  //       desc: "desc",
+  //       image: "https://picsum.photos/200/300?random=1",
+  //       favorite: false),
+  //   Service(
+  //       name: "Service_2",
+  //       desc: "desc",
+  //       image: "https://picsum.photos/200/300?random=2",
+  //       favorite: true),
+  //   Service(
+  //       name: "Service_3",
+  //       desc: "desc",
+  //       image: "https://picsum.photos/200/300?random=3",
+  //       favorite: false),
+  //   Service(
+  //       name: "Service_4",
+  //       desc: "desc",
+  //       image: "https://picsum.photos/200/300?random=4",
+  //       favorite: true),
+  //   Service(
+  //       name: "Service_5",
+  //       desc: "desc",
+  //       image: "https://picsum.photos/200/300?random=5",
+  //       favorite: false),
+  // ];
+  //
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //
+    fillServiceList();
+
+  }
+
+  Future<void> fillServiceList() async {
+    serviceList = await appService.allServices();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -254,11 +271,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
   }
 }
 
-class Service {
-  String? name;
-  String? desc;
-  String? image;
-  bool? favorite;
-
-  Service({this.name, this.desc, this.image, this.favorite});
-}
+// class Service {
+//   String? name;
+//   String? desc;
+//   String? image;
+//   bool? favorite;
+//
+//   Service({this.name, this.desc, this.image, this.favorite});
+// }
