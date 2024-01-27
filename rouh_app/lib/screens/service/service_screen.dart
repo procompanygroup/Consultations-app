@@ -16,50 +16,69 @@ class ServiceScreen extends StatefulWidget {
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {
-  // final controller = PageController(viewportFraction: 0.8, keepPage: true);
-  final pageController = PageController(viewportFraction: 0.7, keepPage: true);
-  Service appService = Service();
-  late List<Service> serviceList = [];
+  bool isLoading = true;
 
-  // List<Service> serviceList = [
-  //   Service(
-  //       name: "طاقة الشفاء",
-  //       desc: "desc",
-  //       image: "https://picsum.photos/200/300?random=1",
-  //       favorite: false),
-  //   Service(
-  //       name: "Service_2",
-  //       desc: "desc",
-  //       image: "https://picsum.photos/200/300?random=2",
-  //       favorite: true),
-  //   Service(
-  //       name: "Service_3",
-  //       desc: "desc",
-  //       image: "https://picsum.photos/200/300?random=3",
-  //       favorite: false),
-  //   Service(
-  //       name: "Service_4",
-  //       desc: "desc",
-  //       image: "https://picsum.photos/200/300?random=4",
-  //       favorite: true),
-  //   Service(
-  //       name: "Service_5",
-  //       desc: "desc",
-  //       image: "https://picsum.photos/200/300?random=5",
-  //       favorite: false),
-  // ];
-  //
+  // final controller = PageController(viewportFraction: 0.8, keepPage: true);
+  final pageController = PageController(viewportFraction: 0.8, keepPage: true);
+  Service appService = Service();
+  List<Service> serviceList = <Service>[];
+
+/*
+  List<Service> serviceList = [
+    Service(
+        name: "طاقة الشفاء",
+        desc: "desc",
+        image: "https://picsum.photos/200/300?random=1"),
+    Service(
+        name: "Service_2",
+        desc: "desc",
+        image: "https://picsum.photos/200/300?random=2"),
+    Service(
+        name: "Service_3",
+        desc: "desc",
+        image: "https://picsum.photos/200/300?random=3"),
+    Service(
+        name: "Service_4",
+        desc: "desc",
+        image: "https://picsum.photos/200/300?random=4"),
+    Service(
+        name: "Service_5",
+        desc: "desc",
+        image: "https://picsum.photos/200/300?random=5"),
+  ];
+*/
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //
+
     fillServiceList();
 
   }
 
   Future<void> fillServiceList() async {
-    serviceList = await appService.allServices();
+     print(isLoading);
+     print( await appService.allServices());
+     // serviceList = await appService.allServices();
+     isLoading =false;
+     print(isLoading);
+/*
+
+     print("Start:" + isLoading.toString());
+    appService.allServices()
+        .then((response) {
+      setState(() {
+        print(response);
+        // serviceList =response;
+        isLoading =false;
+        print("Test:" + isLoading.toString());
+
+      });
+      });
+     print(serviceList);
+     print("End:" + isLoading.toString());
+*/
   }
 
   @override
@@ -236,31 +255,43 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       )
                     ],
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: PageView.builder(
-                        controller: pageController,
-                        // itemCount: pages.length,
-                        itemBuilder: (_, index) {
-                          return pages[index % pages.length];
-                        },
+                  !isLoading?
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: PageView.builder(
+                            controller: pageController,
+                            // itemCount: pages.length,
+                            itemBuilder: (_, index) {
+                              return pages[index % pages.length];
+                            },
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: SmoothPageIndicator(
-                      controller: pageController,
-                      count: pages.length,
-                      effect: const WormEffect(
-                        activeDotColor: mysecondarycolor,
-                        dotHeight: 10,
-                        dotWidth: 10,
-                         type: WormType.thinUnderground,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: SmoothPageIndicator(
+                          controller: pageController,
+                          count: pages.length,
+                          effect: const WormEffect(
+                            activeDotColor: mysecondarycolor,
+                            dotHeight: 10,
+                            dotWidth: 10,
+                            type: WormType.thinUnderground,
+                          ),
+                        ),
                       ),
+                    ],
+                   )
+                  :Padding(
+                    padding:  EdgeInsets.only(top: bodyHeight *0.3),
+                    child: Container(
+                      color: Colors.red,
+                      child: Center(child: Text("Hello"),),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
