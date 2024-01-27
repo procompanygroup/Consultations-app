@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'mystyle/constantsColors.dart';
+import 'screens/service/service_screen.dart';
+import 'screens/service/service_application_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/login/login_verification_screen.dart';
 import 'screens/main_navigation_screen.dart';
@@ -52,7 +54,8 @@ class MyApp extends StatelessWidget {
         '/splashScreen': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
         '/loginVerification': (context) => const LoginVerificationScreen(),
-        // '/service': (context) => const ServiceScreen(),
+        '/service': (context) => const ServiceScreen(),
+        '/serviceApplication': (context) => const ServiceApplicationScreen(),
         // '/experts': (context) => const ExpertsScreen(),
         // '/profile': (context) => const ProfileScreen(),
         // '/record': (context) => const RecordScreen(),

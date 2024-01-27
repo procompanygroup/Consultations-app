@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'sercice/service_screen.dart';
+import 'service/service_screen.dart';
 
 
 class MainNavigationScreen extends StatefulWidget {
