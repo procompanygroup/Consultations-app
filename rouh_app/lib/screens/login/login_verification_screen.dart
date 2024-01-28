@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rouh_app/screens/register.dart';
+import 'package:rouh_app/widget/custom_appbar.dart';
 
 import '../../controllers/phone_auth_controller.dart';
 import '../../models/user_model.dart';
@@ -85,42 +86,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
       */
       body: Stack(
         children: [
-          Container(
-            height: bodyHeight * 0.30,
-            width: screenWidth,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              colors: [Color(0xff015DAC), Color(0xff022440)],
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-            )),
-            child: Padding(
-              padding: EdgeInsetsDirectional.only(bottom: bodyHeight * 0.05),
-              child: Row(
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Transform(
-                    transform: Matrix4.identity().scaled(-1.0, 1.0, 1.0),
-                    child: InkWell(
-                        child: SvgPicture.asset(
-                          "assets/svg/back-arrow.svg",
-                          width: 33,
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                        }),
-                  ),
-                  SizedBox(
-                    width: screenWidth * 0.15,
-                  ),
-                  const Text(
-                    "Activate App",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          const CustomAppBar(),
           Padding(
             padding: EdgeInsets.only(top: bodyHeight * 0.20),
             child: Container(
