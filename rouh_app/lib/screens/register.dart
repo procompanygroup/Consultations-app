@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -26,16 +25,14 @@ class _RegisterState extends State<Register> {
   late Country _selectedCountry;
   late String _selectedGender = listGender[0];
   late String _selectedMaterialState = listMaritalStatus[0];
-  final TextEditingController _dateController = TextEditingController();
-
+  late String _selectedDate = "Choose your birthday";
+  bool isChecked = true;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     //
     Country.readJson().then((response) => {
-          // print(response),
-
           setState(() {
             listCountry = response;
             _selectedCountry = listCountry.first;
@@ -112,9 +109,10 @@ class _RegisterState extends State<Register> {
                         padding: const EdgeInsets.all(5),
                         backgroundColor:
                             Colors.grey.shade50, // <-- Button color
-                        // foregroundColor: Colors.red, // <-- Splash color
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        //getImagefromGallery();
+                      },
                       child: Icon(
                         Icons.camera_alt,
                         size: 35,
@@ -142,19 +140,15 @@ class _RegisterState extends State<Register> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 validator: (value) {
-                                  if (value == null ||
-                                      value.isEmpty ||
-                                      value.length < 9) {
+                                  if (value!.isEmpty || value.length < 6) {
                                     return '';
                                   }
                                   return null;
                                 },
                                 onChanged: (value) {},
                                 decoration: InputDecoration(
-                                  //test the height
                                   errorStyle:
                                       const TextStyle(fontSize: 0, height: 0),
-
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
                                   ),
@@ -177,10 +171,10 @@ class _RegisterState extends State<Register> {
                                   hintText: "UserName",
                                   fillColor: Colors.grey.shade50,
                                 ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(9)
-                                ],
+                                keyboardType: TextInputType.text,
+                                // inputFormatters: [
+                                //   LengthLimitingTextInputFormatter(9)
+                                // ],
                               ),
                             ),
                             Positioned(
@@ -219,9 +213,7 @@ class _RegisterState extends State<Register> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 validator: (value) {
-                                  if (value == null ||
-                                      value.isEmpty ||
-                                      value.length < 9) {
+                                  if (value!.isEmpty || !value.contains('@')) {
                                     return '';
                                   }
                                   return null;
@@ -254,10 +246,10 @@ class _RegisterState extends State<Register> {
                                   hintText: "Email",
                                   fillColor: Colors.grey.shade50,
                                 ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(9)
-                                ],
+                                keyboardType: TextInputType.emailAddress,
+                                // inputFormatters: [
+                                //   LengthLimitingTextInputFormatter(9)
+                                // ],
                               ),
                             ),
                             Positioned(
@@ -376,28 +368,36 @@ class _RegisterState extends State<Register> {
                                     horizontal: 10.0, vertical: 5.0),
                                 child: Container(
                                   height: size.height * 0.06,
+                                  width: double.infinity,
                                   decoration: BoxDecoration(
                                       color: Colors.grey.shade50,
                                       borderRadius: BorderRadius.circular(25),
-                                      border:
-                                          Border.all(color: Colors.black12)),
-                                  child: InkWell(
-                                    onTap: () {
-                                      showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime(2000),
-                                        lastDate: DateTime(2100),
-                                      ).then((selectedDate) {
-                                        if (selectedDate != null) {
-                                          setState(() {
-                                            _dateController.text =
-                                                selectedDate.toString();
-                                          });
-                                        }
-                                      });
-                                    },
-                                    // child: const Text("Choose Date"),
+                                      border: Border.all(
+                                          color: Colors.grey.shade300)),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.only(
+                                        start: size.width * 0.17,
+                                        top: size.height * 0.01),
+                                    child: InkWell(
+                                      onTap: () {
+                                        showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2100),
+                                        ).then((selectedDate) {
+                                          if (selectedDate != null) {
+                                            setState(() {
+                                              final dateOnly =
+                                                  "${selectedDate.year}/${selectedDate.month}/${selectedDate.day}";
+                                              _selectedDate =
+                                                  dateOnly.toString();
+                                            });
+                                          }
+                                        });
+                                      },
+                                      child: Text(_selectedDate),
+                                    ),
                                   ),
                                 )),
                             Positioned(
@@ -456,11 +456,9 @@ class _RegisterState extends State<Register> {
                                       borderRadius: BorderRadius.circular(25.0),
                                       borderSide: BorderSide(
                                         color: Colors.grey.shade300,
-                                        // width: 2.0,
                                       ),
                                     ),
                                     filled: true,
-                                    // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
                                     contentPadding:
                                         const EdgeInsetsDirectional.only(
                                             start: 60,
@@ -539,7 +537,6 @@ class _RegisterState extends State<Register> {
                                       ),
                                     ),
                                     filled: true,
-                                    // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
                                     contentPadding:
                                         const EdgeInsetsDirectional.only(
                                             start: 60,
@@ -585,6 +582,28 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                             )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: isChecked,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isChecked = value!;
+                                });
+                              },
+                              activeColor: Colors.pink.shade500,
+                              checkColor: Colors.white,
+                            ),
+                            const Text(
+                              'I am agree to the terms of use and privacy\n policy of the application.',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff015DAC)),
+                              textAlign: TextAlign.center,
+                            ),
                           ],
                         ),
                         Padding(
