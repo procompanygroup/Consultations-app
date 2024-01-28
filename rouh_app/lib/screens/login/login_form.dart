@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../controllers/phone_auth_controller.dart';
@@ -340,73 +341,70 @@ class _LoginFormState extends State<LoginForm> {
 
                         onPressed: isLoading
                             ? () {}
-                            : () async => {
-                                  if (_formKey.currentState!.validate())
-                                    {
-                                      setState(() {
-                                        isLoading = true;
-                                      }),
+                            : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
 
-                                      // print(_selectedCountry.dialCode! + _phoneNumber ),
-                                      print("Send messager"),
-                                      fullNumber = _selectedCountry.dialCode! +
-                                          _phoneNumber,
-                                      verifyCode = await controller.sendSMS(
-                                          toPhoneNumber: (fullNumber)),
-                                      print("verifyCode: " + verifyCode),
-                                      if (verifyCode == 'timedOut')
-                                        {
-                                          setState(() {
-                                            isLoading = false;
-                                          }),
-                                          _showMessageDialog(context,
-                                              "Connection Failed. Please Retry Later")
-                                        }
-                                      else if (verifyCode == 'noInternet')
-                                        {
-                                          // _showMessageDialog(context, "Internet Connection Error"),
-                                          setState(() {
-                                            isLoading = false;
-                                          }),
-                                          _showSnackbar(context,
-                                              "Internet Connection Error")
-                                        }
-                                      else if (verifyCode == 'errorPhone')
-                                        {
-                                          _showMessageDialog(context,
-                                              "Incorrect Phone Number"),
-                                          setState(() {
-                                            isLoading = false;
-                                          }),
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginVerificationScreen(
-                                                      verifyCode: verifyCode,
-                                                      fullNumber: fullNumber),
-                                            ),
-                                          ),
-                                        }
-                                      else
-                                        {
-                                          setState(() {
-                                            isLoading = false;
-                                          }),
-                                        },
+                                  // print(_selectedCountry.dialCode! + _phoneNumber ),
+                                  print("Send messager");
+                                  fullNumber =
+                                      _selectedCountry.dialCode! + _phoneNumber;
+                                  verifyCode = await controller.sendSMS(
+                                      toPhoneNumber: (fullNumber));
+                                  print("verifyCode: " + verifyCode);
+                                  if (verifyCode == 'timedOut') {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    _showMessageDialog(context,
+                                        "Connection Failed. Please Retry Later");
+                                  } else if (verifyCode == 'noInternet') {
+                                    // _showMessageDialog(context, "Internet Connection Error"),
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    _showSnackbar(
+                                        context, "Internet Connection Error");
+                                  } else if (verifyCode == 'errorPhone') {
+                                    _showMessageDialog(
+                                        context, "Incorrect Phone Number");
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         LoginVerificationScreen(
+                                    //             verifyCode: verifyCode,
+                                    //             fullNumber: fullNumber),
+                                    //   ),
+                                    // );
+                                  } else {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    const storage = FlutterSecureStorage();
+                                    // for write mobile phone
+                                    await storage.write(
+                                        key: 'mobile', value: fullNumber);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            LoginVerificationScreen(
+                                                verifyCode: verifyCode,
+                                                fullNumber: fullNumber),
+                                      ),
+                                    );
+                                  }
+                                  ;
 
-                                      // Navigator.of(context).push(
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         LoginVerificationScreen(
-                                      //             verifyCode: verifyCode,
-                                      //             fullNumber: fullNumber),
-                                      //   ),
-                                      // ),
-
-                                      // }
-                                      // ),
-                                    },
-                                }),
+                                  // }
+                                  // ),
+                                }
+                                ;
+                              }),
                   ),
                 ),
               ],
