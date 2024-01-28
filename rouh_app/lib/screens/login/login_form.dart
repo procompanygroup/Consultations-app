@@ -48,6 +48,41 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
+  void _showMessageDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Error',
+            style: TextStyle(fontSize: 18),
+          ),
+          content: Text(
+            message,
+            style: const TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 4),
+      ),
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -70,7 +105,8 @@ class _LoginFormState extends State<LoginForm> {
                       color: mysecondarycolor),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left:10 ,right: 10, bottom: 10.0),
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 10.0),
                   child: Divider(color: Colors.grey.shade300),
                 ),
 
@@ -81,8 +117,7 @@ class _LoginFormState extends State<LoginForm> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                       child: DropdownButtonFormField<Country>(
-                        validator: (value) =>
-                            value == null ? '' : null,
+                        validator: (value) => value == null ? '' : null,
                         //isDense: true,
                         hint: Text('Choose'),
                         value: _selectedCountry,
@@ -166,7 +201,8 @@ class _LoginFormState extends State<LoginForm> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 5.0),
                           child: TextFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
@@ -183,7 +219,7 @@ class _LoginFormState extends State<LoginForm> {
                             //style: TextStyle(fontSize: 12),
                             decoration: InputDecoration(
                               //test the height
-                              errorStyle: TextStyle(fontSize: 0,height: 0),
+                              errorStyle: TextStyle(fontSize: 0, height: 0),
 
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0),
@@ -233,7 +269,7 @@ class _LoginFormState extends State<LoginForm> {
                                   _selectedCountry.dialCode!,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       color: myprimercolor),
                                 ),
                                 Padding(
@@ -318,25 +354,54 @@ class _LoginFormState extends State<LoginForm> {
                                       verifyCode = await controller.sendSMS(
                                           toPhoneNumber: (fullNumber)),
                                       print("verifyCode: " + verifyCode),
-                                      /*    if (verifyCode == 'timedOut')
-                                        {message = "Time Out"}
+                                      if (verifyCode == 'timedOut')
+                                        {
+                                          setState(() {
+                                            isLoading = false;
+                                          }),
+                                          _showMessageDialog(context,
+                                              "Connection Failed. Please Retry Later")
+                                        }
                                       else if (verifyCode == 'noInternet')
-                                        {message = "No Internet"}
+                                        {
+                                          // _showMessageDialog(context, "Internet Connection Error"),
+                                          setState(() {
+                                            isLoading = false;
+                                          }),
+                                          _showSnackbar(context,
+                                              "Internet Connection Error")
+                                        }
                                       else if (verifyCode == 'errorPhone')
-                                        {message = "Error Phone"}*/
-                                      // else
-                                      setState(() {
-                                        isLoading = false;
-                                      }),
+                                        {
+                                          _showMessageDialog(context,
+                                              "Incorrect Phone Number"),
+                                          setState(() {
+                                            isLoading = false;
+                                          }),
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginVerificationScreen(
+                                                      verifyCode: verifyCode,
+                                                      fullNumber: fullNumber),
+                                            ),
+                                          ),
+                                        }
+                                      else
+                                        {
+                                          setState(() {
+                                            isLoading = false;
+                                          }),
+                                        },
 
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              LoginVerificationScreen(
-                                                  verifyCode: verifyCode,
-                                                  fullNumber: fullNumber),
-                                        ),
-                                      ),
+                                      // Navigator.of(context).push(
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         LoginVerificationScreen(
+                                      //             verifyCode: verifyCode,
+                                      //             fullNumber: fullNumber),
+                                      //   ),
+                                      // ),
 
                                       // }
                                       // ),
