@@ -4,19 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rouh_app/models/service_model.dart';
+import 'package:rouh_app/screens/register.dart';
 
 import '../../controllers/phone_auth_controller.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../main_navigation_screen.dart';
 
 class LoginVerificationScreen extends StatefulWidget {
   final fullNumber, verifyCode;
   const LoginVerificationScreen({Key? key, this.fullNumber, this.verifyCode})
       : super(key: key);
-
 
   @override
   State<LoginVerificationScreen> createState() =>
@@ -28,8 +26,6 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   late Timer _timer;
   String start = "30";
   bool resendButtonisEnable = false;
-  String toPhoneNumber ="0533497777";
-  String verifyCode="";
   PhoneAuthController controller = PhoneAuthController();
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -63,6 +59,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String verifyCode = widget.verifyCode;
     double screenWidth = MediaQuery.of(context).size.width;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
         // - MediaQuery.of(context).padding.top // safe area
@@ -129,7 +126,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
             child: Container(
               height: bodyHeight * 0.80,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(50),
                     topRight: Radius.circular(50)),
                 border: Border.all(color: Colors.grey),
@@ -153,7 +150,8 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 10),
                             child: Center(
                               child: Text(
                                 "Please enter the verification code for the number",
@@ -168,289 +166,314 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                           Container(
                             width: screenWidth,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: Form(
-
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
                                       child: Container(
                                         constraints: BoxConstraints(
-                                            maxHeight: 60,
-                                          maxWidth: 45
-                                        ),
-                                        height: (screenWidth-80) / 6,
-                                        width: (screenWidth-100) / 6,
+                                            maxHeight: 60, maxWidth: 45),
+                                        height: (screenWidth - 80) / 6,
+                                        width: (screenWidth - 100) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
-                                              FocusScope.of(context).nextFocus();
+                                              FocusScope.of(context)
+                                                  .nextFocus();
                                             }
                                           },
                                           onSaved: (pin1) {},
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                                 borderSide: BorderSide(
                                                   color: Colors.grey.shade300,
                                                   // width: 2.0,
                                                 ),
                                               ),
                                               filled: true,
-                                              hintStyle: TextStyle(color: Colors.grey),
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               hintText: "0",
                                               fillColor: Colors.grey.shade100,
                                               contentPadding: EdgeInsets.only(
-                                                bottom: 45 / 2,  // HERE THE IMPORTANT PART
-                                              )
-                                          ),
-                                          style:
-                                          Theme.of(context).textTheme.headlineSmall,
+                                                bottom: 45 /
+                                                    2, // HERE THE IMPORTANT PART
+                                              )),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(1),
-                                            FilteringTextInputFormatter.digitsOnly,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
                                           ],
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                                      child:
-                                      Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      child: Container(
                                         constraints: BoxConstraints(
-                                            maxHeight: 60,
-                                            maxWidth: 45
-                                        ),
-                                        height: (screenWidth-80) / 6,
-                                        width: (screenWidth-100) / 6,
+                                            maxHeight: 60, maxWidth: 45),
+                                        height: (screenWidth - 80) / 6,
+                                        width: (screenWidth - 100) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
-                                              FocusScope.of(context).nextFocus();
+                                              FocusScope.of(context)
+                                                  .nextFocus();
                                             }
                                           },
                                           onSaved: (pin2) {},
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                                 borderSide: BorderSide(
                                                   color: Colors.grey.shade300,
                                                   // width: 2.0,
                                                 ),
                                               ),
                                               filled: true,
-                                              hintStyle: TextStyle(color: Colors.grey),
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               hintText: "0",
                                               fillColor: Colors.grey.shade100,
                                               contentPadding: EdgeInsets.only(
-                                                bottom: 45 / 2,  // HERE THE IMPORTANT PART
-                                              )
-                                          ),
-                                          style:
-                                          Theme.of(context).textTheme.headlineSmall,
+                                                bottom: 45 /
+                                                    2, // HERE THE IMPORTANT PART
+                                              )),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(1),
-                                            FilteringTextInputFormatter.digitsOnly,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
                                           ],
                                         ),
                                       ),
-
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
                                       child: Container(
                                         constraints: BoxConstraints(
-                                            maxHeight: 60,
-                                            maxWidth: 45
-                                        ),
-                                        height: (screenWidth-80) / 6,
-                                        width: (screenWidth-100) / 6,
+                                            maxHeight: 60, maxWidth: 45),
+                                        height: (screenWidth - 80) / 6,
+                                        width: (screenWidth - 100) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
-                                              FocusScope.of(context).nextFocus();
+                                              FocusScope.of(context)
+                                                  .nextFocus();
                                             }
                                           },
                                           onSaved: (pin3) {},
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                                 borderSide: BorderSide(
                                                   color: Colors.grey.shade300,
                                                   // width: 2.0,
                                                 ),
                                               ),
                                               filled: true,
-                                              hintStyle: TextStyle(color: Colors.grey),
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               hintText: "0",
                                               fillColor: Colors.grey.shade100,
                                               contentPadding: EdgeInsets.only(
-                                                bottom: 45 / 2,  // HERE THE IMPORTANT PART
-                                              )
-                                          ),
-                                          style:
-                                          Theme.of(context).textTheme.headlineSmall,
+                                                bottom: 45 /
+                                                    2, // HERE THE IMPORTANT PART
+                                              )),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(1),
-                                            FilteringTextInputFormatter.digitsOnly,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
                                           ],
                                         ),
                                       ),
-
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
                                       child: Container(
                                         constraints: BoxConstraints(
-                                            maxHeight: 60,
-                                            maxWidth: 45
-                                        ),
-                                        height: (screenWidth-80) / 6,
-                                        width: (screenWidth-100) / 6,
+                                            maxHeight: 60, maxWidth: 45),
+                                        height: (screenWidth - 80) / 6,
+                                        width: (screenWidth - 100) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
-                                              FocusScope.of(context).nextFocus();
+                                              FocusScope.of(context)
+                                                  .nextFocus();
                                             }
                                           },
                                           onSaved: (pin4) {},
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                                 borderSide: BorderSide(
                                                   color: Colors.grey.shade300,
                                                   // width: 2.0,
                                                 ),
                                               ),
                                               filled: true,
-                                              hintStyle: TextStyle(color: Colors.grey),
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               hintText: "0",
                                               fillColor: Colors.grey.shade100,
                                               contentPadding: EdgeInsets.only(
-                                                bottom: 45 / 2,  // HERE THE IMPORTANT PART
-                                              )
-                                          ),
-                                          style:
-                                          Theme.of(context).textTheme.headlineSmall,
+                                                bottom: 45 /
+                                                    2, // HERE THE IMPORTANT PART
+                                              )),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(1),
-                                            FilteringTextInputFormatter.digitsOnly,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
                                           ],
                                         ),
                                       ),
-
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
                                       child: Container(
                                         constraints: BoxConstraints(
-                                            maxHeight: 60,
-                                            maxWidth: 45
-                                        ),
-                                        height: (screenWidth-80) / 6,
-                                        width: (screenWidth-100) / 6,
+                                            maxHeight: 60, maxWidth: 45),
+                                        height: (screenWidth - 80) / 6,
+                                        width: (screenWidth - 100) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
-                                              FocusScope.of(context).nextFocus();
+                                              FocusScope.of(context)
+                                                  .nextFocus();
                                             }
                                           },
                                           onSaved: (pin5) {},
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                                 borderSide: BorderSide(
                                                   color: Colors.grey.shade300,
                                                   // width: 2.0,
                                                 ),
                                               ),
                                               filled: true,
-                                              hintStyle: TextStyle(color: Colors.grey),
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               hintText: "0",
                                               fillColor: Colors.grey.shade100,
                                               contentPadding: EdgeInsets.only(
-                                                bottom: 45 / 2,  // HERE THE IMPORTANT PART
-                                              )
-                                          ),
-                                          style:
-                                          Theme.of(context).textTheme.headlineSmall,
+                                                bottom: 45 /
+                                                    2, // HERE THE IMPORTANT PART
+                                              )),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(1),
-                                            FilteringTextInputFormatter.digitsOnly,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
                                           ],
                                         ),
                                       ),
-
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
                                       child: Container(
                                         constraints: BoxConstraints(
-                                            maxHeight: 60,
-                                            maxWidth: 45
-                                        ),
-                                        height: (screenWidth-80) / 6,
-                                        width: (screenWidth-100) / 6,
+                                            maxHeight: 60, maxWidth: 45),
+                                        height: (screenWidth - 80) / 6,
+                                        width: (screenWidth - 100) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
-                                              FocusScope.of(context).nextFocus();
+                                              FocusScope.of(context)
+                                                  .nextFocus();
                                             }
                                           },
                                           onSaved: (pin6) {},
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                                 borderSide: BorderSide(
                                                   color: Colors.grey.shade300,
                                                   // width: 2.0,
                                                 ),
                                               ),
                                               filled: true,
-                                              hintStyle: TextStyle(color: Colors.grey),
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
                                               hintText: "0",
                                               fillColor: Colors.grey.shade100,
                                               contentPadding: EdgeInsets.only(
-                                                bottom: 45 / 2,  // HERE THE IMPORTANT PART
-                                              )
-                                          ),
-                                          style:
-                                          Theme.of(context).textTheme.headlineSmall,
+                                                bottom: 45 /
+                                                    2, // HERE THE IMPORTANT PART
+                                              )),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.center,
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(1),
-                                            FilteringTextInputFormatter.digitsOnly,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
                                           ],
                                         ),
                                       ),
@@ -483,9 +506,8 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                             ),
                             onPressed: resendButtonisEnable
                                 ? () async {
-
-                               verifyCode = await controller.sendSMS(
-                                  toPhoneNumber: (toPhoneNumber));
+                                    verifyCode = await controller.sendSMS(
+                                        toPhoneNumber: (widget.fullNumber));
                                     setState(() {
                                       _start = 30;
                                       resendButtonisEnable = false;
@@ -512,28 +534,33 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                 onPressed: () async {
                                   // dina
                                   User user = User();
-                                  var token =
-                                       await user.login(mobile: toPhoneNumber);
+                                  var token = await user.login(
+                                      mobile: widget.fullNumber);
                                   // print(token);
-                                   if (token != "") {
+                                  if (token != "") {
                                     const storage = FlutterSecureStorage();
                                     // for write
-                                     await storage.write(
-                                         key: 'token',
-                                         value: token); // Save token
+                                    await storage.write(
+                                        key: 'token',
+                                        value: token); // Save token
                                     // get user Info
                                     var userInfo = await user.getUser(
-                                        mobile: toPhoneNumber);
-                                   } else {}
+                                        mobile: widget.fullNumber);
+                                  } else {
+                                    Navigator.of(context)
+                                        .pushReplacement(MaterialPageRoute(
+                                      builder: (context) => const Register(),
+                                    ));
+                                  }
 
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              MainNavigationScreen()),
-                                      (route) =>
-                                          route.settings.name ==
-                                          '/mainNavigation');
+                                  // Navigator.pushAndRemoveUntil(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (_) =>
+                                  //             MainNavigationScreen()),
+                                  //     (route) =>
+                                  //         route.settings.name ==
+                                  //         '/mainNavigation');
                                 },
                               ),
                             ),
