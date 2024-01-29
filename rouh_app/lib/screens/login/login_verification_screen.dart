@@ -11,6 +11,7 @@ import '../../controllers/phone_auth_controller.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../main_navigation_screen.dart';
 
 class LoginVerificationScreen extends StatefulWidget {
   final fullNumber, verifyCode;
