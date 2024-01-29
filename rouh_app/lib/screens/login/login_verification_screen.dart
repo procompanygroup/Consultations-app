@@ -512,6 +512,16 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                     // get user Info
                                     var userInfo = await user.getUser(
                                         mobile: widget.fullNumber);
+
+                                   Navigator.pushAndRemoveUntil(
+                                       context,
+                                       MaterialPageRoute(
+                                           builder: (_) =>
+                                               MainNavigationScreen()),
+                                       (route) =>
+                                           route.settings.name ==
+                                           '/mainNavigation');
+
                                   } else {
                                     Navigator.of(context)
                                         .pushReplacement(MaterialPageRoute(
@@ -519,14 +529,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                     ));
                                   }
 
-                                  // Navigator.pushAndRemoveUntil(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (_) =>
-                                  //             MainNavigationScreen()),
-                                  //     (route) =>
-                                  //         route.settings.name ==
-                                  //         '/mainNavigation');
+
                                 },
                               ),
                             ),
