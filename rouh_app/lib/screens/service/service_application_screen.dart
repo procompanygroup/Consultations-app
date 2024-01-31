@@ -77,7 +77,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                   },
                   onChanged: (value) {
                     serviceValue.value = value;
-                    print(serviceValue.value);
+                    // print(serviceValue.value);
                   },
                   decoration: InputDecoration(
                       errorStyle: TextStyle(fontSize: 0),
@@ -97,7 +97,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           start: 60, top: 5, end: 10, bottom: 5),
                       hintStyle: TextStyle(color: Colors.grey),
                       // labelText: "Country",
-                      hintText: "Country",
+                      hintText: serviceInput.input?.name,
                       fillColor: Colors.grey.shade50),
 
                 ),
@@ -111,11 +111,18 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                 ),
                 child: Row(
                   children: <Widget>[
-                    SvgPicture.asset(
-                      'assets/svg/mobile-phone-icon.svg',
-                      width: 50,
+                    serviceInput.input?.icon != null?
+                    SvgPicture.network(
+                      serviceInput.input!.icon!,
+                      width: 30,
                       height: 30,
-                    ),
+                      color: Colors.grey.shade300,
+                    )
+                   :Icon(
+                  Icons.account_circle,
+                      size: 30,
+                      color: Colors.grey.shade300,
+                  ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       child: VerticalDivider(
@@ -128,6 +135,83 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
             )
           ],
         );
+            else if(serviceInput.input?.type == 'date')
+              return Stack(
+                children: [
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                      child: Container(
+                        height: 45,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                                color: Colors.grey.shade300)),
+                        child: InkWell(
+                          onTap: () {
+                            showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2100),
+                            ).then((selectedDate) {
+                              if (selectedDate != null) {
+                                setState(() {
+                                  final dateOnly =
+                                      "${selectedDate.year}/${selectedDate.month}/${selectedDate.day}";
+                                  serviceValue.value =
+                                      dateOnly.toString();
+                                });
+                              }
+                            });
+                          },
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.only(start: 60, end: 10),
+                              child: Text(serviceValue.value.toString(),
+                              // style: TextStyle(
+                              //    color: Colors.grey
+                              // ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+                  Positioned(
+                    bottom: 0,
+                    top: 0,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: 25,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          serviceInput.input?.icon != null?
+                          SvgPicture.network(
+                            serviceInput.input!.icon!,
+                            width: 30,
+                            height: 30,
+                            color: Colors.grey.shade300,
+                          )
+                              :Icon(
+                            Icons.account_circle,
+                            size: 30,
+                            color: Colors.grey.shade300,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: VerticalDivider(
+                              // color: Colors.grey
+                                color: Colors.grey.shade300),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              );
             else return Text(serviceInput.input!.type!);
           },
         ),
@@ -211,47 +295,52 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                 border: Border.all(color: Colors.grey),
                 color: Colors.white,
               ),
-              child: Column(
-                children: [
-                  SizedBox(height:bodyHeight*0.1 ,),
-                  Text("Service Name",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: mysecondarycolor),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child:
-                      !isLoading?
-                      buildForm(serviceValues)
-                      :Center(child: CircularProgressIndicator()),
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+                child: Column(
+                  children: [
+                    SizedBox(height:bodyHeight*0.1 ,),
+                    Text("Service Name",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: mysecondarycolor),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50.0, vertical: 10.0),
-                    child: Container(
-                      width: double.infinity,
-                      child: TextButton(
-                        child: Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 5),
-                          child: Text(
-                            'Confirm',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        style: bs_flatFill(context),
-                        onPressed: () async {
-                        print(serviceValues[2].value);
-
-                        },
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child:
+                        !isLoading?
+                        buildForm(serviceValues)
+                        :Center(child: CircularProgressIndicator()),
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50.0, vertical: 10.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: TextButton(
+                          child: Padding(
+                            padding:
+                            const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              'Confirm',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          style: bs_flatFill(context),
+                          onPressed: () async {
+                            serviceInputs.forEach((element) {
+                              print(element.input?.icon != null? true:false);
+                            });
+
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
