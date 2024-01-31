@@ -87,7 +87,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
       */
       body: Stack(
         children: [
-          const CustomAppBar(),
+          const CustomAppBar(title: "Activate App"),
           Padding(
             padding: EdgeInsets.only(top: bodyHeight * 0.20),
             child: Container(
@@ -514,23 +514,20 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                     var userInfo = await user.getUser(
                                         mobile: widget.fullNumber);
 
-                                   Navigator.pushAndRemoveUntil(
-                                       context,
-                                       MaterialPageRoute(
-                                           builder: (_) =>
-                                               MainNavigationScreen()),
-                                       (route) =>
-                                           route.settings.name ==
-                                           '/mainNavigation');
-
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                MainNavigationScreen()),
+                                        (route) =>
+                                            route.settings.name ==
+                                            '/mainNavigation');
                                   } else {
                                     Navigator.of(context)
                                         .pushReplacement(MaterialPageRoute(
                                       builder: (context) => const Register(),
                                     ));
                                   }
-
-
                                 },
                               ),
                             ),

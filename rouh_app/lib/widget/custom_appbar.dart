@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+  final String title;
+  const CustomAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,8 @@ class CustomAppBar extends StatelessWidget {
             SizedBox(
               width: screenWidth * 0.15,
             ),
-            const Text(
-              "Activate App",
+            Text(
+              title,
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ],
