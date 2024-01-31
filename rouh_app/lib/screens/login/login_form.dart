@@ -75,14 +75,14 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void _showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: Duration(seconds: 4),
-      ),
-    );
-  }
+  // void _showSnackbar(BuildContext context, String message) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(message),
+  //       duration: Duration(seconds: 4),
+  //     ),
+  //   );
+  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -361,26 +361,17 @@ class _LoginFormState extends State<LoginForm> {
                                     _showMessageDialog(context,
                                         "Connection Failed. Please Retry Later");
                                   } else if (verifyCode == 'noInternet') {
-                                    // _showMessageDialog(context, "Internet Connection Error"),
+                                    _showMessageDialog(
+                                        context, "Internet Connection Error");
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    _showSnackbar(
-                                        context, "Internet Connection Error");
                                   } else if (verifyCode == 'errorPhone') {
                                     _showMessageDialog(
                                         context, "Incorrect Phone Number");
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    // Navigator.of(context).push(
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) =>
-                                    //         LoginVerificationScreen(
-                                    //             verifyCode: verifyCode,
-                                    //             fullNumber: fullNumber),
-                                    //   ),
-                                    // );
                                   } else {
                                     setState(() {
                                       isLoading = false;
@@ -389,17 +380,24 @@ class _LoginFormState extends State<LoginForm> {
                                     // for write mobile phone
                                     await storage.write(
                                         key: 'mobile', value: fullNumber);
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            LoginVerificationScreen(
-                                                verifyCode: verifyCode,
-                                                fullNumber: fullNumber),
-                                      ),
-                                    );
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         LoginVerificationScreen(
+                                    //             verifyCode: verifyCode,
+                                    //             fullNumber: fullNumber),
+                                    //   ),
+                                    // );
                                   }
                                   ;
-
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          LoginVerificationScreen(
+                                              verifyCode: verifyCode,
+                                              fullNumber: fullNumber),
+                                    ),
+                                  );
                                   // }
                                   // ),
                                 }
