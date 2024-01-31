@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rouh_app/screens/service/service_application_screen.dart';
+import 'experts/experts_screen.dart';
 import 'service/service_screen.dart';
 
 
@@ -24,18 +26,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
     const List<Widget> _pages = <Widget>[
       ServiceScreen(),
-      Text(
-        'Index 1: Business',
-      ),
-      Text(
-        'Index 2: School',
-      ),
+      ServiceApplicationScreen(),
+      ExpertsScreen(),
+
       Text(
         'Index 3: Settings',
       ),
       // HomeScreen(),
       // ServiceScreen(),
-      // ExpertsScreen(),
       // ProfileScreen(),
     ];
     return Scaffold(
