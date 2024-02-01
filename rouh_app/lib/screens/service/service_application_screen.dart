@@ -34,7 +34,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   Future<void> fillServiceInputList() async {
     var serviceInput = await service.getServiceInputs(serviceId: 1);
     serviceInputs = serviceInput!.serviceInputs!;
-    print(serviceInputs![0].id);
+    // print(serviceInputs![0].id);
 
     ServiceValue serviceValue = ServiceValue();
     // var serviceValues = await serviceValue.generateInputValues(serviceInputs:serviceInput.serviceInputs);
@@ -170,15 +170,123 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                             alignment: AlignmentDirectional.centerStart,
                             child: Padding(
                               padding: const EdgeInsetsDirectional.only(start: 60, end: 10),
-                              child: Text(serviceValue.value.toString(),
-                              // style: TextStyle(
-                              //    color: Colors.grey
-                              // ),
+                              child: Text(serviceValue.value != null?
+                                  serviceValue.value.toString()
+                                  :serviceInput.input!.name! ,
+                              style: TextStyle(
+                                fontSize: 14,
+                                 color:serviceValue.value != null? Colors.black54:Colors.grey
+                              ),
                               ),
                             ),
                           ),
                         ),
                       )),
+                  Positioned(
+                    bottom: 0,
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          end: 20,
+                        ),
+                        child: Icon(
+                          Icons.arrow_drop_down,
+                          size: 25,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    top: 0,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: 25,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          serviceInput.input?.icon != null?
+                          SvgPicture.network(
+                            serviceInput.input!.icon!,
+                            width: 30,
+                            height: 30,
+                            color: Colors.grey.shade300,
+                          )
+                              :Icon(
+                            Icons.account_circle,
+                            size: 30,
+                            color: Colors.grey.shade300,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: VerticalDivider(
+                              // color: Colors.grey
+                                color: Colors.grey.shade300),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            else if(serviceInput.input?.type == 'list')
+              return Stack(
+                children: [
+                  Padding(
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: DropdownButtonFormField<InputValues>(
+                      validator: (value) => value == null ? '' : null,
+                      //isDense: true,
+                      hint: Text('Choose'),
+                      // value: _selectedCountry,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      isExpanded: true,
+                      style: TextStyle(color: Colors.grey),
+                      // underline: Container(
+                      //   height: 2,
+                      //   color: Colors.grey,
+                      // ),
+                      onChanged: (InputValues? newValue) {
+                        setState(() {
+                          serviceValue.value = newValue!.value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade300,
+                              // width: 2.0,
+                            ),
+                          ),
+                          filled: true,
+                          // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
+                          contentPadding: EdgeInsetsDirectional.only(
+                              start: 60, top: 5, end: 10, bottom: 5),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          hintText: "Country",
+                          fillColor: Colors.grey.shade50),
+                      items: serviceInput.input!.inputValues!
+                          .map<DropdownMenuItem<InputValues>>((InputValues inputValues) {
+                        return DropdownMenuItem<InputValues>(
+                          value: inputValues,
+                          child: Text(inputValues.value!),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                   Positioned(
                     bottom: 0,
                     top: 0,
@@ -212,7 +320,23 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                   )
                 ],
               );
+            else if(serviceInput.input?.type == 'bool')
+            return CheckboxListTile(
+              title: Text(serviceInput.input!.name!,
+            style: TextStyle(
+            fontSize: 14,
+            color:serviceValue.value != null? Colors.black54:Colors.grey
+              )),
+              value:serviceValue.value != null? bool.parse(serviceValue.value!): false,
+              onChanged: (newValue) {
+                setState(() {
+                  serviceValue.value = newValue.toString();
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+            );
             else return Text(serviceInput.input!.type!);
+
           },
         ),
       );
@@ -306,6 +430,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           fontSize: 20,
                           color: mysecondarycolor),
                     ),
+
                     Expanded(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
