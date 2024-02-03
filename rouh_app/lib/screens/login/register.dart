@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../../controllers/dio_manager_controller.dart';
+import '../../models/auth_model.dart';
+import '../../models/country.dart';
+import '../../models/user_model.dart';
+import '../../mystyle/button_style.dart';
 
-import '../models/country.dart';
-import '../mystyle/button_style.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -27,6 +32,7 @@ class _RegisterState extends State<Register> {
   late String _selectedMaterialState = listMaritalStatus[0];
   late String _selectedDate = "Choose your birthday";
   bool isChecked = true;
+  User user= User();
   @override
   void initState() {
     // TODO: implement initState
@@ -111,7 +117,7 @@ class _RegisterState extends State<Register> {
                             Colors.grey.shade50, // <-- Button color
                       ),
                       onPressed: () {
-                        //getImagefromGallery();
+                       getImagefromGallery();
                       },
                       child: Icon(
                         Icons.camera_alt,
@@ -145,7 +151,9 @@ class _RegisterState extends State<Register> {
                                   }
                                   return null;
                                 },
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  user.user_name=value;
+                                },
                                 decoration: InputDecoration(
                                   errorStyle:
                                       const TextStyle(fontSize: 0, height: 0),
@@ -218,7 +226,9 @@ class _RegisterState extends State<Register> {
                                   }
                                   return null;
                                 },
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  user.email=value;
+                                },
                                 decoration: InputDecoration(
                                   //test the height
                                   errorStyle:
@@ -297,6 +307,7 @@ class _RegisterState extends State<Register> {
                                 onChanged: (Country? newValue) {
                                   setState(() {
                                     _selectedCountry = newValue!;
+                                    user.nationality=_selectedCountry.name;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -392,6 +403,7 @@ class _RegisterState extends State<Register> {
                                                   "${selectedDate.year}/${selectedDate.month}/${selectedDate.day}";
                                               _selectedDate =
                                                   dateOnly.toString();
+                                              user.birthdate=selectedDate;
                                             });
                                           }
                                         });
@@ -445,6 +457,7 @@ class _RegisterState extends State<Register> {
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     _selectedGender = newValue!;
+                                    user.gender=_selectedGender=="Male"?1:2;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -523,6 +536,7 @@ class _RegisterState extends State<Register> {
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     _selectedMaterialState = newValue!;
+                                    user.marital_status=_selectedMaterialState;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -612,7 +626,10 @@ class _RegisterState extends State<Register> {
                             width: double.infinity,
                             child: TextButton(
                               style: bs_flatFill(context),
-                              onPressed: () {},
+                              onPressed: () async {
+                               String? res= await register();
+                               print(res);
+                              },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 5),
                                 child: Text(
@@ -632,7 +649,41 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+  Future<String?> register() async {
+    DioManager dioManager = DioManager();
+    const storage = FlutterSecureStorage();
 
+    String? mobile = await storage.read(key: "mobile");
+    user.mobile = mobile;
+    print(mobile);
+    FormData formData = FormData.fromMap({
+      "user_name": user.user_name,
+      "email": user.email,
+      "gender": user.gender,
+      "nationality": user.nationality,
+      "mobile": user.mobile,
+      "birthdate": user.birthdate,
+      "marital_status": user.marital_status,
+      'image': await MultipartFile.fromFile(
+        imagePath,
+      ),
+    });
+    try{
+      var response = await dioManager.dio.post(
+        'https://oras.orasweb.com/api/registerclient',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        return AuthModel.fromJson(json.decode(response.data)).token;
+      } else {
+        return "";
+      }
+    }
+    catch (e){
+      throw Exception();
+    }
+  }
   getImagefromGallery() async {
     //final status = await ImagePicker();
     final pickedfile = await picker.pickImage(source: ImageSource.gallery);
