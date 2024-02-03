@@ -112,7 +112,7 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
 
   Future setAudio(File audioFile) async {
     // Repeat song when completed
-    //audioPlayer.setReleaseMode(audioplayers.ReleaseMode.LOOP);
+
     // audioPlayer.setUrl(audioFile.path, isLocal: true);
     audioPlayer.setSourceUrl(audioFile.path);
     print('audioPlayer setUrl');
@@ -132,49 +132,74 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade900,
-      appBar: AppBar(
-        title: Text("Record And Play Screen"),
-      ),
-      body: Column(
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // return Scaffold(
+    //   backgroundColor: Colors.grey.shade900,
+      // appBar: AppBar(
+      //   title: Text("Record And Play Screen"),
+      // ),
+      // body:
+      return Column(
         children: [
           ClipRRect(
             borderRadius:
             //BorderRadius.circular(15),
             BorderRadius.all(Radius.circular(75.0)),
             child: Container(
-                color: Colors.grey,
+               height: 55,
+                color: Color(0xffD6D6D6),
                 child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    child: Stack(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: screenWidth - 10,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor: Colors.white,
-                              child: IconButton(
-                                icon: Icon(
-                                  recorder.isRecording ? Icons.stop : Icons.mic,
-                                  color: myprimercolor,
-                                ),
-                                iconSize: 35,
-                                onPressed: () async {
-                                  if (recorder.isRecording) {
-                                    await stopRecord();
-                                  } else {
-                                    await startRecord();
-                                  }
-                                  setState(() {});
-                                },
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.all(1),
+                                backgroundColor:
+                                Colors.grey.shade50, // <-- Button color
+                              ),
+                              onPressed: () async {
+                                if (recorder.isRecording) {
+                                  await stopRecord();
+                                } else {
+                                  await startRecord();
+                                }
+                                setState(() {});
+                              },
+                              child: Icon(
+                                recorder.isRecording ? Icons.stop : Icons.mic,
+                                size: 30,
+                                color: myprimercolor,
                               ),
                             ),
+                            // CircleAvatar(
+                            //   radius: 25,
+                            //   backgroundColor: Colors.white,
+                            //   child: IconButton(
+                            //     icon: Icon(
+                            //       recorder.isRecording ? Icons.stop : Icons.mic,
+                            //       color: myprimercolor,
+                            //     ),
+                            //     iconSize: 25,
+                            //     onPressed: () async {
+                            //       if (recorder.isRecording) {
+                            //         await stopRecord();
+                            //       } else {
+                            //         await startRecord();
+                            //       }
+                            //       setState(() {});
+                            //     },
+                            //   ),
+                            // ),
                             Expanded(
                               child: Align(
                                 alignment: Alignment.center,
@@ -183,7 +208,7 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
                                     activeTrackColor: myprimercolor,
                                     inactiveTrackColor: Colors.white,
                                     trackShape: RectangularSliderTrackShape(),
-                                    trackHeight: 4.0,
+                                    trackHeight: 5.0,
                                     thumbColor: myprimercolor,
                                     thumbShape: RoundSliderThumbShape(
                                       //enabledThumbRadius: 12.0),
@@ -208,70 +233,97 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
                                 ),
                               ),
                             ),
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor: Colors.white,
-                              child: IconButton(
-                                icon: Icon(
-                                  isPlaying ? Icons.pause : Icons.play_arrow,
-                                  color: myprimercolor,
-                                ),
-                                iconSize: 35,
-                                onPressed: () async {
-                                  if (!isPlayerLoad || recorder.isRecording )
-                                  {
-                                    // await stopRecord();
-                                    return;
-                                  }
-                                  if (isPlaying) {
-                                    await audioPlayer.pause();
-                                  } else {
-                                    // String url = '';
-                                    // await audioPlayer.play(url);
-                                    await audioPlayer.resume();
-                                  }
-                                },
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.all(1),
+                                backgroundColor:
+                                Colors.grey.shade50, // <-- Button color
                               ),
-                            )
+                              onPressed: () async {
+                                if (!isPlayerLoad || recorder.isRecording )
+                                {
+                                  // await stopRecord();
+                                  return;
+                                }
+                                if (isPlaying) {
+                                  await audioPlayer.pause();
+                                } else {
+                                  // String url = '';
+                                  // await audioPlayer.play(url);
+                                  await audioPlayer.resume();
+                                }
+                              },
+                              child: Icon(
+                                isPlaying ? Icons.pause : Icons.play_arrow,
+                                size: 30,
+                                color: myprimercolor,
+                              ),
+                            ),
+                            // CircleAvatar(
+                            //   radius: 25,
+                            //   backgroundColor: Colors.white,
+                            //   child: IconButton(
+                            //     icon: Icon(
+                            //       isPlaying ? Icons.pause : Icons.play_arrow,
+                            //       color: myprimercolor,
+                            //     ),
+                            //     iconSize: 25,
+                            //     onPressed: () async {
+                            //       if (!isPlayerLoad || recorder.isRecording )
+                            //       {
+                            //         // await stopRecord();
+                            //         return;
+                            //       }
+                            //       if (isPlaying) {
+                            //         await audioPlayer.pause();
+                            //       } else {
+                            //         // String url = '';
+                            //         // await audioPlayer.play(url);
+                            //         await audioPlayer.resume();
+                            //       }
+                            //     },
+                            //   ),
+                            // )
                           ],
                         ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: recorder.isRecording
-                              ? StreamBuilder<RecordingDisposition>(
-                            stream: recorder.onProgress,
-                            builder: (context, snapshot) {
-                              final duration = snapshot.hasData
-                                  ? snapshot.data!.duration
-                                  : Duration.zero;
-                              String twoDigits(int n) =>
-                                  n.toString().padLeft(2, '0');
-                              final twoDigitMinutes = twoDigits(
-                                  duration.inMinutes.remainder(60));
-                              final twoDigitSeconds = twoDigits(
-                                  duration.inSeconds.remainder(60));
-                              return Text(
-                                '$twoDigitMinutes:$twoDigitSeconds',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            },
-                          )
-                              : Text(formatTime(duration - position),
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: recorder.isRecording
+                            ? StreamBuilder<RecordingDisposition>(
+                          stream: recorder.onProgress,
+                          builder: (context, snapshot) {
+                            final duration = snapshot.hasData
+                                ? snapshot.data!.duration
+                                : Duration.zero;
+                            String twoDigits(int n) =>
+                                n.toString().padLeft(2, '0');
+                            final twoDigitMinutes = twoDigits(
+                                duration.inMinutes.remainder(60));
+                            final twoDigitSeconds = twoDigits(
+                                duration.inSeconds.remainder(60));
+                            return Text(
+                              '$twoDigitMinutes:$twoDigitSeconds',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                      ],
-                    ),
+                              ),
+                            );
+                          },
+                        )
+                            : Text(formatTime(duration - position),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ),
+                    ],
                   ),
                 )),
           ),
         ],
-      ),
-    );
+      );
+    // );
   }
 }
