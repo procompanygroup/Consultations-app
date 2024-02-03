@@ -70,7 +70,8 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
     // Listen To State: playing, paused, stopped
     audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
-        isPlaying = state == audioplayers.PlayerState.PLAYING;
+        // isPlaying = state == audioplayers.PlayerState.PLAYING;
+        isPlaying = state == audioplayers.PlayerState.playing;
       });
     });
 
@@ -85,7 +86,8 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
     });
 
     /// Listen to audio position
-    audioPlayer.onAudioPositionChanged.listen((newPosition) {
+    // audioPlayer.onAudioPositionChanged.listen((newPosition) {
+    audioPlayer.onPositionChanged.listen((newPosition) {
       setState(() {
         print('newPosition: $newPosition');
         position = newPosition;
@@ -111,7 +113,8 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
   Future setAudio(File audioFile) async {
     // Repeat song when completed
     //audioPlayer.setReleaseMode(audioplayers.ReleaseMode.LOOP);
-    audioPlayer.setUrl(audioFile.path, isLocal: true);
+    // audioPlayer.setUrl(audioFile.path, isLocal: true);
+    audioPlayer.setSourceUrl(audioFile.path);
     print('audioPlayer setUrl');
 
     // }
