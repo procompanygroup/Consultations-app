@@ -40,7 +40,9 @@ dependencies:
 
   # play audio
 #  audioplayers: ^0.20.1
-  audioplayers: ^5.2.1
+  audioplayers: ^1.2.0
+#  audioplayers: ^5.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
