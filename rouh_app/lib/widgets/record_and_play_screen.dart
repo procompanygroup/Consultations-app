@@ -22,6 +22,7 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
   final audioPlayer = audioplayers.AudioPlayer();
   bool isPlaying = false;
   bool isPlayerLoad = false;
+  String audioPlayerState = "";
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
   int audioCounter = 0;
@@ -36,17 +37,26 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
     await recorder.startRecorder(toFile: 'audio_$audioCounter');
 
   }
-
+  late File audioFile;
   Future stopRecord() async {
     if (!isRecorderReady) return;
 
     final path = await recorder.stopRecorder();
-    final audioFile = File(path!);
+    audioFile = File(path!);
 
     print('Record audio: $audioFile');
     await setAudio(audioFile);
     isPlayerLoad = true;
 
+  }
+
+  loadAgain() async{
+
+    // String url = '';
+    // await audioPlayer.play(url);
+
+    print('Record audio: $audioFile');
+    await setAudio(audioFile);
   }
 
   String formatTime(Duration duration) {
@@ -72,6 +82,8 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
       setState(() {
         // isPlaying = state == audioplayers.PlayerState.PLAYING;
         isPlaying = state == audioplayers.PlayerState.playing;
+        // print(state.name);
+        audioPlayerState = state.name;
       });
     });
 
@@ -80,7 +92,7 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
     /// Listen to audio duration
     audioPlayer.onDurationChanged.listen((newDuration) {
       setState(() {
-        print('newDuration: $newDuration');
+        // print('newDuration: $newDuration');
         duration = newDuration;
       });
     });
@@ -89,10 +101,21 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
     // audioPlayer.onAudioPositionChanged.listen((newPosition) {
     audioPlayer.onPositionChanged.listen((newPosition) {
       setState(() {
-        print('newPosition: $newPosition');
+        // print('newPosition: $newPosition');
         position = newPosition;
       });
     });
+
+
+    /// Listen to audio Complete
+    // audioPlayer.onPlayerComplete.listen((event) {
+    //   //Here goes the code that will be called when the audio finishes
+    //   // onComplete();
+    //   setState(() {
+    //     position =Duration.zero;
+    //
+    //   });
+    // });
   }
 
   Future initRecorder() async {
@@ -111,10 +134,10 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
   }
 
   Future setAudio(File audioFile) async {
-    // Repeat song when completed
 
-    // audioPlayer.setUrl(audioFile.path, isLocal: true);
+    //audioPlayer.setSource(audioFile.path, isLocal: true);
     audioPlayer.setSourceUrl(audioFile.path);
+    await audioPlayer.resume();
     print('audioPlayer setUrl');
 
     // }
@@ -181,25 +204,6 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
                                 color: myprimercolor,
                               ),
                             ),
-                            // CircleAvatar(
-                            //   radius: 25,
-                            //   backgroundColor: Colors.white,
-                            //   child: IconButton(
-                            //     icon: Icon(
-                            //       recorder.isRecording ? Icons.stop : Icons.mic,
-                            //       color: myprimercolor,
-                            //     ),
-                            //     iconSize: 25,
-                            //     onPressed: () async {
-                            //       if (recorder.isRecording) {
-                            //         await stopRecord();
-                            //       } else {
-                            //         await startRecord();
-                            //       }
-                            //       setState(() {});
-                            //     },
-                            //   ),
-                            // ),
                             Expanded(
                               child: Align(
                                 alignment: Alignment.center,
@@ -241,18 +245,25 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
                                 Colors.grey.shade50, // <-- Button color
                               ),
                               onPressed: () async {
+
                                 if (!isPlayerLoad || recorder.isRecording )
                                 {
                                   // await stopRecord();
                                   return;
                                 }
-                                if (isPlaying) {
+                                if(audioPlayerState == "playing") {
                                   await audioPlayer.pause();
-                                } else {
+                                }else if(audioPlayerState == "completed")
+                                {
                                   // String url = '';
                                   // await audioPlayer.play(url);
-                                  await audioPlayer.resume();
-                                }
+                                 await loadAgain();
+                                } else
+                                  {
+                                    // paused
+                                    await audioPlayer.resume();
+                                  }
+
                               },
                               child: Icon(
                                 isPlaying ? Icons.pause : Icons.play_arrow,
@@ -260,31 +271,6 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
                                 color: myprimercolor,
                               ),
                             ),
-                            // CircleAvatar(
-                            //   radius: 25,
-                            //   backgroundColor: Colors.white,
-                            //   child: IconButton(
-                            //     icon: Icon(
-                            //       isPlaying ? Icons.pause : Icons.play_arrow,
-                            //       color: myprimercolor,
-                            //     ),
-                            //     iconSize: 25,
-                            //     onPressed: () async {
-                            //       if (!isPlayerLoad || recorder.isRecording )
-                            //       {
-                            //         // await stopRecord();
-                            //         return;
-                            //       }
-                            //       if (isPlaying) {
-                            //         await audioPlayer.pause();
-                            //       } else {
-                            //         // String url = '';
-                            //         // await audioPlayer.play(url);
-                            //         await audioPlayer.resume();
-                            //       }
-                            //     },
-                            //   ),
-                            // )
                           ],
                         ),
                       ),
