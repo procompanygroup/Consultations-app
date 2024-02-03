@@ -20,6 +20,7 @@ class ServiceApplicationScreen extends StatefulWidget {
 class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   bool isLoading = true;
   bool hasRecordFile = false;
+  bool hasImageFile = false;
   Service service = Service();
   List<ServiceInput> serviceInputs = <ServiceInput>[];
   List<ServiceValue> serviceValues = <ServiceValue>[];
@@ -63,7 +64,12 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
         setState(() {
           hasRecordFile = true;
         });
+      } else if(serviceInput.input?.type == 'image') {
+        setState(() {
+          hasImageFile = true;
+        });
       }
+
       inputsWidgetList.add(
         Builder(
           builder: (context) {
@@ -355,8 +361,49 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
               },
               controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
             );
-            // else if(serviceInput.input?.type == 'longtext')
-            // else if(serviceInput.input?.type == 'image')
+            else if(serviceInput.input?.type == 'longtext')
+              return  Stack(
+                children: [
+                  Padding(
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child:TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ) {
+                          return '';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        serviceValue.value = value;
+                        // print(serviceValue.value);
+                      },
+                      decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade300,
+                              // width: 2.0,
+                            ),
+                          ),
+                          filled: true,
+                          // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
+                          contentPadding: EdgeInsetsDirectional.only(
+                              start: 60, top: 5, end: 10, bottom: 5),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          // labelText: "Country",
+                          hintText: serviceInput.input?.name,
+                          fillColor: Colors.grey.shade50),
+                    ),
+                  ),
+                ],
+              );
             else return SizedBox();
           },
         ),
@@ -476,15 +523,54 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                   child: RecordAndPlayScreen(),
                                 ),
                               ],
-                            ):Container(),
+                            ):SizedBox(),
+                            hasImageFile?Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Text("Add Image",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: myprimercolor),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                  child: ImagePicker(),
+                                ),
+                              ],
+                            ):SizedBox(),
                           ],
                         )
                         :Center(child: CircularProgressIndicator()),
                       ),
                     ),
 
-
-
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              width: (screenWidth -100) / 4,
+                              height: (screenWidth -100) / 4,
+                              child: ImagePicker()),
+                          Container(
+                              width: (screenWidth -100) / 4,
+                              height: (screenWidth -100) / 4,
+                              child: ImagePicker()),
+                          Container(
+                              width: (screenWidth -100) / 4,
+                              height: (screenWidth -100) / 4,
+                              child: ImagePicker()),
+                          Container(
+                              width: (screenWidth -100) / 4,
+                              height: (screenWidth -100) / 4,
+                              child: ImagePicker()),
+                        ],
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50.0, vertical: 10.0),
@@ -578,3 +664,43 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     );
   }
 }
+
+
+class ImagePicker extends StatefulWidget {
+  const ImagePicker({super.key});
+
+  @override
+  State<ImagePicker> createState() => _ImagePickerState();
+}
+
+class _ImagePickerState extends State<ImagePicker> {
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      height: screenWidth,
+      width: screenWidth,
+      child: Container(
+        width: screenWidth,
+        height: screenWidth,
+        decoration: BoxDecoration(
+            image:const DecorationImage(
+              image: NetworkImage("https://picsum.photos/200/300?random=4"),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.grey.shade200, width: 1),
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.black.withOpacity(0.03),
+            //     spreadRadius: 5,
+            //     blurRadius: 7,
+            //     offset: Offset(0, 3), // changes position of shadow
+            //   ),
+            // ],
+            color: Colors.grey.shade100),
+      ),
+    );
+  }
+}
+
