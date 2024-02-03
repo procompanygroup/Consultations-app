@@ -19,6 +19,7 @@ class ServiceApplicationScreen extends StatefulWidget {
 
 class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   bool isLoading = true;
+  bool hasRecordFile = false;
   Service service = Service();
   List<ServiceInput> serviceInputs = <ServiceInput>[];
   List<ServiceValue> serviceValues = <ServiceValue>[];
@@ -58,9 +59,15 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     List<Widget> inputsWidgetList = [];
     _serviceValues.forEach((ServiceValue serviceValue) {
       var serviceInput = serviceInputs.firstWhere((element) => element.id ==serviceValue.inputservice_id);
+      if(serviceInput.input?.type == 'record') {
+        setState(() {
+          hasRecordFile = true;
+        });
+      }
       inputsWidgetList.add(
         Builder(
           builder: (context) {
+
             if(serviceInput.input?.type == 'text')
               return  Stack(
           children: [
@@ -113,11 +120,15 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                 child: Row(
                   children: <Widget>[
                     serviceInput.input?.icon != null?
-                    SvgPicture.network(
-                      serviceInput.input!.icon!,
+                    Container(
                       width: 30,
                       height: 30,
-                      color: Colors.grey.shade300,
+                      child: SvgPicture.network(
+                        serviceInput.input!.icon!,
+                        width: 30,
+                        height: 30,
+                        color: Colors.grey.shade300,
+                      ),
                     )
                    :Icon(
                   Icons.account_circle,
@@ -212,11 +223,15 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                       child: Row(
                         children: <Widget>[
                           serviceInput.input?.icon != null?
-                          SvgPicture.network(
-                            serviceInput.input!.icon!,
+                          Container(
                             width: 30,
                             height: 30,
-                            color: Colors.grey.shade300,
+                            child: SvgPicture.network(
+                              serviceInput.input!.icon!,
+                              width: 30,
+                              height: 30,
+                              color: Colors.grey.shade300,
+                            ),
                           )
                               :Icon(
                             Icons.account_circle,
@@ -298,11 +313,15 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                       child: Row(
                         children: <Widget>[
                           serviceInput.input?.icon != null?
-                          SvgPicture.network(
-                            serviceInput.input!.icon!,
+                          Container(
                             width: 30,
                             height: 30,
-                            color: Colors.grey.shade300,
+                            child: SvgPicture.network(
+                              serviceInput.input!.icon!,
+                              width: 30,
+                              height: 30,
+                              color: Colors.grey.shade300,
+                            ),
                           )
                               :Icon(
                             Icons.account_circle,
@@ -336,8 +355,9 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
               },
               controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
             );
-            else return Text(serviceInput.input!.type!);
-
+            // else if(serviceInput.input?.type == 'longtext')
+            // else if(serviceInput.input?.type == 'image')
+            else return SizedBox();
           },
         ),
       );
@@ -440,20 +460,31 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                         Column(
                           children: [
                             buildForm(serviceValues),
+                            hasRecordFile?Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Text("Record Audio",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: myprimercolor),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                  child: RecordAndPlayScreen(),
+                                ),
+                              ],
+                            ):Container(),
                           ],
                         )
                         :Center(child: CircularProgressIndicator()),
                       ),
                     ),
 
-                    Text("Record Audio",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: myprimercolor),
-                    ),
-                    // Expanded(child: RecordAndPlayScreen()),
-                     RecordAndPlayScreen(),
+
+
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50.0, vertical: 10.0),
