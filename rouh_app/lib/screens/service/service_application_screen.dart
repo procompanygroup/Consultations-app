@@ -6,6 +6,7 @@ import '../../models/service_model.dart';
 import '../../models/service_value_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../../widgets/record_and_play_screen.dart';
 
 
 class ServiceApplicationScreen extends StatefulWidget {
@@ -436,10 +437,23 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                         scrollDirection: Axis.vertical,
                         child:
                         !isLoading?
-                        buildForm(serviceValues)
+                        Column(
+                          children: [
+                            buildForm(serviceValues),
+                          ],
+                        )
                         :Center(child: CircularProgressIndicator()),
                       ),
                     ),
+
+                    Text("Record Audio",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: myprimercolor),
+                    ),
+                    // Expanded(child: RecordAndPlayScreen()),
+                     RecordAndPlayScreen(),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50.0, vertical: 10.0),
