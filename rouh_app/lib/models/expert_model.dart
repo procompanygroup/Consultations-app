@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import '../controllers/dio_manager_controller.dart';
 import 'expert_service_model.dart';
+import 'service_model.dart';
 
 class Expert {
   //Instance variables
@@ -22,7 +23,9 @@ class Expert {
   String? desc;
   double? answer_speed;
   String? image;
+  bool? isFavorite;
 List<ExpertService>? expert_services;
+List<Service>? services;
 
   DioManager dioManager = DioManager();
 
@@ -30,13 +33,18 @@ List<ExpertService>? expert_services;
   Expert(
       { this.id, this.expert_name, this.email, this.mobile, this.nationality, this.birthdate, this.gender, this.marital_status,
         this.is_active,this.points_balance,this.cash_balance,this.cash_balance_todate,this.rates,this.record,this.desc,
-        this.answer_speed, this.image, this.expert_services});
+        this.answer_speed, this.image,this.isFavorite, this.expert_services,this.services});
 
   factory Expert.fromJson(Map<String, dynamic> parsedJson) {
     var tmpExpertServices;
+    var tmpServices;
     if(parsedJson["experts_services"] != null)
     {
       tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
+    }
+    if(parsedJson["services"] != null)
+    {
+      tmpServices = convertListToModel(Service.fromJson, parsedJson["services"]);
     }
     return Expert(
         id: parsedJson['id'],
@@ -56,7 +64,9 @@ List<ExpertService>? expert_services;
       record:  parsedJson['record'],
        points_balance:  parsedJson['points_balance'],
       rates:  double.tryParse(parsedJson['rates']),
+      isFavorite:  bool.tryParse(parsedJson['is_favorite']),
       expert_services: tmpExpertServices,
+      services: tmpServices,
     );
   }
 
@@ -68,6 +78,30 @@ List<ExpertService>? expert_services;
     });
 
     var response = await dioManager.dio.post('client/expert/getexpertsbyserviceid',
+      data: data,
+    );
+
+    List<Expert> experts;
+    if (response.statusCode == 200) {
+      experts = convertListToModel<Expert>(Expert.fromJson,jsonDecode(response.data));
+
+    }
+    else {
+      experts = List<Expert>.empty();;
+    }
+    return experts;
+  }
+
+
+
+Future<List<Expert>?> GetWithFavorite({
+    required int clientId,
+  }) async {
+    var data = json.encode({
+      "client_id": clientId
+    });
+
+    var response = await dioManager.dio.post('client/expert/getwithfav',
       data: data,
     );
 
