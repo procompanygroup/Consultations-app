@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../controllers/dio_manager_controller.dart';
-import '../../models/auth_model.dart';
 import '../../models/country.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
-
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -32,7 +29,9 @@ class _RegisterState extends State<Register> {
   late String _selectedMaterialState = listMaritalStatus[0];
   late String _selectedDate = "Choose your birthday";
   bool isChecked = true;
-  User user= User();
+  User user = User();
+  String? mobile;
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -89,7 +88,7 @@ class _RegisterState extends State<Register> {
                 child: Stack(children: [
                   Container(
                     width: size.width * 0.4,
-                    height: size.height * 0.18,
+                    height: size.width*0.4,
                     decoration: BoxDecoration(
                         image: imagePath == ""
                             ? const DecorationImage(image: NetworkImage(""))
@@ -117,7 +116,7 @@ class _RegisterState extends State<Register> {
                             Colors.grey.shade50, // <-- Button color
                       ),
                       onPressed: () {
-                       getImagefromGallery();
+                        getImagefromGallery();
                       },
                       child: Icon(
                         Icons.camera_alt,
@@ -135,6 +134,7 @@ class _RegisterState extends State<Register> {
                     start: size.width * 0.07,
                   ),
                   child: Form(
+                    key: _formKey,
                     child: Column(
                       children: [
                         Stack(
@@ -152,7 +152,7 @@ class _RegisterState extends State<Register> {
                                   return null;
                                 },
                                 onChanged: (value) {
-                                  user.user_name=value;
+                                  user.user_name = value;
                                 },
                                 decoration: InputDecoration(
                                   errorStyle:
@@ -227,7 +227,7 @@ class _RegisterState extends State<Register> {
                                   return null;
                                 },
                                 onChanged: (value) {
-                                  user.email=value;
+                                  user.email = value;
                                 },
                                 decoration: InputDecoration(
                                   //test the height
@@ -272,9 +272,9 @@ class _RegisterState extends State<Register> {
                                 child: Row(
                                   children: <Widget>[
                                     SvgPicture.asset(
-                                      'assets/svg/profile.svg',
-                                      width: 50,
-                                      height: 30,
+                                      'assets/svg/mail-icon.svg',
+                                      width: 40,
+                                      height: 20,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -307,7 +307,7 @@ class _RegisterState extends State<Register> {
                                 onChanged: (Country? newValue) {
                                   setState(() {
                                     _selectedCountry = newValue!;
-                                    user.nationality=_selectedCountry.name;
+                                    user.nationality = _selectedCountry.name;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -403,7 +403,7 @@ class _RegisterState extends State<Register> {
                                                   "${selectedDate.year}/${selectedDate.month}/${selectedDate.day}";
                                               _selectedDate =
                                                   dateOnly.toString();
-                                              user.birthdate=selectedDate;
+                                              user.birthdate = selectedDate;
                                             });
                                           }
                                         });
@@ -457,7 +457,8 @@ class _RegisterState extends State<Register> {
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     _selectedGender = newValue!;
-                                    user.gender=_selectedGender=="Male"?1:2;
+                                    user.gender =
+                                        _selectedGender == "Male" ? 1 : 2;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -501,9 +502,9 @@ class _RegisterState extends State<Register> {
                                 child: Row(
                                   children: <Widget>[
                                     SvgPicture.asset(
-                                      'assets/svg/profile.svg',
-                                      width: 50,
-                                      height: 30,
+                                      'assets/svg/male-and-female.svg',
+                                      width: 40,
+                                      height: 23,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -536,7 +537,8 @@ class _RegisterState extends State<Register> {
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     _selectedMaterialState = newValue!;
-                                    user.marital_status=_selectedMaterialState;
+                                    user.marital_status =
+                                        _selectedMaterialState;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -581,9 +583,9 @@ class _RegisterState extends State<Register> {
                                 child: Row(
                                   children: <Widget>[
                                     SvgPicture.asset(
-                                      'assets/svg/profile.svg',
-                                      width: 50,
-                                      height: 30,
+                                      'assets/svg/interlocking-rings.svg',
+                                      width: 40,
+                                      height: 20,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -627,8 +629,22 @@ class _RegisterState extends State<Register> {
                             child: TextButton(
                               style: bs_flatFill(context),
                               onPressed: () async {
-                               String? res= await register();
-                               print(res);
+                                if(_formKey.currentState!.validate()){
+                                  String? res = await register();
+                                  if (int.parse(res ?? "0") > 0) {
+                                    var token =
+                                    await user.login(mobile: mobile ?? "");
+                                    // print(token);
+                                    if (token != "") {
+                                      const storage = FlutterSecureStorage();
+                                      // for write
+                                      await storage.write(
+                                          key: 'token', value: token);
+                                    }
+                                    print(res);
+                                  }
+                                }
+
                               },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -649,13 +665,12 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+
   Future<String?> register() async {
     DioManager dioManager = DioManager();
     const storage = FlutterSecureStorage();
-
-    String? mobile = await storage.read(key: "mobile");
-    user.mobile = mobile;
-    print(mobile);
+    String? mobile = await storage.read(key: "mobile") ?? "0";
+    user.mobile = mobile.replaceFirst("+", "");
     FormData formData = FormData.fromMap({
       "user_name": user.user_name,
       "email": user.email,
@@ -668,22 +683,22 @@ class _RegisterState extends State<Register> {
         imagePath,
       ),
     });
-    try{
+    try {
       var response = await dioManager.dio.post(
         'https://oras.orasweb.com/api/registerclient',
         data: formData,
       );
-
       if (response.statusCode == 200) {
-        return AuthModel.fromJson(json.decode(response.data)).token;
+        return response.data;
       } else {
         return "";
       }
+    } catch (e) {
+      print(e.toString());
     }
-    catch (e){
-      throw Exception();
-    }
+    return "";
   }
+
   getImagefromGallery() async {
     //final status = await ImagePicker();
     final pickedfile = await picker.pickImage(source: ImageSource.gallery);
