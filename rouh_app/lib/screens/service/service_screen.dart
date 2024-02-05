@@ -42,54 +42,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   Future<void> fillServiceList() async {
 
-    print("Start:" + isLoading.toString());
+    // print("Start:" + isLoading.toString());
     // serviceList = await appService.allServices();
       appService.allServices()
         .then((response) {
       setState(() {
-        print(response.length);
+        // print(response.length);
        serviceList =response;
         isLoading =false;
         print("Test:" + isLoading.toString());
 
       });
     });
-    print(serviceList);
-    print("End:" + isLoading.toString());
+    // print(serviceList);
+    // print("End:" + isLoading.toString());
 
-
-      /*
-     for (var i = 0; i < serviceList.length; i++) {
-       print(serviceList[i].name);
-       print(serviceList[i].desc);
-       print(serviceList[i].image);
-     }
-     */
-     /*
-     var serviceInput = await appService.getServiceInputs(serviceId: 1);
-     print(serviceInput!.serviceInputs![0].id);
-*/
-    /*
-     ServiceValue serviceValue = ServiceValue();
-     var serviceVlues =await serviceValue.generateInputValues(serviceInputs:serviceInput.serviceInputs);
-     print(serviceVlues![0].inputservice_id);
-*/
-    /*
-
-         print("Start:" + isLoading.toString());
-        appService.allServices()
-            .then((response) {
-          setState(() {
-            print(response);
-            // serviceList =response;
-            isLoading =false;
-            print("Test:" + isLoading.toString());
-
-          });
-          });
-         print(serviceList);
-         print("End:" + isLoading.toString());
-    */
   }
 
   Widget buildPages(List<Service> _serviceList)
