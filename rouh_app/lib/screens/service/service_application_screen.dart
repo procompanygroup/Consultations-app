@@ -368,6 +368,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                     padding:
                     EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child:TextFormField(
+                      maxLines: 5,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value == null ||
@@ -395,7 +396,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           filled: true,
                           // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
                           contentPadding: EdgeInsetsDirectional.only(
-                              start: 60, top: 5, end: 10, bottom: 5),
+                              start: 20, top: 10, end: 20, bottom: 10),
                           hintStyle: TextStyle(color: Colors.grey),
                           // labelText: "Country",
                           hintText: serviceInput.input?.name,
@@ -537,7 +538,27 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                  child: ImagePicker(),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                          width: (screenWidth -100) / 4,
+                                          height: (screenWidth -100) / 4,
+                                          child: ImagePicker()),
+                                      Container(
+                                          width: (screenWidth -100) / 4,
+                                          height: (screenWidth -100) / 4,
+                                          child: ImagePicker()),
+                                      Container(
+                                          width: (screenWidth -100) / 4,
+                                          height: (screenWidth -100) / 4,
+                                          child: ImagePicker()),
+                                      Container(
+                                          width: (screenWidth -100) / 4,
+                                          height: (screenWidth -100) / 4,
+                                          child: ImagePicker()),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ):SizedBox(),
@@ -547,30 +568,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                       ),
                     ),
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              width: (screenWidth -100) / 4,
-                              height: (screenWidth -100) / 4,
-                              child: ImagePicker()),
-                          Container(
-                              width: (screenWidth -100) / 4,
-                              height: (screenWidth -100) / 4,
-                              child: ImagePicker()),
-                          Container(
-                              width: (screenWidth -100) / 4,
-                              height: (screenWidth -100) / 4,
-                              child: ImagePicker()),
-                          Container(
-                              width: (screenWidth -100) / 4,
-                              height: (screenWidth -100) / 4,
-                              child: ImagePicker()),
-                        ],
-                      ),
-                    ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50.0, vertical: 10.0),
@@ -672,33 +670,76 @@ class ImagePicker extends StatefulWidget {
   @override
   State<ImagePicker> createState() => _ImagePickerState();
 }
-
 class _ImagePickerState extends State<ImagePicker> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      height: screenWidth,
-      width: screenWidth,
+    String imagePath = "";
+    return GestureDetector(
+      onTap: () {
+        print("pick image here");
+      },
       child: Container(
-        width: screenWidth,
         height: screenWidth,
-        decoration: BoxDecoration(
-            image:const DecorationImage(
-              image: NetworkImage("https://picsum.photos/200/300?random=4"),
-              fit: BoxFit.cover,
+        width: screenWidth,
+        child: Stack(
+                    children: [
+        imagePath == ""?
+        // background icon
+        Container(
+          decoration:  BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.grey.shade200, width: 1),
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.black.withOpacity(0.03),
+              //     spreadRadius: 5,
+              //     blurRadius: 7,
+              //     offset: Offset(0, 3), // changes position of shadow
+              //   ),
+              // ],
+              color: Colors.grey.shade100
+          ),
+          child: Positioned(
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            child: Center(
+              child: SvgPicture.asset(
+                'assets/svg/plus-icon.svg',
+                height: 35,
+                width: 35,
+                fit: BoxFit.cover,
+                color: Colors.grey.shade400,
+                // color: Colors.red,
+              ),
             ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.shade200, width: 1),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.black.withOpacity(0.03),
-            //     spreadRadius: 5,
-            //     blurRadius: 7,
-            //     offset: Offset(0, 3), // changes position of shadow
-            //   ),
-            // ],
-            color: Colors.grey.shade100),
+          ),
+        )
+        :Container(
+          width: screenWidth,
+          height: screenWidth,
+          decoration: BoxDecoration(
+              image:const DecorationImage(
+                image: NetworkImage("https://picsum.photos/200/300?random=4"),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.grey.shade200, width: 1),
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.black.withOpacity(0.03),
+              //     spreadRadius: 5,
+              //     blurRadius: 7,
+              //     offset: Offset(0, 3), // changes position of shadow
+              //   ),
+              // ],
+              color: Colors.grey.shade100
+              ),
+        ),
+                    ],
+                  ),
       ),
     );
   }
