@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rouh_app/mystyle/constantsColors.dart';
 import 'package:rouh_app/screens/service/service_application_screen.dart';
 import 'experts/experts_screen.dart';
 import 'service/service_screen.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -23,7 +25,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
+    List<Color> colorBorder = [
+      Color(0xff015DAC),
+      Colors.transparent,
+      Colors.transparent,
+      Colors.transparent
+    ];
     const List<Widget> _pages = <Widget>[
       ServiceScreen(),
       ServiceApplicationScreen(),
@@ -46,36 +53,52 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff015DAC),Color(0xff015DAC)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter  ,
-            )
-        ),
+          colors: [colorBorder[_selectedIndex], Colors.transparent],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        )),
         child: ClipRRect(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(35.0),topRight: Radius.circular(35.0)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(35.0), topRight: Radius.circular(35.0)),
           child: BottomNavigationBar(
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home,size: 35),
+                icon: SvgPicture.asset(
+                  "assets/svg/home.svg",
+                  fit: BoxFit.cover,
+                  color:
+                      _selectedIndex == 0 ? mysecondarycolor : Colors.black26,
+                ),
                 label: 'home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle,size: 35) ,
-                label: 'sercice',
+                icon: SvgPicture.asset(
+                  "assets/svg/couple-icon.svg",
+                  color:
+                      _selectedIndex == 1 ? mysecondarycolor : Colors.black26,
+                ),
+                label: 'service',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.people,size: 35) ,
+                icon: SvgPicture.asset(
+                  "assets/svg/experts.svg",
+                  color:
+                      _selectedIndex == 2 ?mysecondarycolor : Colors.black26,
+                ),
                 label: 'experts',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.people,size: 35) ,
+                icon: SvgPicture.asset(
+                  "assets/svg/settings.svg",
+                  color:
+                      _selectedIndex == 3 ? mysecondarycolor : Colors.black26,
+                ),
                 label: 'profile',
               ),
             ],
             type: BottomNavigationBarType.fixed,
-
           ),
         ),
       ),
