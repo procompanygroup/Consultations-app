@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../models/expert_model.dart';
 import '../../models/service_model.dart';
@@ -199,9 +200,11 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
       );
     }
     _buildExperts(List<Expert> experts){
-      return GridView.count(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
+      return StaggeredGrid.count(
+          // padding: EdgeInsets.symmetric(horizontal: 10.0),
           crossAxisCount: 2,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
           children:
           List.generate(experts.length,
                   (index)  {
@@ -224,23 +227,21 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                         children: [
                           Column(
                             children: [
-                              Expanded(
-                                child: Container(
-                                  width: double.maxFinite,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(35),
-                                    child: Image(
-                                      image:NetworkImage(expert.image!),
-                                      // height: (screenWidth
-                                      //     -20 //margen
-                                      // ) /2,
-                                      fit: BoxFit.cover,
-                                    ),
+                              Container(
+                                height: (screenWidth-65 ) /2.5,
+                                width: (screenWidth-65 ) /2,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(35),
+                                  child: Image(
+                                    image:NetworkImage(expert.image!),
+                                    // height: (screenWidth-20 ) /2,
+                                    // width: (screenWidth-20 ) /2,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(vertical: 5),
                                 child: Text(expert.expert_name!,
                                   style: TextStyle(
                                     fontSize: 14,
@@ -249,7 +250,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                                   ),),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(vertical: 5),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -386,9 +387,13 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
               ),
             ),
           SizedBox(height: 10,),
+
           // expertList
           Expanded(
-              child:_buildExperts(expertList!)
+              child:Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _buildExperts(expertList!),
+              )
           ),
           SizedBox(height: 10,),
 
