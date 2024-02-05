@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
@@ -6,18 +5,17 @@ class Country {
   String? code;
   String? name;
   String? dialCode;
+  String flag;
 
   Country.fromJson(Map json)
       : code = json['code'],
         name = json['name'],
-        dialCode = json['dialCode'];
+        dialCode = json['dialCode'],
+        flag = json['flag'];
 
   Map toJson() {
-    return {'code': code,
-      'name': name,
-      'dialCode': dialCode};
+    return {'code': code, 'name': name, 'dialCode': dialCode, 'flag': flag};
   }
-
 
   // Future<void> readJson() async {
   //   final String response = await rootBundle.loadString('assets/sample.json');
@@ -31,8 +29,8 @@ class Country {
   //
   // }
   static Future<List<Country>> readJson() async {
-
-    final String response = await rootBundle.loadString('assets/data/countries.json');
+    final String response =
+        await rootBundle.loadString('assets/data/countries.json');
     // //final data = await json.decode(response);
     // // Iterable l = json.decode(response.body);
     // print(response);
@@ -50,17 +48,17 @@ class Country {
     // //     .toList();
     // List<Country> list2 = data.map((model) => Country.fromJson(model)).toList();
 
-    var jsonResponse =await json.decode(response); //Map dictionary
+    var jsonResponse = await json.decode(response); //Map dictionary
     Iterable data = jsonResponse['countries'];
     // print('print:');
     // print(data);
-     List<Country> list2 = data.map((model) => Country.fromJson(model)).toList();
+    List<Country> list2 = data.map((model) => Country.fromJson(model)).toList();
     // List<Country> list2 = data.map((model) =>
     // print(model)
     // ).toList();
-      //print(list2);
+    //print(list2);
     //List<Country> list1 =<Country>[];
-    return  list2;
+    return list2;
 
     // Iterable list = payloadMap['scopes'];
     // print('print:');

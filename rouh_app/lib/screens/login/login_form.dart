@@ -174,10 +174,13 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                         child: Row(
                           children: <Widget>[
-                            SvgPicture.asset(
-                              'assets/svg/syria-flag.svg',
-                              width: 50,
-                              height: 30,
+                            SizedBox(
+                              width: 30,
+                              height: 20,
+                              child: SvgPicture.asset(
+                                _selectedCountry.flag,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 15),

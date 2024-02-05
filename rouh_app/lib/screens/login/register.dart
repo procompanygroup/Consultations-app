@@ -32,6 +32,7 @@ class _RegisterState extends State<Register> {
   User user = User();
   String? mobile;
   final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -88,7 +89,7 @@ class _RegisterState extends State<Register> {
                 child: Stack(children: [
                   Container(
                     width: size.width * 0.4,
-                    height: size.width*0.4,
+                    height: size.width * 0.4,
                     decoration: BoxDecoration(
                         image: imagePath == ""
                             ? const DecorationImage(image: NetworkImage(""))
@@ -354,10 +355,13 @@ class _RegisterState extends State<Register> {
                                 ),
                                 child: Row(
                                   children: <Widget>[
-                                    SvgPicture.asset(
-                                      'assets/svg/syria-flag.svg',
-                                      width: 50,
-                                      height: 30,
+                                    SizedBox(
+                                      width: 30,
+                                      height: 20,
+                                      child: SvgPicture.asset(
+                                        _selectedCountry.flag,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -629,11 +633,11 @@ class _RegisterState extends State<Register> {
                             child: TextButton(
                               style: bs_flatFill(context),
                               onPressed: () async {
-                                if(_formKey.currentState!.validate()){
+                                if (_formKey.currentState!.validate()) {
                                   String? res = await register();
                                   if (int.parse(res ?? "0") > 0) {
                                     var token =
-                                    await user.login(mobile: mobile ?? "");
+                                        await user.login(mobile: mobile ?? "");
                                     // print(token);
                                     if (token != "") {
                                       const storage = FlutterSecureStorage();
@@ -641,10 +645,8 @@ class _RegisterState extends State<Register> {
                                       await storage.write(
                                           key: 'token', value: token);
                                     }
-                                    print(res);
                                   }
                                 }
-
                               },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -706,7 +708,7 @@ class _RegisterState extends State<Register> {
       setState(() {
         image = File(pickedfile.path);
         imagePath = pickedfile.path;
-        // print(image);
+         print(imagePath);
       });
       setState(() {
         uploading = true;
