@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rouh_app/mystyle/constantsColors.dart';
 import 'package:rouh_app/screens/service/service_application_screen.dart';
 import 'experts/experts_screen.dart';
+import 'service/select_expert_screen.dart';
 import 'service/service_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -35,13 +36,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       ServiceScreen(),
       ServiceApplicationScreen(serviceId: 1),
       ExpertsScreen(),
-
-      Text(
-        'Index 3: Settings',
-      ),
-      // HomeScreen(),
-      // ServiceScreen(),
-      // ProfileScreen(),
+      SelectExpert(),
     ];
     return Scaffold(
       // appBar: AppBar(
