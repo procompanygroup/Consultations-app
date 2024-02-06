@@ -74,21 +74,6 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      /*
-      backgroundColor: myprimercolor,
-      appBar: AppBar(
-        toolbarHeight: bodyHeight * 0.20,
-        iconTheme: IconThemeData(
-          color: mysecondarycolor, //change your color here
-        ),
-        backgroundColor: myprimercolor,
-        title: Text(
-          "Active Application",
-          style: TextStyle(color: Colors.white),
-        ),
-        elevation: 0,
-      ),
-      */
       body: Stack(
         children: [
           const CustomAppBar(title: "Activate App"),
