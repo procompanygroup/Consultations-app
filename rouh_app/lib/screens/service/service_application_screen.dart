@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rouh_app/models/service_input_model.dart';
 
+import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../models/service_value_model.dart';
 import '../../mystyle/button_style.dart';
@@ -10,8 +11,9 @@ import '../../widgets/record_and_play_screen.dart';
 
 
 class ServiceApplicationScreen extends StatefulWidget {
-  const ServiceApplicationScreen({super.key});
 
+  const ServiceApplicationScreen({super.key, required this.serviceId});
+  final int serviceId;
 
   @override
   State<ServiceApplicationScreen> createState() => _ServiceApplicationScreenState();
@@ -35,6 +37,15 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   }
 
   Future<void> fillServiceInputList() async {
+    print("start");
+    await fillServiceInputApplicationList(widget.serviceId);
+    print("end");
+    setState(() {
+      serviceInputs = globalServiceInputsApplicationList;
+      serviceValues = globalServiceValuesApplicationList;
+      isLoading = false;
+    });
+    /*
     var serviceInput = await service.getServiceInputs(serviceId: 1);
     serviceInputs = serviceInput!.serviceInputs!;
     // print(serviceInputs![0].id);
@@ -52,7 +63,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
             });
 
     print(serviceValues![0].inputservice_id);
-
+*/
   }
   // Widget buildForm(List<ServiceInput> _serviceInputs, List<ServiceValue> _serviceValues)
   Widget buildForm(List<ServiceValue> _serviceValues)
