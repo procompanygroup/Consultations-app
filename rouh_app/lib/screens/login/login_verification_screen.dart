@@ -517,6 +517,12 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                             route.settings.name ==
                                             '/mainNavigation');
                                   } else {
+                                    const storage = FlutterSecureStorage();
+
+                                    // for write mobile phone
+                                    await storage.write(
+                                        key: 'mobile', value: widget.fullNumber);
+
                                     Navigator.of(context)
                                         .pushReplacement(MaterialPageRoute(
                                       builder: (context) => const Register(),

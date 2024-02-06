@@ -98,4 +98,22 @@ class User {
      }
 
   }
+
+  Future<String?> register({  Object? formData}) async {
+
+    try {
+      var response = await dioManager.dio.post(
+        'registerclient',
+        data: formData,
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return "";
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return "";
+  }
 }

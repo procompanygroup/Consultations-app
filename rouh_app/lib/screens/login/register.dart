@@ -8,6 +8,7 @@ import '../../controllers/dio_manager_controller.dart';
 import '../../models/country.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
+import '../main_navigation_screen.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -635,7 +636,9 @@ class _RegisterState extends State<Register> {
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   String? res = await register();
+
                                   if (int.parse(res ?? "0") > 0) {
+                                    mobile = mobile?.replaceFirst("+", "");
                                     var token =
                                         await user.login(mobile: mobile ?? "");
                                     // print(token);
@@ -644,6 +647,10 @@ class _RegisterState extends State<Register> {
                                       // for write
                                       await storage.write(
                                           key: 'token', value: token);
+                                      Navigator.of(context)
+                                          .pushReplacement(MaterialPageRoute(
+                                          builder: (context) => const MainNavigationScreen(),
+                                      ));
                                     }
                                   }
                                 }
@@ -669,10 +676,11 @@ class _RegisterState extends State<Register> {
   }
 
   Future<String?> register() async {
-    DioManager dioManager = DioManager();
+    //DioManager dioManager = DioManager();
+
     const storage = FlutterSecureStorage();
-    String? mobile = await storage.read(key: "mobile") ?? "0";
-    user.mobile = mobile.replaceFirst("+", "");
+    mobile = await storage.read(key: "mobile") ?? "0";
+    user.mobile = mobile?.replaceFirst("+", "");
     FormData formData = FormData.fromMap({
       "user_name": user.user_name,
       "email": user.email,
@@ -685,20 +693,22 @@ class _RegisterState extends State<Register> {
         imagePath,
       ),
     });
-    try {
-      var response = await dioManager.dio.post(
-        'https://oras.orasweb.com/api/registerclient',
-        data: formData,
-      );
-      if (response.statusCode == 200) {
-        return response.data;
-      } else {
-        return "";
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-    return "";
+    // try {
+      String? res = await user.register(formData:formData );
+      // var response = await dioManager.dio.post(
+      //   'https://oras.orasweb.com/api/registerclient',
+      //   data: formData,
+      // );
+      // if (response.statusCode == 200) {
+      //   return response.data;
+      // } else {
+      //   return "";
+      // }
+    // } catch (e) {
+    //   print(e.toString());
+    // }
+    // return "";
+    return res;
   }
 
   getImagefromGallery() async {
