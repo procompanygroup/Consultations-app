@@ -1,5 +1,7 @@
 import '../constants/global.dart';
+import '../models/service_input_model.dart';
 import '../models/service_model.dart';
+import '../models/service_value_model.dart';
 
 
 // Service
@@ -11,7 +13,6 @@ List<Service> globalServiceList = <Service>[];
 //      desc: "",
 //      image: ""),
 // ];
-
 Future<List<Service>> getGlobalServiceList() async {
 
   if(globalServiceList.isEmpty)
@@ -45,5 +46,24 @@ Future<List<Service>> getGlobalServiceList() async {
         });
     }
      return globalServiceList;
+
+}
+
+
+// Service Input and Value
+
+List<ServiceInput> globalServiceInputsApplicationList = <ServiceInput>[];
+List<ServiceValue> globalServiceValuesApplicationList = <ServiceValue>[];
+
+Future<void> fillServiceInputApplicationList(int serviceId) async {
+  var serviceInput = await globalService.getServiceInputs(serviceId: serviceId);
+  globalServiceInputsApplicationList = serviceInput!.serviceInputs!;
+
+  ServiceValue serviceValue = ServiceValue();
+  serviceValue
+      .generateInputValues(serviceInputs: serviceInput.serviceInputs)
+      .then((responce) => {
+        globalServiceValuesApplicationList = responce,
+       });
 
 }
