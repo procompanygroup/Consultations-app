@@ -33,7 +33,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     ];
     const List<Widget> _pages = <Widget>[
       ServiceScreen(),
-      ServiceApplicationScreen(),
+      ServiceApplicationScreen(serviceId: 1),
       ExpertsScreen(),
 
       Text(
