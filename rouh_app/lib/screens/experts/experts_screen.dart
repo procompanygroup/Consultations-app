@@ -155,7 +155,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
     );
 
 
-
+    //GetByServiceId
     _buildServices(List<Service> services) {
       List<Widget> serviceWidgetList = [];
       services.forEach((Service service) {
@@ -221,6 +221,14 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                         // border: Border.all(color: myprimercolor,width: 2),
                         borderRadius: BorderRadius.circular(35),
                         color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.03),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
                       ),
                       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       child: Stack(
@@ -390,11 +398,12 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
 
           // expertList
           Expanded(
-              child:Padding(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: _buildExperts(expertList!),
-              )
-          ),
+                child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: _buildExperts(expertList!)),
+              )),
           SizedBox(height: 10,),
 
         ],
