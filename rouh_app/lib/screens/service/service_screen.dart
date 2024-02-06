@@ -6,6 +6,7 @@ import 'package:rouh_app/models/service_value_model.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/constantsColors.dart';
 
@@ -17,7 +18,8 @@ class ServiceScreen extends StatefulWidget {
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {
-  bool isLoading = true;
+  bool isLoadingServices = true;
+  bool isLoadingServicesApplication = false;
 
   // final controller = PageController(viewportFraction: 0.8, keepPage: true);
   final pageController = PageController(viewportFraction: 0.8, keepPage: true);
@@ -42,15 +44,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   Future<void> fillServiceList() async {
 
-    // print("Start:" + isLoading.toString());
-    // serviceList = await appService.allServices();
-      appService.allServices()
+    getGlobalServiceList()
         .then((response) {
       setState(() {
-        // print(response.length);
-       serviceList =response;
-        isLoading =false;
-        print("Test:" + isLoading.toString());
+         print(response);
+        serviceList =response;
+        /*
+         serviceList.forEach((element) {
+           print(element.name);
+           print(element.desc);
+           print(element.icon);
+           print(element.is_active);
+           print(element.image);
+           // print(serviceList[0].ServiceInput[0].name);
+         });
+        */
+        isLoadingServices =false;
+        // print("Test:" + isLoading.toString());
 
       });
     });
@@ -252,7 +262,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     ],
                   ),
                 ),
-                !isLoading?
+                !isLoadingServices?
                 Container(
                   height: (bodyHeight * 0.70),
                     child: buildPages(serviceList))
