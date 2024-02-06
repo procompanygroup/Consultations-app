@@ -6,6 +6,7 @@ import '../controllers/dio_manager_controller.dart';
 
 class Service {
   //Instance variables
+  int? id;
   String? name;
   String? desc;
   String? icon;
@@ -17,7 +18,7 @@ class Service {
 
   //Constructor
   Service(
-      { this.name, this.desc, this.icon, this.is_active, this.image,this.serviceInputs}) ;
+      {this.id, this.name, this.desc, this.icon, this.is_active, this.image,this.serviceInputs}) ;
 
   factory Service.fromJson(dynamic parsedJson) {
     var tmpServiceInputs;
@@ -26,6 +27,7 @@ class Service {
          tmpServiceInputs = convertListToModel(ServiceInput.fromJson, parsedJson["inputservices"]);
       }
     return Service(
+    id: parsedJson['id'],
     name: parsedJson['name'],
     desc: parsedJson['desc'],
     icon: parsedJson['icon'],
@@ -38,6 +40,7 @@ class Service {
 
   Map<String, dynamic> toJson() =>
       {
+        'id': id,
         'name': name,
         'desc': desc,
         'icon': icon,
