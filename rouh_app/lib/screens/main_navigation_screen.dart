@@ -6,6 +6,8 @@ import 'service/select_expert_screen.dart';
 import 'service/service_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'shop/purchase_shop_screen.dart';
+
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
 
@@ -34,9 +36,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     ];
     const List<Widget> _pages = <Widget>[
       ServiceScreen(),
-      ServiceApplicationScreen(serviceId: 1),
       ExpertsScreen(),
-      SelectExpert(),
+      Text("Profile"),
+      Text("Settings")
     ];
     return Scaffold(
       // appBar: AppBar(
@@ -74,15 +76,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   color:
                       _selectedIndex == 1 ? mysecondarycolor : Colors.black26,
                 ),
-                label: 'service',
+                label: 'experts',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  "assets/svg/experts.svg",
+                  "assets/svg/my-account-icon.svg",
                   color:
                       _selectedIndex == 2 ?mysecondarycolor : Colors.black26,
                 ),
-                label: 'experts',
+                label: 'profile',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -90,7 +92,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   color:
                       _selectedIndex == 3 ? mysecondarycolor : Colors.black26,
                 ),
-                label: 'profile',
+                label: 'settings',
               ),
             ],
             type: BottomNavigationBarType.fixed,
