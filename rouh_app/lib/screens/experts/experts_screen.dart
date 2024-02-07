@@ -150,10 +150,11 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
-        -MediaQuery.of(context).padding.top // safe area
-        -AppBar().preferredSize.height //AppBar
-    );
-
+            -
+            MediaQuery.of(context).padding.top // safe area
+            -
+            AppBar().preferredSize.height //AppBar
+        );
 
     //GetByServiceId
     _buildServices(List<Service> services) {
@@ -199,124 +200,146 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
         children: serviceWidgetList,
       );
     }
-    _buildExperts(List<Expert> experts){
+
+    _buildExperts(List<Expert> experts) {
       return StaggeredGrid.count(
           // padding: EdgeInsets.symmetric(horizontal: 10.0),
           crossAxisCount: 2,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
-          children:
-          List.generate(experts.length,
-                  (index)  {
-                Expert expert= experts[index];
-                return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedExpert = expert.expert_name!;
-                        print(_selectedExpert);
-                      });
-                    },
-                    child:Container(
-                      decoration: BoxDecoration(
-                        // border: Border.all(color: myprimercolor,width: 2),
-                        borderRadius: BorderRadius.circular(35),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
+          children: List.generate(experts.length, (index) {
+            Expert expert = experts[index];
+            return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedExpert = expert.expert_name!;
+                    print(_selectedExpert);
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    // border: Border.all(color: myprimercolor,width: 2),
+                    borderRadius: BorderRadius.circular(35),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
                       ),
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      child: Stack(
+                    ],
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  child: Stack(
+                    children: [
+                      Column(
                         children: [
-                          Column(
+                          Container(
+                            height: (screenWidth - 65) / 2.5,
+                            width: (screenWidth - 65) / 2,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image(
+                                image: NetworkImage(expert.image!),
+                                // height: (screenWidth-20 ) /2,
+                                // width: (screenWidth-20 ) /2,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          // expert name
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              expert.expert_name!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                                // fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                          // rating
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(
-                                height: (screenWidth-65 ) /2.5,
-                                width: (screenWidth-65 ) /2,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(35),
-                                  child: Image(
-                                    image:NetworkImage(expert.image!),
-                                    // height: (screenWidth-20 ) /2,
-                                    // width: (screenWidth-20 ) /2,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                              RatingStars(
+                                rating: expert.rates!,
+                                size: 20,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5),
-                                child: Text(expert.expert_name!,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
-                                    // fontWeight: FontWeight.bold
-                                  ),),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    RatingStars(rating:expert.rates!,),
-                                    Row(
-                                      children: [
-                                        Text("Response ",
-                                        style: TextStyle(fontSize: 10,
-                                          color: Colors.grey,
-                                        ),),
-                                        Text(expert.answer_speed!.toString(),
-                                          style: TextStyle(fontSize: 10,
-                                            color: mysecondarycolor,
-                                          ),),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 10,)
                             ],
                           ),
-
-                          Positioned(
-                            top: 0,
-                            left: 0,
-                            child:
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  expert.isFavorite = expert.isFavorite!? false: true;
-                                  print(expert.isFavorite);
-                                });
-                              },
-                              child:ClipRRect(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular( 30.0),bottomRight: Radius.circular( 15.0)),
-                                child: Container(
-                                  color: mysecondarycolor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Icon( expert.isFavorite!? Icons.favorite : Icons.favorite_border,
-                                      color: Colors.white
-                                      , size: 25,),
+                          SizedBox(
+                            height: 10,
+                          )
+                        ],
+                      ),
+                      // Response speed
+                      Container(
+                          height: (screenWidth - 65) / 2.5,
+                          width: (screenWidth - 65) / 2,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(35),bottomLeft: Radius.circular(35)),
+                              child: Container(
+                                color: Colors.black.withOpacity(0.35),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text(
+                                        "Response "+expert.answer_speed!.toString(),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
+                          )),
+                      // isFavorite
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              expert.isFavorite =
+                                  expert.isFavorite! ? false : true;
+                              print(expert.isFavorite);
+                            });
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30.0),
+                                bottomRight: Radius.circular(15.0)),
+                            child: Container(
+                              color: mysecondarycolor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Icon(
+                                  expert.isFavorite!
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
+                        ),
                       ),
-                    )
-                );
-              }
-          )
-      );
-
+                    ],
+                  ),
+                ));
+          }));
     }
-
 
     return Scaffold(
       body: Column(
@@ -341,7 +364,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                       // Top
                       Container(
                         width: screenWidth,
-                        height:( bodyHeight * 0.20) - 45, // service list,
+                        height: (bodyHeight * 0.20) - 45, // service list,
                         child: Align(
                           alignment: AlignmentDirectional.bottomCenter,
                           child: Padding(
@@ -362,7 +385,10 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                         child: Align(
                           alignment: AlignmentDirectional.topEnd,
                           child: Padding(
-                            padding: EdgeInsetsDirectional.only( top: 20,end: 20,),
+                            padding: EdgeInsetsDirectional.only(
+                              top: 20,
+                              end: 20,
+                            ),
                             child: ElevatedButton(
                               child: Icon(
                                 Icons.favorite_border,
@@ -372,7 +398,8 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                               style: ElevatedButton.styleFrom(
                                 shape: CircleBorder(),
                                 padding: EdgeInsets.all(5),
-                                backgroundColor: Colors.white, // <-- Button color
+                                backgroundColor:
+                                    Colors.white, // <-- Button color
                                 // foregroundColor: Colors.red, // <-- Splash color
                               ),
                               onPressed: () {},
@@ -388,27 +415,30 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
           ),
           // serviceList
           Padding(
-            padding: const EdgeInsets.only(left: 10,top: 0,right: 10,bottom: 0),
+            padding:
+                const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-                child: _buildServices(serviceList),
-              ),
+              child: _buildServices(serviceList),
             ),
-          SizedBox(height: 10,),
+          ),
+          SizedBox(
+            height: 10,
+          ),
 
           // expertList
           Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: _buildExperts(expertList!)),
-              )),
-          SizedBox(height: 10,),
-
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: _buildExperts(expertList!)),
+          )),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
   }
 }
-
