@@ -8,6 +8,7 @@ import '../../models/service_value_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/record_and_play_screen.dart';
+import 'select_expert_screen.dart';
 
 
 class ServiceApplicationScreen extends StatefulWidget {
@@ -38,6 +39,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
 
   Future<void> fillServiceInputList() async {
     print("start");
+    print(widget.serviceId);
     await fillServiceInputApplicationList(widget.serviceId);
     print("end");
     setState(() {
@@ -432,7 +434,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
         // -MediaQuery.of(context).padding.top // safe area
-        -AppBar().preferredSize.height //AppBar
+        // -AppBar().preferredSize.height //AppBar
     );
 
     return Scaffold(
@@ -596,10 +598,15 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           ),
                           style: bs_flatFill(context),
                           onPressed: () async {
-                            serviceInputs.forEach((element) {
-                              print(element.input?.icon != null? true:false);
-                            });
-
+                            // serviceInputs.forEach((element) {
+                            //   print(element.input?.icon != null? true:false);
+                            // });
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SelectExpert(),
+                              ),
+                            );
                           },
                         ),
                       ),

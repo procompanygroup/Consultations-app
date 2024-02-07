@@ -72,16 +72,19 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   Widget buildPages(List<Service> _serviceList)
   {
+    /*
     var pages = List.generate(
         _serviceList.length,
             (index) => GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ServiceApplicationScreen(serviceId: _serviceList[index].id!),
-                  ),
-                );
+                print(_serviceList[index].id!.toString());
+
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) =>
+                //         ServiceApplicationScreen(serviceId: _serviceList[index].id!),
+                //   ),
+                // );
               },
               child: Container(
                         decoration: BoxDecoration(
@@ -151,12 +154,107 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         ),
                       ),
             ));
-
+    */
+    List<Widget> pages = [];
+    _serviceList.forEach((Service service) {
+      pages.add(
+       GestureDetector(
+            onTap: () {
+              // print(service.id!.toString());
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ServiceApplicationScreen(serviceId: service.id!),
+                ),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.white, width: 0.3),
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: double.maxFinite,
+                          // height: height,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child:
+                            // Image(
+                            //   image: NetworkImage(service.image!),
+                            //   fit: BoxFit.fitHeight,
+                            // ),
+                            Image(
+                              image: NetworkImage(service.image!),
+                              fit: BoxFit.fitHeight,
+                              errorBuilder:
+                                  (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return Image(
+                                      image: AssetImage("assets/images/default_image.png"),
+                                      fit: BoxFit.fitHeight,
+                                    );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          service.name!,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: myprimercolor,
+                            // fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Positioned(
+                    right: 5,
+                    bottom: 35,
+                    child: Container(
+                      //height: MediaQuery.of(context).size.height * 0.65,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade200),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.03),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(Icons.favorite,
+                          color: mysecondarycolor,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      );
+    });
     return Column(
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: PageView.builder(
               controller: pageController,
               // itemCount: pages.length,
