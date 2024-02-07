@@ -493,9 +493,11 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                   setState(() {
                                     isLoading=true;
                                   });
+                                  var mobile = widget.fullNumber?.replaceFirst("+", "");
+
                                   var token = await user.login(
-                                      mobile: widget.fullNumber);
-                                  // print(token);
+                                      mobile: mobile);
+                                  // store token
                                   if (token != "") {
                                     const storage = FlutterSecureStorage();
                                     // for write
@@ -504,7 +506,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         value: token); // Save token
                                     // get user Info
                                     var userInfo = await user.getUser(
-                                        mobile: widget.fullNumber);
+                                        mobile: mobile);
                                        setState(() {
                                          isLoading=false;
                                        });
@@ -518,10 +520,10 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                             '/mainNavigation');
                                   } else {
                                     const storage = FlutterSecureStorage();
-
+                                    var mobile = widget.fullNumber?.replaceFirst("+", "");
                                     // for write mobile phone
                                     await storage.write(
-                                        key: 'mobile', value: widget.fullNumber);
+                                        key: 'mobile', value: mobile);
 
                                     Navigator.of(context)
                                         .pushReplacement(MaterialPageRoute(

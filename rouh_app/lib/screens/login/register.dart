@@ -680,7 +680,8 @@ class _RegisterState extends State<Register> {
 
     const storage = FlutterSecureStorage();
     mobile = await storage.read(key: "mobile") ?? "0";
-    user.mobile = mobile?.replaceFirst("+", "");
+    user.mobile = mobile;
+    // user.mobile = mobile?.replaceFirst("+", "");
     FormData formData = FormData.fromMap({
       "user_name": user.user_name,
       "email": user.email,
