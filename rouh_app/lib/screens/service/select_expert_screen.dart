@@ -21,8 +21,7 @@ class _SelectExpertState extends State<SelectExpert> {
     double screenHeight = MediaQuery.of(context).size.height;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
             // -MediaQuery.of(context).padding.top // safe area
-            -
-            AppBar().preferredSize.height //AppBar
+            // - AppBar().preferredSize.height //AppBar
         );
 
     String _selectedExpert = "Expert_1";
@@ -195,6 +194,7 @@ class _SelectExpertState extends State<SelectExpert> {
                               ),
                             ),
                           ),
+                          // expert name
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: Text(
@@ -206,40 +206,49 @@ class _SelectExpertState extends State<SelectExpert> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                RatingStars(
-                                  rating: expert.rates!,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Response ",
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    Text(
-                                      expert.answer_speed!.toString(),
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: mysecondarycolor,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
+                          // rating
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              RatingStars(
+                                rating: expert.rates!,
+                                size: 20,
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 10,
                           )
                         ],
                       ),
+                      // Response speed
+                      Container(
+                          height: (screenWidth - 65) / 2.5,
+                          width: (screenWidth - 65) / 2,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(35),bottomLeft: Radius.circular(35)),
+                              child: Container(
+                                color: Colors.black.withOpacity(0.35),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text(
+                                        "Response "+expert.answer_speed!.toString(),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )),
                       // expert service point
                       PositionedDirectional(
                         top: 0,
@@ -444,6 +453,7 @@ class _SelectExpertState extends State<SelectExpert> {
                       scrollDirection: Axis.vertical,
                         child: _buildExperts(expertList!)),
                   )),
+                  SizedBox(height: 10,)
                 ],
               ),
             ),

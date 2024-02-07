@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class RatingStars extends StatelessWidget {
   final double rating;
-  const RatingStars({Key? key,  required this.rating}) : super(key: key);
+  final double size;
+  const RatingStars({Key? key,  required this.rating,  required this.size}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     List<Widget> stars = <Widget>[];
@@ -16,21 +17,21 @@ class RatingStars extends StatelessWidget {
               if(rating >= i)
                 return SvgPicture.asset(
                   'assets/svg/star-full-icon.svg',
-                  width: 12.5,
+                  width: size,
                   fit: BoxFit.cover,
                   color:Color(0xffF9CF2B),
                 );
               else if(i > rating && rating > i-1 )
                 return SvgPicture.asset(
                   'assets/svg/star-half-icon.svg',
-                  width: 12.5,
+                  width: size,
                   fit: BoxFit.cover,
                   color:Color(0xffF9CF2B),
                 );
               else
                 return SvgPicture.asset(
                   'assets/svg/star-full-icon.svg',
-                  width: 12.5,
+                  width: size,
                   fit: BoxFit.cover,
                   color:Colors.grey.shade300,
                 );
