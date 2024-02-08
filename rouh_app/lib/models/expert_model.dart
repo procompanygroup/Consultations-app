@@ -21,6 +21,7 @@ class Expert {
   double? rates;
   String? record;
   String? desc;
+  int? call_cost;
   double? answer_speed;
   String? image;
   bool? isFavorite;
@@ -33,7 +34,7 @@ List<Service>? services;
   Expert(
       { this.id, this.expert_name, this.email, this.mobile, this.nationality, this.birthdate, this.gender, this.marital_status,
         this.is_active,this.points_balance,this.cash_balance,this.cash_balance_todate,this.rates,this.record,this.desc,
-        this.answer_speed, this.image,this.isFavorite, this.expert_services,this.services});
+        this.call_cost,this.answer_speed, this.image,this.isFavorite, this.expert_services,this.services});
 
   factory Expert.fromJson(Map<String, dynamic> parsedJson) {
     var tmpExpertServices;
@@ -57,6 +58,7 @@ List<Service>? services;
         is_active: parsedJson['is_active'],
         marital_status: parsedJson['marital_status'],
         nationality: parsedJson['nationality'],
+      call_cost: parsedJson['call_cost'],
       answer_speed: parsedJson['answer_speed'],
       cash_balance:double.tryParse( parsedJson['cash_balance']),
       cash_balance_todate: double.tryParse(parsedJson['cash_balance_todate']),
