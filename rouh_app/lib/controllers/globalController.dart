@@ -55,7 +55,7 @@ Future<List<Service>> getGlobalServiceList() async {
 List<ServiceInput> globalServiceInputsApplicationList = <ServiceInput>[];
 List<ServiceValue> globalServiceValuesApplicationList = <ServiceValue>[];
 
-Future<void> fillServiceInputApplicationList(int serviceId) async {
+Future<bool> fillServiceInputApplicationList(int serviceId) async {
   var serviceInput = await globalService.getServiceInputs(serviceId: serviceId);
   globalServiceInputsApplicationList = serviceInput!.serviceInputs!;
 
@@ -65,5 +65,7 @@ Future<void> fillServiceInputApplicationList(int serviceId) async {
       .then((responce) => {
         globalServiceValuesApplicationList = responce,
        });
+
+  return true;
 
 }
