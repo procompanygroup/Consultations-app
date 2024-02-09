@@ -38,7 +38,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     fillServiceList();
 
   }
@@ -159,14 +158,27 @@ class _ServiceScreenState extends State<ServiceScreen> {
     _serviceList.forEach((Service service) {
       pages.add(
        GestureDetector(
-            onTap: () {
+            onTap: ()  async {
               // print(service.id!.toString());
+
+              setState(() {
+                isLoadingServicesApplication = true;
+              });
+
+              var result = await fillServiceInputApplicationList(service.id!);
+
+              setState(() {
+                isLoadingServicesApplication = false;
+              });
+              if(result)
+                {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
                       ServiceApplicationScreen(serviceId: service.id!),
                 ),
               );
+            }
             },
             child: Container(
               decoration: BoxDecoration(
@@ -292,8 +304,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
         );
 
 
-
-
     return Scaffold(
       // appBar: AppBar(
       //   title: Text("Player Audio Screen"),
@@ -384,9 +394,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         Center(child: CircularProgressIndicator()),
                       ],
                     )),
+
               ],
             ),
           ),
+          if(isLoadingServicesApplication)
+            Center(child: CircularProgressIndicator()),
         ],
       ),
     );

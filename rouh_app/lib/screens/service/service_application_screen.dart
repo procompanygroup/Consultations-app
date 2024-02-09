@@ -21,7 +21,7 @@ class ServiceApplicationScreen extends StatefulWidget {
 }
 
 class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
-  bool isLoading = true;
+  // bool isLoading = true;
   bool hasRecordFile = false;
   bool hasImageFile = false;
   Service service = Service();
@@ -38,14 +38,14 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   }
 
   Future<void> fillServiceInputList() async {
-    print("start");
-    print(widget.serviceId);
-    await fillServiceInputApplicationList(widget.serviceId);
-    print("end");
+    // print("start");
+    // print(widget.serviceId);
+    // await fillServiceInputApplicationList(widget.serviceId);
+    // print("end");
     setState(() {
       serviceInputs = globalServiceInputsApplicationList;
       serviceValues = globalServiceValuesApplicationList;
-      isLoading = false;
+      // isLoading = false;
     });
     /*
     var serviceInput = await service.getServiceInputs(serviceId: 1);
@@ -517,7 +517,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child:
-                        !isLoading?
+                        // !isLoading?
                         Column(
                           children: [
                             buildForm(serviceValues),
@@ -577,7 +577,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                             ):SizedBox(),
                           ],
                         )
-                        :Center(child: CircularProgressIndicator()),
+                        // :Center(child: CircularProgressIndicator()),
                       ),
                     ),
 
