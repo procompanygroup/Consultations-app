@@ -276,14 +276,14 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                         ],
                       ),
                       // Response speed
-                      Container(
+                      ClipRRect(
+                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(35),bottomLeft: Radius.circular(35)),
+                          child: Container(
                           height: (screenWidth - 65) / 2.5,
                           width: (screenWidth - 65) / 2,
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(35),bottomLeft: Radius.circular(35)),
-                              child: Container(
+                            child:  Container(
                                 color: Colors.black.withOpacity(0.35),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 5),
