@@ -49,16 +49,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
       setState(() {
          print(response);
         serviceList =response;
-        /*
-         serviceList.forEach((element) {
-           print(element.name);
-           print(element.desc);
-           print(element.icon);
-           print(element.is_active);
-           print(element.image);
-           // print(serviceList[0].ServiceInput[0].name);
-         });
-        */
         isLoadingServices =false;
         // print("Test:" + isLoading.toString());
 
@@ -71,89 +61,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   Widget buildPages(List<Service> _serviceList)
   {
-    /*
-    var pages = List.generate(
-        _serviceList.length,
-            (index) => GestureDetector(
-              onTap: () {
-                print(_serviceList[index].id!.toString());
-
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) =>
-                //         ServiceApplicationScreen(serviceId: _serviceList[index].id!),
-                //   ),
-                // );
-              },
-              child: Container(
-                        decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white, width: 0.3),
-              color: Colors.white,
-                        ),
-                        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                        child: Stack(
-              children: [
-                Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: double.maxFinite,
-                        // height: height,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image(
-                            image: NetworkImage(_serviceList[index].image!),
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        _serviceList[index].name!,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: myprimercolor,
-                          // fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                Positioned(
-                  right: 5,
-                  bottom: 35,
-                  child: Container(
-                    //height: MediaQuery.of(context).size.height * 0.65,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.shade200),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.03),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Icon(Icons.favorite,
-                        color: mysecondarycolor,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-                        ),
-                      ),
-            ));
-    */
     List<Widget> pages = [];
     _serviceList.forEach((Service service) {
       pages.add(
@@ -262,6 +169,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
           ),
       );
     });
+
     return Column(
       children: [
         Expanded(
