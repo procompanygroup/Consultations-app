@@ -7,6 +7,8 @@ import '../models/service_value_model.dart';
 // Service
 Service globalService = Service();
 List<Service> globalServiceList = <Service>[];
+List<Service> globalServiceWithoutCallList = <Service>[];
+List<Service> globalServiceWithoutCallWithAllList = <Service>[];
 // List<Service> starterServiceList = [
 //  Service(
 //      name: "",
@@ -48,6 +50,29 @@ Future<List<Service>> getGlobalServiceList() async {
      return globalServiceList;
 
 }
+Future<List<Service>> getGlobalServiceWithoutCallList() async {
+  if(globalServiceWithoutCallList.isEmpty)
+  {
+    globalServiceWithoutCallList = await getGlobalServiceList();
+    globalServiceWithoutCallList
+    = globalServiceWithoutCallList.where((element) => element.name != "callservice").toList();
+  }
+  return globalServiceWithoutCallList;
+}
+Future<List<Service>> getGlobalServiceWithoutCallWithAllList() async {
+  if(globalServiceWithoutCallWithAllList.isEmpty)
+    {
+  globalServiceWithoutCallWithAllList.clear();
+  globalServiceWithoutCallWithAllList.add(
+      Service(id: 0, name: "All", image: "")
+  );
+    await getGlobalServiceWithoutCallList();
+    globalServiceWithoutCallWithAllList.addAll(globalServiceWithoutCallList);
+    }
+  return globalServiceWithoutCallWithAllList;
+}
+
+
 
 
 // Service Input and Value
