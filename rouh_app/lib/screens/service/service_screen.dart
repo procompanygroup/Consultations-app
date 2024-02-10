@@ -82,7 +82,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
-                      ServiceApplicationScreen(serviceId: service.id!),
+                      ServiceApplicationScreen(service: service),
                 ),
               );
             }
