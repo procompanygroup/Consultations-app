@@ -223,10 +223,15 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                       left: 0,
                       child: GestureDetector(
                         onTap: () {
-                          setState(() {
-                            expert.isFavorite =
-                            expert.isFavorite! ? false : true;
-                            print(expert.isFavorite);
+                          setState(() async {
+                            isLoading = true;
+                            bool newfavoriteState = expert.isFavorite! ? false : true;
+                            // Dina
+                            await globalExpert.SaveFavorite(clientId: 1,
+                                expertId: expert.id!,
+                                isFavorite: newfavoriteState,);
+                            expert.isFavorite = newfavoriteState;
+                            isLoading = false;
                           });
                         },
                         child: ClipRRect(
