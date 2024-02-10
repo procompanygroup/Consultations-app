@@ -72,7 +72,7 @@ List<Service>? services;
     );
   }
 
-  Future<List<Expert>?> GetByServiceId({
+  Future<List<Expert>> GetByServiceId({
     required int serviceId,
   }) async {
     var data = json.encode({
@@ -96,7 +96,7 @@ List<Service>? services;
 
 
 
-Future<List<Expert>?> GetWithFavorite({
+Future<List<Expert>> GetWithFavorite({
     required int clientId,
   }) async {
     var data = json.encode({
