@@ -13,8 +13,8 @@ import 'select_expert_screen.dart';
 
 class ServiceApplicationScreen extends StatefulWidget {
 
-  const ServiceApplicationScreen({super.key, required this.serviceId});
-  final int serviceId;
+  const ServiceApplicationScreen({super.key, required this.service});
+  final Service service;
 
   @override
   State<ServiceApplicationScreen> createState() => _ServiceApplicationScreenState();
@@ -506,7 +506,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                 child: Column(
                   children: [
                     SizedBox(height:bodyHeight*0.1 ,),
-                    Text("Service Name",
+                    Text(widget.service.name!,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -624,14 +624,10 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Stack(children: [
-                Container(
+                 Container(
                   width: bodyHeight * 0.20,
                   height: bodyHeight * 0.20,
                   decoration: BoxDecoration(
-                      image:const DecorationImage(
-                          image: NetworkImage("https://picsum.photos/200/300?random=4"),
-                        fit: BoxFit.cover,
-                      ),
                       borderRadius: BorderRadius.circular(80),
                       border: Border.all(color: Colors.white, width: 3),
                       boxShadow: [
@@ -643,7 +639,22 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                         ),
                       ],
                       color: Colors.blueGrey),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(80),
+                    child: Image(
+                      image: NetworkImage("https://picsum.photos/200/300?random=4"),
+                      fit: BoxFit.cover,
+                        errorBuilder:
+                        (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  return Image(
+                  image: AssetImage("assets/images/default_image.png"),
+                  fit: BoxFit.fitHeight,
+                  );
+                  },
+                    ),
+                  ),
                 ),
+
                 Positioned(
                   right: 5,
                   bottom: 5,
@@ -708,14 +719,6 @@ class _ImagePickerState extends State<ImagePicker> {
           decoration:  BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.grey.shade200, width: 1),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.black.withOpacity(0.03),
-              //     spreadRadius: 5,
-              //     blurRadius: 7,
-              //     offset: Offset(0, 3), // changes position of shadow
-              //   ),
-              // ],
               color: Colors.grey.shade100
           ),
           child: Positioned(
@@ -735,27 +738,37 @@ class _ImagePickerState extends State<ImagePicker> {
             ),
           ),
         )
-        :Container(
+        : Container(
           width: screenWidth,
           height: screenWidth,
           decoration: BoxDecoration(
-              image:const DecorationImage(
-                image: NetworkImage("https://picsum.photos/200/300?random=4"),
-                fit: BoxFit.cover,
-              ),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.grey.shade200, width: 1),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.black.withOpacity(0.03),
-              //     spreadRadius: 5,
-              //     blurRadius: 7,
-              //     offset: Offset(0, 3), // changes position of shadow
-              //   ),
-              // ],
-              color: Colors.grey.shade100
-              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+              color: Colors.grey.shade100),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image(
+              image:NetworkImage("https://picsum.photos/200/300?random=4"),
+              fit: BoxFit.cover,
+              errorBuilder:
+                  (BuildContext context, Object exception, StackTrace? stackTrace) {
+                return Image(
+                  image: AssetImage("assets/images/default_image.png"),
+                  fit: BoxFit.fitHeight,
+                );
+              },
+            ),
+          ),
         ),
+
                     ],
                   ),
       ),
