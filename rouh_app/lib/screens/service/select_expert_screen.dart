@@ -191,6 +191,13 @@ class _SelectExpertState extends State<SelectExpert> {
                                 // height: (screenWidth-20 ) /2,
                                 // width: (screenWidth-20 ) /2,
                                 fit: BoxFit.cover,
+                                errorBuilder:
+                                    (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  return Image(
+                                    image: AssetImage("assets/images/default_image.png"),
+                                    fit: BoxFit.fitHeight,
+                                  );
+                                },
                               ),
                             ),
                           ),
