@@ -1,10 +1,11 @@
 import '../constants/global.dart';
+import '../models/expert_model.dart';
 import '../models/service_input_model.dart';
 import '../models/service_model.dart';
 import '../models/service_value_model.dart';
 
 
-// Service
+//#region Service
 Service globalService = Service();
 List<Service> globalServiceList = <Service>[];
 List<Service> globalServiceWithoutCallList = <Service>[];
@@ -73,10 +74,9 @@ Future<List<Service>> getGlobalServiceWithoutCallWithAllList() async {
 }
 
 
+//#endregion
 
-
-// Service Input and Value
-
+//#region Service Input and Value
 List<ServiceInput> globalServiceInputsApplicationList = <ServiceInput>[];
 List<ServiceValue> globalServiceValuesApplicationList = <ServiceValue>[];
 
@@ -94,3 +94,18 @@ Future<bool> fillServiceInputApplicationList(int serviceId) async {
   return true;
 
 }
+//#endregion
+
+//#region expert
+Expert globalExpert = Expert();
+
+List<Expert> globalExpertWithFavoriteList = <Expert>[];
+
+Future<List<Expert>> getGlobalExpertWithFavoriteList() async {
+  if(globalExpertWithFavoriteList.isEmpty)
+  {
+    globalExpertWithFavoriteList = await globalExpert.GetWithFavorite(clientId:1);
+  }
+  return globalExpertWithFavoriteList;
+}
+//#endregion
