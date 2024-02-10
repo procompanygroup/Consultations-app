@@ -89,7 +89,7 @@ List<Service>? services;
 
     }
     else {
-      experts = List<Expert>.empty();;
+      experts = List<Expert>.empty();
     }
     return experts;
   }
@@ -116,6 +116,29 @@ Future<List<Expert>> GetWithFavorite({
       experts = List<Expert>.empty();;
     }
     return experts;
+  }
+Future<bool> SaveFavorite({
+    required int clientId,
+  required int expertId,
+  required bool isFavorite
+  }) async {
+    var data = json.encode({
+      "client_id": clientId,
+      "expert_id": expertId,
+      "is_favorite": isFavorite,
+    });
+
+    var response = await dioManager.dio.post('client/expert/savefav',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+     return true;
+
+    }
+    else {
+      return false;
+    }
   }
 
   // used  for convert a List of value
