@@ -15,101 +15,21 @@ class ExpertsScreen extends StatefulWidget {
 }
 
 class _ExpertsScreenState extends State<ExpertsScreen> {
-  bool isLoadingServices = true;
+  bool isLoading = true;
 
   bool isFavoriteSearch = false;
 
   int _selectedService = 0;
   List<Service> serviceList = <Service>[];
-  String _selectedExpert = "Expert_1";
-  List<Expert> expertList = [
-    Expert(
-        expert_name: "Expert_1",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=1",
-        answer_speed: 0.00,
-        rates: 0,
-        isFavorite: false,
-          services: []),
-    Expert(
-        expert_name: "Expert_2",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=2",
-        answer_speed: 0.00,
-        rates: 0.5,
-        isFavorite: true,
-        services: []),
-    Expert(
-        expert_name: "Expert_3",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=3",
-        answer_speed: 0.00,
-        rates: 1,
-        isFavorite: false,
-        services: []),
-    Expert(
-        expert_name: "Expert_4",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=4",
-        answer_speed: 0.00,
-        rates: 4,
-        isFavorite: true,
-        services: []),
-    Expert(
-        expert_name: "Expert_5",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=5",
-        answer_speed: 0.00,
-        rates: 3.5,
-        isFavorite: false,
-        services: []),
-    Expert(
-        expert_name: "Expert_6",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=6",
-        answer_speed: 0.00,
-        rates: 3.5,
-        isFavorite: false,
-        services: []),
-    Expert(
-        expert_name: "Expert_7",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=7",
-        answer_speed: 0.00,
-        rates: 3.5,
-        isFavorite: true,
-        services: []),
-    Expert(
-        expert_name: "Expert_8",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=8",
-        answer_speed: 0.00,
-        rates: 3.5,
-        isFavorite: false,
-        services: []),
-    Expert(
-        expert_name: "Expert_9",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=9",
-        answer_speed: 0.00,
-        rates: 3.5,
-        isFavorite: true,
-        services: []),
-    Expert(
-        expert_name: "Expert_10",
-        desc: "desc",
-        image: "https://picsum.photos/200/300?random=10",
-        answer_speed: 0.00,
-        rates: 3.5,
-        isFavorite: false,
-        services: []),
-  ];
+  int _selectedExpert = 0;
+  List<Expert> expertList = <Expert>[];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fillServiceList();
+    fillExpertList();
 
   }
 
@@ -124,7 +44,22 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
         if(serviceList.isNotEmpty)
           _selectedService = serviceList[0].id!;
 
-        isLoadingServices =false;
+        isLoading =false;
+      });
+    });
+  }
+  Future<void> fillExpertList() async {
+
+    getGlobalExpertWithFavoriteList()
+        .then((response) {
+      setState(() {
+        print(response);
+        expertList =response;
+
+        if(expertList.isNotEmpty)
+          _selectedExpert = expertList[0].id!;
+
+        isLoading =false;
       });
     });
   }
@@ -191,7 +126,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
           listWidget.add( GestureDetector(
               onTap: () {
                 setState(() {
-                  _selectedExpert = expert.expert_name!;
+                  _selectedExpert = expert.id!;
                   print(_selectedExpert);
                 });
               },
@@ -327,108 +262,114 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
     }
 
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          Container(
-            width: screenWidth,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25)),
-                // border: Border.all(color: Colors.grey),
-                gradient: LinearGradient(
-                  colors: [Color(0xff023056), myprimercolor],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                )),
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    children: [
-                      // Top
-                      Container(
-                        width: screenWidth,
-                        height: (bodyHeight * 0.20) - 45, // service list,
-                        child: Align(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Text(
-                              "Experts",
-                              style: TextStyle(
-                                  // fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                  color: mysecondarycolor),
+          Column(
+            children: [
+              Container(
+                width: screenWidth,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25)),
+                    // border: Border.all(color: Colors.grey),
+                    gradient: LinearGradient(
+                      colors: [Color(0xff023056), myprimercolor],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    )),
+                child: SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: [
+                          // Top
+                          Container(
+                            width: screenWidth,
+                            height: (bodyHeight * 0.20) - 45, // service list,
+                            child: Align(
+                              alignment: AlignmentDirectional.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  "Experts",
+                                  style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      color: mysecondarycolor),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            child: Align(
+                              alignment: AlignmentDirectional.topEnd,
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.only(
+                                  top: 20,
+                                  end: 20,
+                                ),
+                                child: ElevatedButton(
+                                  child: Icon(
+                                    isFavoriteSearch? Icons.favorite :Icons.favorite_border,
+                                    color: mysecondarycolor,
+                                    size: 35,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: CircleBorder(),
+                                    padding: EdgeInsets.all(5),
+                                    backgroundColor:
+                                        Colors.white, // <-- Button color
+                                    // foregroundColor: Colors.red, // <-- Splash color
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      isFavoriteSearch= !isFavoriteSearch;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        child: Align(
-                          alignment: AlignmentDirectional.topEnd,
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.only(
-                              top: 20,
-                              end: 20,
-                            ),
-                            child: ElevatedButton(
-                              child: Icon(
-                                isFavoriteSearch? Icons.favorite :Icons.favorite_border,
-                                color: mysecondarycolor,
-                                size: 35,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(5),
-                                backgroundColor:
-                                    Colors.white, // <-- Button color
-                                // foregroundColor: Colors.red, // <-- Splash color
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isFavoriteSearch= !isFavoriteSearch;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      )
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-          // serviceList
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: _buildServices(serviceList),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
+              // serviceList
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: _buildServices(serviceList),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
 
-          // expertList
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: _buildExperts(
-                    isFavoriteSearch?expertList!.where((element) => element.isFavorite!).toList()
-                        : expertList!
-                )),
-          )),
-          SizedBox(
-            height: 10,
+              // expertList
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: _buildExperts(
+                        isFavoriteSearch?expertList!.where((element) => element.isFavorite!).toList()
+                            : expertList!
+                    )),
+              )),
+              SizedBox(
+                height: 10,
+              ),
+            ],
           ),
+          if(isLoading)
+            Center(child: CircularProgressIndicator()),
         ],
       ),
     );
