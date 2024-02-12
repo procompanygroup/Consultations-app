@@ -136,6 +136,7 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
   Future setAudio(File audioFile) async {
 
     //audioPlayer.setSource(audioFile.path, isLocal: true);
+    await audioPlayer.setPlayerMode(audioplayers.PlayerMode.mediaPlayer);
     audioPlayer.setSourceUrl(audioFile.path);
     await audioPlayer.resume();
     print('audioPlayer setUrl');
