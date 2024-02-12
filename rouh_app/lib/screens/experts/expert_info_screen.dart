@@ -8,6 +8,7 @@ import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../../widgets/play_record_screen.dart';
 
 class ExpertInfo extends StatefulWidget {
   const ExpertInfo({super.key, required this.expert});
@@ -181,14 +182,16 @@ class _ExpertInfoState extends State<ExpertInfo> {
                   padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
                   child: Column(
                     children: [
-                      SizedBox(height:bodyHeight*0.1 ,),
+                      SizedBox(height:bodyHeight*0.095 ,),
+                      // expert_name
                       Text(widget.expert.expert_name!,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 18,
                             color: mysecondarycolor),
                       ),
-                  Padding(
+                      // RatingStars
+                      Padding(
                     padding: const EdgeInsets.symmetric(vertical:5),
                     child: Container(
                       width: 125,
@@ -196,12 +199,14 @@ class _ExpertInfoState extends State<ExpertInfo> {
                             child: RatingStars(
                                 rating: widget.expert.rates!, size: 20))),
                   ),
+                      // PlayRecordScreen
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: RecordAndPlayScreen(),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                        child: PlayRecordScreen(audioUrl: "https://oras.orasweb.com/storage/images/values/records/15562135.mp3"),
                       ),
+                      // Experts Title
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                         child: Align(
                           alignment: AlignmentDirectional.centerStart,
                           child: Text("Experts",
@@ -211,7 +216,6 @@ class _ExpertInfoState extends State<ExpertInfo> {
                           ),
                         ),
                       ),
-
                       // serviceList
                        Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -219,8 +223,6 @@ class _ExpertInfoState extends State<ExpertInfo> {
                                 scrollDirection: Axis.horizontal,
                                 child: _buildServices(serviceList!)),
                           ),
-
-
 
                 ],
                   ),
