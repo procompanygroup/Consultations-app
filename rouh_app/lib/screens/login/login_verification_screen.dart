@@ -13,6 +13,7 @@ import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../main_navigation_screen.dart';
+//import '../shop/test.dart';
 
 class LoginVerificationScreen extends StatefulWidget {
   final fullNumber, verifyCode;
@@ -529,6 +530,10 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         .pushReplacement(MaterialPageRoute(
                                       builder: (context) => const Register(),
                                     ));
+                                    // Navigator.of(context)
+                                    //     .pushReplacement(MaterialPageRoute(
+                                    //   builder: (context) =>   PaymentScreen(),
+                                    // ));
                                   }
                                 },
                               ),
