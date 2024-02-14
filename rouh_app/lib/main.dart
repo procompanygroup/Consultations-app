@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'mystyle/constantsColors.dart';
 import 'screens/experts/experts_screen.dart';
 import 'screens/service/service_screen.dart';
@@ -9,7 +11,12 @@ import 'screens/login/login_verification_screen.dart';
 import 'screens/main_navigation_screen.dart';
 import 'screens/splash_screen.dart';
 
-void main() {
+void main() async{
+
+  Stripe.publishableKey = 'pk_test_51OixcfJifccNTBbxp9uOqin9nVSx6UOb6KE6JaWDnMSbbsxAUICBdBByrXLa8G6sPAhO2PDtBFjTJudgRHOjQDP600pI5owy1m';
+
+  await dotenv.load( fileName: 'assets/payments/payment.env');
+
   runApp(const MyApp());
 }
 
