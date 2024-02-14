@@ -8,6 +8,7 @@ import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../../widgets/custom_image.dart';
 import '../../widgets/play_record_screen.dart';
 
 class ExpertInfo extends StatefulWidget {
@@ -22,15 +23,16 @@ class _ExpertInfoState extends State<ExpertInfo> {
   int _selectedService = 0;
   List<Service> serviceList = <Service>[];
 
+  int _selectedCommentTest = 0;
+  List<CommentTest> commentTestList = <CommentTest>[];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     fillServiceList();
-
-
-
+    fillCommentTestList();
 
   }
   Future<void> fillServiceList() async {
@@ -45,6 +47,25 @@ class _ExpertInfoState extends State<ExpertInfo> {
           _selectedService = serviceList[0].id!;
       });
     });
+  }
+  Future<void> fillCommentTestList() async {
+    commentTestList.add(
+        CommentTest(name: "Commenter-1", date: "2022/2/2"
+            , desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        ,url: "https://picsum.photos/200/300?random=1")
+    );
+    commentTestList.add(
+        CommentTest(name: "Commenter-1", date: "2022/2/2"
+            , desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At augue eget arcu dictum varius duis at. Sit amet volutpat consequat mauris nunc congue."
+            ,url: "https://picsum.photos/200/300?random=2")
+    );
+    commentTestList.add(
+        CommentTest(name: "Commenter-1", date: "2022/2/2"
+            , desc: "At augue eget arcu dictum varius duis at. Sit amet volutpat consequat mauris nunc congue."
+            ,url: "https://picsum.photos/200/300?random=3")
+    );
+
+
   }
   @override
   Widget build(BuildContext context) {
@@ -98,10 +119,10 @@ class _ExpertInfoState extends State<ExpertInfo> {
                         ),
                          Expanded(
                            child: Text(
-                              service.name!.toString() + " Hello",
+                              service.name!.toString(),
                               style: TextStyle(
                                 fontSize: 10,
-                                color: Colors.grey,
+                                color: Colors.grey.shade400,
                                 // fontWeight: FontWeight.bold
                             ),
                              ),
@@ -112,7 +133,80 @@ class _ExpertInfoState extends State<ExpertInfo> {
                 ));
           }));
     }
-
+    _buildCommentTests(List<CommentTest> commentTests) {
+      return Column(
+          children: List.generate(commentTests.length, (index) {
+            CommentTest commentTest = commentTests[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child:  Container(
+                    width: screenWidth - 40,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                        children: [
+                            // comment image
+                            CustomImage(url: commentTest.url,
+                              height: 40, width: 40,
+                              radius: 10,
+                              borderColor:  Colors.blue,
+                              borderWidth:  0.5,
+                            ),
+                            SizedBox(height: 5,),
+                            // comment name
+                            Container(
+                              width: 40,
+                              child: Text(
+                                commentTest.name! ,
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: mysecondarycolor,
+                                ),
+                              ),
+                            ),
+                            // comment date
+                            Container(
+                              width: 40,
+                              child:Text(
+                                commentTest.date!,
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // comment text
+                        Padding(
+                          padding:  EdgeInsetsDirectional.only(start: 20,),
+                          child: Container(
+                            width: screenWidth - 40 -10 - 40 - 35,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: mysecondarycolor,width: 1),
+                              borderRadius: BorderRadius.circular(20),
+                              // color: Colors.grey.shade50,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: Text(
+                                commentTest.desc! ,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                  // fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            );
+          }));
+    }
     return Scaffold(
       //backgroundColor: const Color(0xff022440),
       body: Stack(
@@ -144,22 +238,34 @@ class _ExpertInfoState extends State<ExpertInfo> {
                           }),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.only(end: 10),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(5),
-                          backgroundColor:
-                          Colors.grey.shade50, // <-- Button color
-                          // foregroundColor: Colors.red, // <-- Splash color
-                        ),
-                        onPressed: () {},
-                        child: Icon(
-                          Icons.shopping_cart,
-                          size: 35,
-                          color: myprimercolor,
-                        ),
+                      padding: EdgeInsetsDirectional.only(end: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                          onTap: (){},
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(150),
+                                  color: Colors.white),
+                              child: Icon(
+                                Icons.notifications_none_outlined,
+                                size: 30,
+                                color: myprimercolor,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 5,),
+                          Text("Folow",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white),
+                          ),
+                        ],
                       ),
+
                     ),
                   ],
                 ),
@@ -223,7 +329,102 @@ class _ExpertInfoState extends State<ExpertInfo> {
                                 scrollDirection: Axis.horizontal,
                                 child: _buildServices(serviceList!)),
                           ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // expert description
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                                  child: Container(
+                                    width: screenWidth - 60,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.shade200,width: 1),
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.grey.shade50,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start ,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(5),
+                                            child: Text(
+                                              "Information apout expert" ,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: mysecondarycolor,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5),
+                                            child: Text(
+                                              widget.expert.desc! ,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey.shade600,
+                                                // fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // comments title
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                                          color: mysecondarycolor,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(7.5),
+                                          child: SvgPicture.asset(
+                                            "assets/svg/speech-bubble-black-icon.svg",
+                                            width: 12.5,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                        child: Text(
+                                          "Comments" ,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: myprimercolor
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // comments
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: _buildCommentTests(commentTestList!)),
+                                ),
 
+
+                              ],
+                            )
+                        ),
+                    ),
+                  ),
                 ],
                   ),
                 ),
@@ -272,29 +473,22 @@ class _ExpertInfoState extends State<ExpertInfo> {
                     right: 5,
                     bottom: 5,
                     child:
-                    Container(
-                      //height: MediaQuery.of(context).size.height * 0.65,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        border: Border.all(color: Colors.grey.shade300, width: 3),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Icon(Icons.favorite,
+                    GestureDetector(
+                      onTap: (){},
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(150),
+                            border: Border.all(color: Colors.grey.shade300, width: 3),
+                            color: Colors.white),
+                        child:Icon( widget.expert.isFavorite!?  Icons.favorite :Icons.favorite_border  ,
                           color: mysecondarycolor,
                           size: 25,
                         ),
                       ),
                     ),
+
                   ),
                 ]),
               ),
@@ -303,4 +497,14 @@ class _ExpertInfoState extends State<ExpertInfo> {
       ),
     );
   }
+}
+
+class CommentTest{
+  String? name;
+  String? date;
+  String? desc;
+  String? url;
+
+  CommentTest({this.name, this.date, this.desc, this.url});
+
 }
