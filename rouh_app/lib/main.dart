@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/UserInformation/user_information_cubit.dart';
 import 'mystyle/constantsColors.dart';
 import 'screens/experts/experts_screen.dart';
 import 'screens/service/service_screen.dart';
-import 'screens/service/service_application_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/login/login_verification_screen.dart';
 import 'screens/main_navigation_screen.dart';
@@ -17,7 +18,18 @@ void main() async{
 
   await dotenv.load( fileName: 'assets/payments/payment.env');
 
-  runApp(const MyApp());
+  //runApp(const MyApp() );
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<UserInformationCubit>(
+        create: (BuildContext context) => UserInformationCubit(),
+      ),
+      // BlocProvider<ThemeBloc>(
+      //   create: (BuildContext context) => ThemeBloc(),
+      // ),
+    ],
+    child: MyApp(),
+  ), );
 }
 
 class MyApp extends StatelessWidget {

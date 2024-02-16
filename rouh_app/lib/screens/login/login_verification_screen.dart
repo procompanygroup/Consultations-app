@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/screens/login/register.dart';
 import 'package:rouh_app/widgets/custom_appbar.dart';
 
@@ -13,7 +14,8 @@ import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../main_navigation_screen.dart';
-//import '../shop/test.dart';
+import '../../bloc/UserInformation/user_information_cubit.dart';
+
 
 class LoginVerificationScreen extends StatefulWidget {
   final fullNumber, verifyCode;
@@ -33,6 +35,8 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   bool resendButtonisEnable = false;
   PhoneAuthController controller = PhoneAuthController();
   bool isLoading = false;
+  late UserInformationCubit profileCubit;
+
   void startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
@@ -54,6 +58,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
 
   @override
   void initState() {
+    profileCubit = UserInformationCubit();
     super.initState();
     startTimer();
   }
@@ -478,65 +483,72 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                 horizontal: 50.0, vertical: 10.0),
                             child: Container(
                               width: double.infinity,
-                              child: TextButton(
-                                child: Padding(
-                                  padding:
+                              child:BlocBuilder<UserInformationCubit,UserInformationState>(
+                                builder:(context,state) {
+                                  return TextButton(
+                                    child: Padding(
+                                      padding:
                                       const EdgeInsets.symmetric(vertical: 5),
-                                  child: Text(
-                                    'Confirm',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                                style: bs_flatFill(context),
-                                onPressed: () async {
-                                  // dina
-                                  User user = User();
-                                  setState(() {
-                                    isLoading=true;
-                                  });
-                                  var mobile = widget.fullNumber?.replaceFirst("+", "");
+                                      child: Text(
+                                        'Confirm',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                    style: bs_flatFill(context),
+                                    onPressed: () async {
+                                      // dina
+                                      User user = User();
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      var mobile = widget.fullNumber
+                                          ?.replaceFirst("+", "");
 
-                                  var token = await user.login(
-                                      mobile: mobile);
-                                  // store token
-                                  if (token != "") {
-                                    const storage = FlutterSecureStorage();
-                                    // for write
-                                    await storage.write(
-                                        key: 'token',
-                                        value: token); // Save token
-                                    // get user Info
-                                    var userInfo = await user.getUser(
-                                        mobile: mobile);
-                                       setState(() {
-                                         isLoading=false;
-                                       });
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) =>
-                                                MainNavigationScreen()),
-                                        (route) =>
+                                      var token = await user.login(
+                                          mobile: mobile);
+
+                                      // store token
+                                      if (token != "") {
+                                        const storage = FlutterSecureStorage();
+                                        // for write
+                                        await storage.write(
+                                            key: 'token',
+                                            value: token); // Save token
+                                        // get user Info
+                                        var userInfo = await user.getUser(
+                                            mobile: mobile);
+                                        profileCubit.addProfile(userInfo!);
+
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    MainNavigationScreen()),
+                                                (route) =>
                                             route.settings.name ==
-                                            '/mainNavigation');
-                                  } else {
-                                    const storage = FlutterSecureStorage();
-                                    var mobile = widget.fullNumber?.replaceFirst("+", "");
-                                    // for write mobile phone
-                                    await storage.write(
-                                        key: 'mobile', value: mobile);
+                                                '/mainNavigation');
+                                      } else {
+                                        const storage = FlutterSecureStorage();
+                                        var mobile = widget.fullNumber
+                                            ?.replaceFirst("+", "");
+                                        // for write mobile phone
+                                        await storage.write(
+                                            key: 'mobile', value: mobile);
 
-                                    Navigator.of(context)
-                                        .pushReplacement(MaterialPageRoute(
-                                      builder: (context) => const Register(),
-                                    ));
-                                    // Navigator.of(context)
-                                    //     .pushReplacement(MaterialPageRoute(
-                                    //   builder: (context) =>   PaymentScreen(),
-                                    // ));
-                                  }
+                                        Navigator.of(context)
+                                            .pushReplacement(MaterialPageRoute(
+                                          builder: (
+                                              context) => const Register(),
+                                        ));
+                                      }
+                                    },
+                                  );
+
                                 },
-                              ),
+                            ),
                             ),
                           ),
                         ],
