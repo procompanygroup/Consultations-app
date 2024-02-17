@@ -332,15 +332,13 @@ class _LoginFormState extends State<LoginForm> {
                       horizontal: 10.0, vertical: 5.0),
                   child: Container(
                     width: double.infinity,
+                    height: 50,
                     child: TextButton(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text(
-                            'LOGIN',
-                            style: TextStyle(fontSize: 18),
-                          ),
+                        child: Text(
+                          'LOGIN',
+                          style: TextStyle(fontSize: 18),
                         ),
-                        style: bs_flatFill(context),
+                        style: bs_flatFill(context,myprimercolor),
                         // onPressed: () {},
 
                         onPressed: isLoading

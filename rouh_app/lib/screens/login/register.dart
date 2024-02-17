@@ -9,6 +9,7 @@ import '../../controllers/globalController.dart';
 import '../../models/country.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
+import '../../mystyle/constantsColors.dart';
 import '../main_navigation_screen.dart';
 
 class Register extends StatefulWidget {
@@ -618,8 +619,9 @@ class _RegisterState extends State<Register> {
                           padding: const EdgeInsets.all(14.0),
                           child: SizedBox(
                             width: double.infinity,
+                            height: 50,
                             child: TextButton(
-                              style: bs_flatFill(context),
+                              style: bs_flatFill(context,myprimercolor),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   String? res = await register();
@@ -642,12 +644,9 @@ class _RegisterState extends State<Register> {
                                   }
                                 }
                               },
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text(
-                                  'Save',
-                                  style: TextStyle(fontSize: 18),
-                                ),
+                              child: Text(
+                                'Save',
+                                style: TextStyle(fontSize: 18),
                               ),
                             ),
                           ),

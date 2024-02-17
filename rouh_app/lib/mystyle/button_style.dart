@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'constantsColors.dart';
 
-ButtonStyle bs_flatFill(BuildContext context,)
+ButtonStyle bs_flatFill(BuildContext context ,Color backgroundColor)
 {
   return ButtonStyle(
       foregroundColor: MaterialStateProperty.all(Colors.white),
-      backgroundColor: MaterialStateProperty.all(myprimercolor),
+      backgroundColor: MaterialStateProperty.all(backgroundColor),
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25.0),
-            side: BorderSide(color: myprimercolor),
+            side: BorderSide(color: backgroundColor),
           )
       )
   );
