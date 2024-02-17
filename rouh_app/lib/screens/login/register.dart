@@ -337,7 +337,7 @@ class _RegisterState extends State<Register> {
                                         width: 30,
                                         height: 20,
                                         child: SvgPicture.asset(
-                                          _selectedCountry.flag,
+                                          _selectedCountry.flag!,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
