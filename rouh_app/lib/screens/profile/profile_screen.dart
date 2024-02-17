@@ -117,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             // Body
             Padding(
-              padding: EdgeInsets.only(top: bodyHeight * 0.25),
+              padding: EdgeInsets.only(top: bodyHeight * 0.35),
               child: Container(
                 width: screenWidth,
                 height: bodyHeight * 0.80,
@@ -635,30 +635,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
 
-
                               ],
                             ),
                           ),
                         ),
                         // Save
-                        Padding(
-                          padding: const EdgeInsets.all(14.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: TextButton(
-                              style: bs_flatFill(context),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-
-                                }
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Text(
-                                  'Save',
-                                  style: TextStyle(fontSize: 18),
+                        Container(
+                          width: screenWidth,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: screenWidth - 20 - 40  - 10 - 100,
+                                  height: 50,
+                                  child: TextButton(
+                                    style: bs_flatFill(context,myprimercolor),
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                      }
+                                    },
+                                    child: Text(
+                                      'Save',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(width: 10,),
+                                Container(
+                                  width: 100,
+                                  height: 50,
+                                  child: TextButton(
+                                    style: bs_flatFill(context,mysecondarycolor),
+                                    onPressed: () async {
+                                    },
+                                    child:  Icon( Icons.close  ,
+                                      color: Colors.grey.shade300,
+                                      size: 35,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -714,15 +731,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     GestureDetector(
                       onTap: (){},
                       child: Container(
-                        width: 50,
-                        height: 50,
+                        width: 40,
+                        height: 40,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(150),
                             border: Border.all(color: Colors.grey.shade300, width: 3),
                             color: Colors.white),
                         child:Icon( Icons.camera_alt  ,
                           color: Colors.grey.shade300,
-                          size: 30,
+                          size: 25,
                         ),
                       ),
                     ),
