@@ -25,8 +25,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final picker = ImagePicker();
   bool uploading = false;
 
+  late Country _selectedCountry = new Country(code: "",name: "", dialCode: "",flag: "");
+  // late Country _selectedCountry;
   List<Country> listCountry = <Country>[];
-  late Country _selectedCountry;
   late String _selectedGender;
 
 
@@ -39,15 +40,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         listCountry = response;
         _selectedCountry = listCountry.first;
-        user.nationality = _selectedCountry.name;
       }),
       // print( listCountry[0].name)
     });
-    user.marital_status = globallistMaritalStatus[0];
-    _selectedGender = globallistGender[0];
-    user.gender =
-    _selectedGender == "Male" ? 1 : 2;
+    setState(() {
+      user.nationality = _selectedCountry.name;
+      user.marital_status = globallistMaritalStatus[0];
+      _selectedGender = globallistGender[0];
+      user.gender =
+      _selectedGender == "Male" ? 1 : 2;
+    });
+
   }
+
 
   @override
   Widget build(BuildContext context) {
