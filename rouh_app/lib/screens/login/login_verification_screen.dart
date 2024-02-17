@@ -35,7 +35,6 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
   bool resendButtonisEnable = false;
   PhoneAuthController controller = PhoneAuthController();
   bool isLoading = false;
-  late UserInformationCubit profileCubit;
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -58,7 +57,6 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
 
   @override
   void initState() {
-    profileCubit = UserInformationCubit();
     super.initState();
     startTimer();
   }
@@ -517,8 +515,10 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         // get user Info
                                         var userInfo = await user.getUser(
                                             mobile: mobile);
-                                        profileCubit.addProfile(userInfo!);
-
+                                        BlocProvider.of<UserInformationCubit>(context)
+                                            .addProfile(userInfo!);
+                                       // profileCubit.addProfile(userInfo!);
+                                       //print( context.read<UserInformationCubit>().state.fetchedPerson?.id);
                                         setState(() {
                                           isLoading = false;
                                         });

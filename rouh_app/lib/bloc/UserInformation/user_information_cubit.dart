@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../controllers/dio_manager_controller.dart';
+//import '../../controllers/dio_manager_controller.dart';
 import '../../models/user_model.dart';
 
 part 'user_information_state.dart';
@@ -9,7 +9,7 @@ part 'user_information_state.dart';
 class UserInformationCubit extends Cubit<UserInformationState> {
   UserInformationCubit() : super(UserInformationInitial());
 
-  DioManager dioManager = DioManager();
+  //DioManager dioManager = DioManager();
 
   void addProfile(User profileData)  {
 

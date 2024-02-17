@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../controllers/globalController.dart';
 import '../../models/expert_model.dart';
 import '../../models/service_model.dart';
@@ -28,8 +30,10 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    var clientId = context.read<UserInformationCubit>().state.fetchedPerson?.id;
+
     fillServiceList();
-    fillExpertList();
+    fillExpertList(clientId as int);
 
   }
 
@@ -48,9 +52,9 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
       });
     });
   }
-  Future<void> fillExpertList() async {
+  Future<void> fillExpertList(int clientId) async {
 
-    getGlobalExpertWithFavoriteList()
+    getGlobalExpertWithFavoriteList(clientId)
         .then((response) {
       setState(() {
         print(response);
