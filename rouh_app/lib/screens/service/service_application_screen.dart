@@ -254,7 +254,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                             ),
                           )
                               :Icon(
-                            Icons.account_circle,
+                            Icons.date_range,
                             size: 30,
                             color: Colors.grey.shade300,
                           ),
