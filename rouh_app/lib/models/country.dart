@@ -5,7 +5,9 @@ class Country {
   String? code;
   String? name;
   String? dialCode;
-  String flag;
+  String? flag;
+
+  Country({this.code, this.name, this.dialCode,  this.flag});
 
   Country.fromJson(Map json)
       : code = json['code'],

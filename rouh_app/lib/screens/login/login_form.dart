@@ -20,7 +20,8 @@ class _LoginFormState extends State<LoginForm> {
   bool isLoading = false;
 
   List<Country> listCountry = <Country>[];
-  late Country _selectedCountry;
+  late Country _selectedCountry = new Country(code: "",name: "", dialCode: "",flag: "");
+  // late Country _selectedCountry;
   late String _phoneNumber;
   late String fullNumber;
   PhoneAuthController controller = PhoneAuthController();
@@ -31,15 +32,15 @@ class _LoginFormState extends State<LoginForm> {
     // TODO: implement initState
     super.initState();
     //
-    Country.readJson().then((response) => {
-          // print(response),
 
-          setState(() {
-            listCountry = response;
-            _selectedCountry = listCountry.first;
-          }),
-          // print( listCountry[0].name)
-        });
+    Country.readJson().then((response) => {
+      // print(response),
+      setState(() {
+        listCountry = response;
+        _selectedCountry = listCountry.first;
+      }),
+      // print( listCountry[0].name)
+    });
   }
 
   @override
@@ -178,7 +179,7 @@ class _LoginFormState extends State<LoginForm> {
                               width: 30,
                               height: 20,
                               child: SvgPicture.asset(
-                                _selectedCountry.flag,
+                                _selectedCountry.flag!,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -331,15 +332,13 @@ class _LoginFormState extends State<LoginForm> {
                       horizontal: 10.0, vertical: 5.0),
                   child: Container(
                     width: double.infinity,
+                    height: 50,
                     child: TextButton(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Text(
-                            'LOGIN',
-                            style: TextStyle(fontSize: 18),
-                          ),
+                        child: Text(
+                          'LOGIN',
+                          style: TextStyle(fontSize: 18),
                         ),
-                        style: bs_flatFill(context),
+                        style: bs_flatFill(context,myprimercolor),
                         // onPressed: () {},
 
                         onPressed: isLoading

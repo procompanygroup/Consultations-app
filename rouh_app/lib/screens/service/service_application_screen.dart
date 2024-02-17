@@ -588,16 +588,13 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           horizontal: 50.0, vertical: 10.0),
                       child: Container(
                         width: double.infinity,
+                        height: 50,
                         child: TextButton(
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(vertical: 5),
-                            child: Text(
-                              'Confirm',
-                              style: TextStyle(fontSize: 18),
-                            ),
+                          child: Text(
+                            'Confirm',
+                            style: TextStyle(fontSize: 18),
                           ),
-                          style: bs_flatFill(context),
+                          style: bs_flatFill(context,myprimercolor),
                           onPressed: () async {
                             // serviceInputs.forEach((element) {
                             //   print(element.input?.icon != null? true:false);
