@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../controllers/dio_manager_controller.dart';
+import '../../controllers/globalController.dart';
 import '../../models/country.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
@@ -23,11 +24,10 @@ class _RegisterState extends State<Register> {
   final picker = ImagePicker();
   bool uploading = false;
   List<Country> listCountry = <Country>[];
-  List<String> listMaritalStatus = ["Single", "Married", "Divorced", "Widowed"];
-  List<String> listGender = ["Male", "Female"];
+
   late Country _selectedCountry;
-  late String _selectedGender = listGender[0];
-  late String _selectedMaterialState = listMaritalStatus[0];
+  late String _selectedGender;
+  late String _selectedMaterialState;
   late String _selectedDate = "Choose your birthday";
   bool isChecked = true;
   User user = User();
@@ -39,13 +39,18 @@ class _RegisterState extends State<Register> {
     // TODO: implement initState
     super.initState();
     //
+
     Country.readJson().then((response) => {
           setState(() {
             listCountry = response;
             _selectedCountry = listCountry.first;
+            user.nationality = _selectedCountry.name;
           }),
           // print( listCountry[0].name)
         });
+
+    _selectedGender = globallistGender[0];
+    _selectedMaterialState = globallistMaritalStatus[0];
   }
 
   @override
@@ -356,7 +361,7 @@ class _RegisterState extends State<Register> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0, vertical: 5.0),
                                   child: Container(
-                                    height: size.height * 0.06,
+                                    height: 45,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                         color: Colors.grey.shade50,
@@ -462,7 +467,7 @@ class _RegisterState extends State<Register> {
                                           const TextStyle(color: Colors.grey),
                                       hintText: "Gender",
                                       fillColor: Colors.grey.shade50),
-                                  items: listGender.map<DropdownMenuItem<String>>(
+                                  items: globallistGender.map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
@@ -543,7 +548,7 @@ class _RegisterState extends State<Register> {
                                           const TextStyle(color: Colors.grey),
                                       hintText: "marital status",
                                       fillColor: Colors.grey.shade50),
-                                  items: listMaritalStatus
+                                  items: globallistMaritalStatus
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
                                     return DropdownMenuItem<String>(
