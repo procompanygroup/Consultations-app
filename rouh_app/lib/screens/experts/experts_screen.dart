@@ -25,12 +25,13 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
   List<Service> serviceList = <Service>[];
   int _selectedExpert = 0;
   List<Expert> expertList = <Expert>[];
+int clientId=0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    var clientId = context.read<UserInformationCubit>().state.fetchedPerson?.id;
+     clientId = context.read<UserInformationCubit>().state.fetchedPerson!.id!;
 
     fillServiceList();
     fillExpertList(clientId as int);
@@ -231,7 +232,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                             isLoading = true;
                             bool newfavoriteState = expert.isFavorite! ? false : true;
                             // Dina
-                            await globalExpert.SaveFavorite(clientId: 1,
+                            await globalExpert.SaveFavorite(clientId: clientId,
                                 expertId: expert.id!,
                                 isFavorite: newfavoriteState,);
                             expert.isFavorite = newfavoriteState;
