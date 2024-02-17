@@ -4,6 +4,11 @@ import '../models/service_input_model.dart';
 import '../models/service_model.dart';
 import '../models/service_value_model.dart';
 
+//#region Constant
+List<String> globallistMaritalStatus = ["Single", "Married", "Divorced", "Widowed"];
+List<String> globallistGender = ["Male", "Female"];
+//#endregion
+
 
 //#region Service
 Service globalService = Service();
