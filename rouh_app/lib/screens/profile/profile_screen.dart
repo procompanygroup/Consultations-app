@@ -30,34 +30,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Country _selectedCountry = new Country(code: "",name: "", dialCode: "",flag: "");
   // late Country _selectedCountry;
   List<Country> listCountry = <Country>[];
-  late String _selectedGender;
+  late String _selectedGender = "Male";
 
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    //
+
     Country.readJson().then((response) => {
       setState(() {
         listCountry = response;
-        _selectedCountry = listCountry.first;
+        user = context.read<UserInformationCubit>().state.fetchedPerson!;
+        _selectedGender = user.gender == 1?"Male":"Female";
+        _selectedCountry = listCountry.firstWhere((element) => element.name == user.nationality);
+
+        print(user.user_name);
+        print(user.email);
       }),
-      // print( listCountry[0].name)
     });
 
-    // user.nationality = _selectedCountry.name;
-    // user.marital_status = globallistMaritalStatus[0];
-    // _selectedGender = globallistGender[0];
-    // user.gender = _selectedGender == "Male" ? 1 : 2;
 
-    setState(() {
-          user = context.read<UserInformationCubit>().state.fetchedPerson!;
-          _selectedGender = user.gender == 1?"Male":"Female";
-    });
+    super.initState();
+    //
+
+
+
 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +158,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           }
                                           return null;
                                         },
-                                        initialValue: user.user_name,
+                                        controller: TextEditingController(text: user.user_name),
+                                        // initialValue: user.user_name,
                                         onChanged: (value) {
                                           user.user_name = value;
                                         },
@@ -236,7 +236,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           }
                                           return null;
                                         },
-                                        initialValue: user.email,
+                                        controller: TextEditingController(text: user.email),
+                                        // initialValue: user.email,
                                         onChanged: (value) {
                                           user.email = value;
                                         },
@@ -759,4 +760,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+
 }
