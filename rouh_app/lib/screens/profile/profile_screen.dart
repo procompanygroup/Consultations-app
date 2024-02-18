@@ -38,7 +38,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
     //
-    user = context.read<UserInformationCubit>().state.fetchedPerson!;
     Country.readJson().then((response) => {
       setState(() {
         listCountry = response;
@@ -46,12 +45,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }),
       // print( listCountry[0].name)
     });
+
+    // user.nationality = _selectedCountry.name;
+    // user.marital_status = globallistMaritalStatus[0];
+    // _selectedGender = globallistGender[0];
+    // user.gender = _selectedGender == "Male" ? 1 : 2;
+
     setState(() {
-      user.nationality = _selectedCountry.name;
-      user.marital_status = globallistMaritalStatus[0];
-      _selectedGender = globallistGender[0];
-      user.gender =
-      _selectedGender == "Male" ? 1 : 2;
+          user = context.read<UserInformationCubit>().state.fetchedPerson!;
+          _selectedGender = user.gender == 1?"Male":"Female";
     });
 
   }
@@ -157,6 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           }
                                           return null;
                                         },
+                                        initialValue: user.user_name,
                                         onChanged: (value) {
                                           user.user_name = value;
                                         },
@@ -233,6 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           }
                                           return null;
                                         },
+                                        initialValue: user.email,
                                         onChanged: (value) {
                                           user.email = value;
                                         },
