@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../controllers/globalController.dart';
 import '../../models/country.dart';
 import '../../models/user_model.dart';
@@ -36,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
     //
+    user = context.read<UserInformationCubit>().state.fetchedPerson!;
     Country.readJson().then((response) => {
       setState(() {
         listCountry = response;
