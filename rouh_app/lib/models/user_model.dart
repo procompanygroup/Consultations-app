@@ -33,11 +33,14 @@ class User {
   // }
 
   factory User.fromJson(Map<String, dynamic> parsedJson) {
+    var tmpBirthDate = null;
+    if(parsedJson['birthdate'] != null)
+      tmpBirthDate = DateTime.tryParse(parsedJson['birthdate']);
     return User(
         id: parsedJson['id'],
         user_name: parsedJson['user_name'],
         mobile: parsedJson['mobile'],
-        birthdate: DateTime.tryParse(parsedJson['birthdate']),
+        birthdate:tmpBirthDate ,
         email: parsedJson['email'],
         gender: parsedJson['gender'],
         image: parsedJson['image'],
