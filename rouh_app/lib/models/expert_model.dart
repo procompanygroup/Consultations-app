@@ -52,7 +52,7 @@ class Expert {
     var tmpRates;
     var tmpAnswerSpeed;
     var tmpFav;
-
+print("dina +$parsedJson['is_favorite']");
     if(parsedJson["experts_services"] != null)
     {
       tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
@@ -81,8 +81,11 @@ class Expert {
     if(parsedJson['answer_speed'] != null) {
       tmpAnswerSpeed = double.tryParse( parsedJson['answer_speed']);
     }
-    if(parsedJson['is_favorite'] != null) {
-      tmpFav = bool.tryParse( parsedJson['is_favorite'].toString());
+    if(parsedJson['is_favorite'] != null)
+      tmpFav = false;
+     else if(parsedJson['is_favorite'] != null) {
+      tmpFav = parsedJson['is_favorite'] == 0 ? false : true;
+      //tmpFav = bool.tryParse( parsedJson['is_favorite'].toString());
     }
 
     return Expert(
