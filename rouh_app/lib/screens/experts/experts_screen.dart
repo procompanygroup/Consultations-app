@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rouh_app/screens/experts/expert_info_screen.dart';
 
 import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../controllers/globalController.dart';
@@ -17,7 +18,11 @@ class ExpertsScreen extends StatefulWidget {
 }
 
 class _ExpertsScreenState extends State<ExpertsScreen> {
-  bool isLoading = true;
+  // bool isLoading = false;
+  bool isLoadingFavorite = false;
+  bool isLoadingExperts = false;
+  bool isLoadingService = false;
+  bool isLoadingExpertInfo = false;
 
   bool isFavoriteSearch = false;
 
@@ -25,46 +30,44 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
   List<Service> serviceList = <Service>[];
   int _selectedExpert = 0;
   List<Expert> expertList = <Expert>[];
-int clientId=0;
+  int clientId = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     clientId = context.read<UserInformationCubit>().state.fetchedPerson!.id!;
+
+    clientId = context.read<UserInformationCubit>().state.fetchedPerson!.id!;
 
     fillServiceList();
+    print("clientId: " + clientId.toString());
     fillExpertList(clientId as int);
-
   }
 
   Future<void> fillServiceList() async {
-
-    getGlobalServiceWithoutCallWithAllList()
-        .then((response) {
+    getGlobalServiceWithoutCallWithAllList().then((response) {
       setState(() {
+        isLoadingService = true;
         print(response);
-        serviceList =response;
+        serviceList = response;
 
-        if(serviceList.isNotEmpty)
-          _selectedService = serviceList[0].id!;
+        if (serviceList.isNotEmpty) _selectedService = serviceList[0].id!;
 
-        isLoading =false;
+        isLoadingService = false;
       });
     });
   }
+
   Future<void> fillExpertList(int clientId) async {
-
-    getGlobalExpertWithFavoriteList(clientId)
-        .then((response) {
+    getGlobalExpertWithFavoriteList(clientId).then((response) {
       setState(() {
+        isLoadingExperts = true;
         print(response);
-        expertList =response;
+        expertList = response;
 
-        if(expertList.isNotEmpty)
-          _selectedExpert = expertList[0].id!;
+        if (expertList.isNotEmpty) _selectedExpert = expertList[0].id!;
 
-        isLoading =false;
+        isLoadingExperts = false;
       });
     });
   }
@@ -73,8 +76,10 @@ int clientId=0;
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
-            -MediaQuery.of(context).padding.top // safe area
-            -AppBar().preferredSize.height //AppBar
+            -
+            MediaQuery.of(context).padding.top // safe area
+            -
+            AppBar().preferredSize.height //AppBar
         );
 
     //GetByServiceId
@@ -121,19 +126,45 @@ int clientId=0;
         children: serviceWidgetList,
       );
     }
-    _buildExperts(List<Expert> experts) {
 
+    _buildExperts(List<Expert> experts) {
       var listWidget = <Widget>[];
-       List.generate(experts.length, (index) {
+      List.generate(experts.length, (index) {
         Expert expert = experts[index];
-        if( _selectedService == 0 ||
-        expert.services!.where((element) => element.id == _selectedService).length >0)
-          listWidget.add( GestureDetector(
-              onTap: () {
+        if (_selectedService == 0 ||
+            expert.services!
+                    .where((element) => element.id == _selectedService)
+                    .length >
+                0)
+          listWidget.add(GestureDetector(
+              onTap: () async {
+
                 setState(() {
-                  _selectedExpert = expert.id!;
-                  print(_selectedExpert);
+                  isLoadingExpertInfo = true;
                 });
+                var expertInfo =  await globalExpert.GetExpertWithComments(expertId: expert.id!);
+                print("expertInfo != null:" + (expertInfo != null).toString());
+                setState(() {
+                  isLoadingExpertInfo = false;
+                });
+
+                if(expertInfo != null)
+                {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ExpertInfo(expert: expertInfo),
+                    ),
+                  );
+                }
+
+
+
+
+
+
+
+
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -164,6 +195,14 @@ int clientId=0;
                               // height: (screenWidth-20 ) /2,
                               // width: (screenWidth-20 ) /2,
                               fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return Image(
+                                  image: AssetImage(
+                                      "assets/images/default_image.png"),
+                                  fit: BoxFit.cover,
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -196,21 +235,26 @@ int clientId=0;
                     ),
                     // Response speed
                     ClipRRect(
-                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(35),bottomLeft: Radius.circular(35)),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(35),
+                            bottomLeft: Radius.circular(35)),
                         child: Container(
                           height: (screenWidth - 65) / 2.5,
                           width: (screenWidth - 65) / 2,
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child:  Container(
+                            child: Container(
                               color: Colors.black.withOpacity(0.35),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
-                                      "Response "+expert.answer_speed!.toString(),
+                                      "Response " +
+                                          expert.answer_speed!.toString(),
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.white,
@@ -228,16 +272,27 @@ int clientId=0;
                       left: 0,
                       child: GestureDetector(
                         onTap: () {
-                          setState(() async {
-                            isLoading = true;
-                            bool newfavoriteState = expert.isFavorite! ? false : true;
-                            // Dina
-                            await globalExpert.SaveFavorite(clientId: clientId,
-                                expertId: expert.id!,
-                                isFavorite: newfavoriteState,);
-                            expert.isFavorite = newfavoriteState;
-                            isLoading = false;
+                          if(!isLoadingFavorite)
+                            {
+
+                          setState(() {
+                            isLoadingFavorite = true;
                           });
+                          bool newfavoriteState =
+                              expert.isFavorite! ? false : true;
+
+                          globalExpert.SaveFavorite(
+                            clientId: clientId,
+                            expertId: expert.id!,
+                            isFavorite: newfavoriteState,
+                          ).then((value) => {
+                                setState(() {
+                                  expert.isFavorite = newfavoriteState;
+                                  isLoadingFavorite = false;
+                                })
+                              });
+                            }
+
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.only(
@@ -261,8 +316,7 @@ int clientId=0;
                     ),
                   ],
                 ),
-              ))
-          );
+              )));
       });
       return StaggeredGrid.count(
           crossAxisCount: 2,
@@ -323,7 +377,9 @@ int clientId=0;
                                 ),
                                 child: ElevatedButton(
                                   child: Icon(
-                                    isFavoriteSearch? Icons.favorite :Icons.favorite_border,
+                                    isFavoriteSearch
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
                                     color: mysecondarycolor,
                                     size: 35,
                                   ),
@@ -336,7 +392,7 @@ int clientId=0;
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      isFavoriteSearch= !isFavoriteSearch;
+                                      isFavoriteSearch = !isFavoriteSearch;
                                     });
                                   },
                                 ),
@@ -351,8 +407,8 @@ int clientId=0;
               ),
               // serviceList
               Padding(
-                padding:
-                    const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 0),
+                padding: const EdgeInsets.only(
+                    left: 10, top: 0, right: 10, bottom: 0),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: _buildServices(serviceList),
@@ -368,17 +424,18 @@ int clientId=0;
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
-                    child: _buildExperts(
-                        isFavoriteSearch?expertList!.where((element) => element.isFavorite!).toList()
-                            : expertList!
-                    )),
+                    child: _buildExperts(isFavoriteSearch
+                        ? expertList!
+                            .where((element) => element.isFavorite!)
+                            .toList()
+                        : expertList!)),
               )),
               SizedBox(
                 height: 10,
               ),
             ],
           ),
-          if(isLoading)
+          if (isLoadingService || isLoadingExperts || isLoadingFavorite || isLoadingExpertInfo)
             Center(child: CircularProgressIndicator()),
         ],
       ),
