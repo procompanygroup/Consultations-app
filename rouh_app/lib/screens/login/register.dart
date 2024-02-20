@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../controllers/dio_manager_controller.dart';
 import '../../controllers/globalController.dart';
 import '../../models/country.dart';
@@ -620,34 +622,45 @@ class _RegisterState extends State<Register> {
                           child: SizedBox(
                             width: double.infinity,
                             height: 50,
-                            child: TextButton(
+                            child:BlocBuilder<UserInformationCubit,UserInformationState>(
+                              builder:(context,state) {
+                            return TextButton(
                               style: bs_flatFill(context,myprimercolor),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  String? res = await register();
-                        
-                                  if (int.parse(res ?? "0") > 0) {
-                                    mobile = mobile?.replaceFirst("+", "");
-                                    var token =
-                                        await user.login(mobile: mobile ?? "");
-                                    // print(token);
-                                    if (token != "") {
-                                      const storage = FlutterSecureStorage();
-                                      // for write
-                                      await storage.write(
-                                          key: 'token', value: token);
-                                      Navigator.of(context)
-                                          .pushReplacement(MaterialPageRoute(
-                                          builder: (context) => const MainNavigationScreen(),
-                                      ));
-                                    }
-                                  }
-                                }
-                              },
-                              child: Text(
-                                'Save',
-                                style: TextStyle(fontSize: 18),
-                              ),
+                                onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                String? res = await register();
+
+                              if (int.parse(res ?? "0") > 0) {
+                                mobile = mobile?.replaceFirst("+", "");
+                                var token =
+                                await user.login(mobile: mobile ?? "");
+                                // print(token);
+                                if (token != "") {
+                                  const storage = FlutterSecureStorage();
+                                  // for write
+                                  await storage.write(
+                                    key: 'token', value: token);
+
+                                  // get user Info
+                                  var userInfo = await user.getUser(
+                                      mobile: mobile as String);
+                                  //save user info in block
+                                  BlocProvider.of<UserInformationCubit>(context)
+                                      .addProfile(userInfo!);
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                builder: (context) => const MainNavigationScreen(),
+                               ));
+                             }
+                            }
+                            }
+                            },
+                            child: Text(
+                            'Save',
+                            style: TextStyle(fontSize: 18),
+                            ),
+                            );
+                            },
                             ),
                           ),
                         ),
