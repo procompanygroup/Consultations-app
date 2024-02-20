@@ -119,4 +119,17 @@ class User {
     }
     return "";
   }
+
+  Future<String?> Update({  Object? formData}) async {
+
+      var response = await dioManager.dio.post(
+        'client/updateprofile',
+        data: formData,
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return throw Exception();
+      }
+  }
 }
