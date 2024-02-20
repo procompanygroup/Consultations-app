@@ -188,7 +188,7 @@ print("dina +$parsedJson['is_favorite']");
     }
   }
 
-  Future<Expert> GetExpertComments({
+  Future<Expert> GetExpertWithComments({
     required int expertId,
   }) async {
     var data = json.encode({
