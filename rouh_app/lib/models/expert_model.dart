@@ -50,6 +50,7 @@ class Expert {
     var tmpCashBalance;
     var tmpCashBalanceTodate;
     var tmpRates;
+    var tmpAnswerSpeed;
     var tmpFav;
 
     if(parsedJson["experts_services"] != null)
@@ -77,6 +78,9 @@ class Expert {
     if(parsedJson['rates'] != null) {
       tmpRates = double.tryParse( parsedJson['rates']);
     }
+    if(parsedJson['answer_speed'] != null) {
+      tmpAnswerSpeed = double.tryParse( parsedJson['answer_speed']);
+    }
     if(parsedJson['is_favorite'] != null) {
       tmpFav = bool.tryParse( parsedJson['is_favorite'].toString());
     }
@@ -95,7 +99,7 @@ class Expert {
       marital_status: parsedJson['marital_status'],
       nationality: parsedJson['nationality'],
       call_cost: parsedJson['call_cost'],
-      answer_speed: parsedJson['answer_speed'],
+      answer_speed: tmpAnswerSpeed,
       cash_balance:tmpCashBalance,
       cash_balance_todate: tmpCashBalanceTodate,
       desc:  parsedJson['desc'],
