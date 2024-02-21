@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../bloc/UserInformation/user_information_cubit.dart';
@@ -44,8 +45,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _selectedGender = user.gender == 1?"Male":"Female";
         _selectedCountry = listCountry.firstWhere((element) => element.name == user.nationality);
 
+        imagePath = user.image as String;
+        image = File(imagePath);
+
         print(user.user_name);
-        print(user.email);
+        print(imagePath);
+        print(user.image);
       }),
     });
 
@@ -657,16 +662,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Container(
                                   width: screenWidth - 20 - 40  - 10 - 100,
                                   height: 50,
-                                  child: TextButton(
-                                    style: bs_flatFill(context,myprimercolor),
-                                    onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
-                                      }
+                                  child: BlocBuilder<UserInformationCubit,UserInformationState>(
+                                    builder:(context,state) {
+                                      return TextButton(
+                                        style: bs_flatFill(
+                                            context, myprimercolor),
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            try {
+                                              await updateProfile();
+                                              user = await user.getUser(mobile: user.mobile as String) as User;
+                                              BlocProvider.of<UserInformationCubit>(context)
+                                                  .addProfile(user!);
+                                            }
+                                            catch (e) {}
+                                          }
+                                        },
+                                        child: Text(
+                                          'Save',
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                      );
                                     },
-                                    child: Text(
-                                      'Save',
-                                      style: TextStyle(fontSize: 18),
-                                    ),
                                   ),
                                 ),
                                 SizedBox(width: 10,),
@@ -718,13 +736,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: Colors.blueGrey),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(150),
-                      child: Image(
-                        image: NetworkImage("https://picsum.photos/200/300?random=4"),
+                      child:
+                      imagePath == ""
+                          ? Image(
+                        image:  NetworkImage(""),
                         fit: BoxFit.cover,
                         errorBuilder:
                             (BuildContext context, Object exception, StackTrace? stackTrace) {
                           return Image(
                             image: AssetImage("assets/images/default_image.png"),
+                            fit: BoxFit.fitHeight,
+                          );
+                        },
+                      )
+                          : Image(
+                        image: NetworkImage(imagePath),
+                        fit: BoxFit.cover,
+                        errorBuilder:
+                            (BuildContext context, Object exception, StackTrace? stackTrace) {
+                          return Image(
+                              image: FileImage(image),
+                            //image: AssetImage("assets/images/default_image.png"),
                             fit: BoxFit.fitHeight,
                           );
                         },
@@ -737,7 +769,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     bottom: 6,
                     child:
                     GestureDetector(
-                      onTap: (){},
+                      onTap: (){
+                        getImagefromGallery();
+                      },
                       child: Container(
                         width: 40,
                         height: 40,
@@ -761,5 +795,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  getImagefromGallery() async {
+    //final status = await ImagePicker();
+    final pickedfile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedfile != null) {
+      setState(() {
+        image = File(pickedfile.path);
+        imagePath = pickedfile.path;
+        print(imagePath);
+      });
+      setState(() {
+        uploading = true;
+      });
+    }
+  }
 
+//update profile function
+  Future<String?> updateProfile() async {
+
+    FormData formData = FormData.fromMap({
+      "id" : user.id,
+      "user_name": user.user_name,
+      "email": user.email,
+      "gender": user.gender,
+      "nationality": user.nationality,
+      "birthdate": user.birthdate,
+      "marital_status": user.marital_status,
+      'image': await MultipartFile.fromFile(
+        imagePath,
+      ),
+    });
+
+    String? res = await user.Update(formData:formData );
+
+    return res;
+  }
 }
