@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/models/service_input_model.dart';
 
+import '../../bloc/service_inputs/service_input_cubit.dart';
 import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../models/service_value_model.dart';
@@ -589,23 +591,29 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                       child: Container(
                         width: double.infinity,
                         height: 50,
-                        child: TextButton(
-                          child: Text(
-                            'Confirm',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          style: bs_flatFill(context,myprimercolor),
-                          onPressed: () async {
-                            // serviceInputs.forEach((element) {
-                            //   print(element.input?.icon != null? true:false);
-                            // });
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SelectExpert(),
-                              ),
-                            );
-                          },
+                        child:BlocBuilder<ServiceInputCubit,ServiceInputState>(
+                        builder:(context,state) {
+                          return TextButton(
+                            child: Text(
+                              'Confirm',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            style: bs_flatFill(context, myprimercolor),
+                            onPressed: ()  {
+                              BlocProvider.of<ServiceInputCubit>(context)
+                                  .loadServiceValues(serviceInputs,serviceValues);
+                              // serviceInputs.forEach((element) {
+                              //   print(element.input?.icon != null? true:false);
+                              // });
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SelectExpert(),
+                                ),
+                              );
+                            },
+                          );
+                        },
                         ),
                       ),
                     ),
@@ -688,6 +696,21 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
       ),
     );
   }
+
+  //keep service values in bloc function
+  // Future<String?> keepServiceValues() async {
+  //
+  //   serviceInputs.forEach((element) {
+  //       element.id;
+  //       element.service_id;
+  //     });
+  //   serviceValues.forEach((serviceVal) {
+  //     serviceVal.id;
+  //     serviceVal.value;
+  //     serviceVal.inputservice_id;
+  //     serviceVal.selectedservice_id;
+  //   });
+  // }
 }
 
 
