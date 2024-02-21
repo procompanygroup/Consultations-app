@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
 import 'bloc/UserInformation/user_information_cubit.dart';
 import 'mystyle/constantsColors.dart';
 import 'screens/experts/experts_screen.dart';
@@ -24,9 +25,9 @@ void main() async{
       BlocProvider<UserInformationCubit>(
         create: (BuildContext context) => UserInformationCubit(),
       ),
-      // BlocProvider<ThemeBloc>(
-      //   create: (BuildContext context) => ThemeBloc(),
-      // ),
+      BlocProvider<ServiceInputCubit>(
+        create: (BuildContext context) => ServiceInputCubit(),
+      ),
     ],
     child: MyApp(),
   ), );
