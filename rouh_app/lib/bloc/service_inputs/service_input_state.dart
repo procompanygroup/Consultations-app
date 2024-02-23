@@ -11,10 +11,10 @@ class ServiceInputInitial extends ServiceInputState {}
 
 class ServiceInputLoding extends ServiceInputState {
   @override
-  late final  List<ServiceInput> serviceInputs;
-  late final   List<ServiceValue> serviceValues;
+  late final  List<ServiceInput>? serviceInputs;
+  late final   List<ServiceValue>? serviceValues;
   ServiceInputLoding(this.serviceInputs,this.serviceValues);
   get inputs => serviceInputs;
   get values => serviceValues;
 }
-class UserInformationFailure extends ServiceInputState {}
+class ServiceInputFailure extends ServiceInputState {}

@@ -697,20 +697,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     );
   }
 
-  //keep service values in bloc function
-  // Future<String?> keepServiceValues() async {
-  //
-  //   serviceInputs.forEach((element) {
-  //       element.id;
-  //       element.service_id;
-  //     });
-  //   serviceValues.forEach((serviceVal) {
-  //     serviceVal.id;
-  //     serviceVal.value;
-  //     serviceVal.inputservice_id;
-  //     serviceVal.selectedservice_id;
-  //   });
-  // }
+
 }
 
 
