@@ -9,7 +9,7 @@ import '../../models/service_model.dart';
 import '../../models/service_value_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/image_picker.dart';
+import '../../widgets/custom_image_picker.dart';
 import '../../widgets/record_and_play_screen.dart';
 import 'select_expert_screen.dart';
 
@@ -560,19 +560,19 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: ImagePicker()),
+                                          child: CustomImagePicker()),
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: ImagePicker()),
+                                          child: CustomImagePicker()),
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: ImagePicker()),
+                                          child: CustomImagePicker()),
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: ImagePicker()),
+                                          child: CustomImagePicker()),
                                     ],
                                   ),
                                 ),
