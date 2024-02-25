@@ -49,10 +49,11 @@ class Input {
   String? tooltipe;
   String? icon;
   int? ispersonal;
+  int? imageCount;
   List<InputValues>? inputValues;
 
   //Constructor
-  Input({ this.id, this.name, this.type, this.tooltipe, this.icon,this.ispersonal,this.inputValues }) {
+  Input({ this.id, this.name, this.type, this.tooltipe, this.icon,this.ispersonal,this.imageCount,this.inputValues }) {
 
   }
 
@@ -63,6 +64,7 @@ class Input {
         tooltipe: parsedJson['tooltipe'] ,
         icon: parsedJson['icon'] ,
         ispersonal: parsedJson['ispersonal'],
+          imageCount: parsedJson['image_count'],
         inputValues : convertListToModel(InputValues.fromJson, parsedJson["inputvalues"],)
       );
 
