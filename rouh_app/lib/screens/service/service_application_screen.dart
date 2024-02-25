@@ -26,6 +26,8 @@ class ServiceApplicationScreen extends StatefulWidget {
 class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   // bool isLoading = true;
   bool hasRecordFile = false;
+  int RecordInputServiceId = 0;
+
   bool hasImageFile = false;
   Service service = Service();
   List<ServiceInput> serviceInputs = <ServiceInput>[];
@@ -79,6 +81,8 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
       if(serviceInput.input?.type == 'record') {
         setState(() {
           hasRecordFile = true;
+          RecordInputServiceId = serviceValue.inputservice_id!;
+
         });
       } else if(serviceInput.input?.type == 'image') {
         setState(() {
@@ -537,7 +541,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                  child: RecordAndPlayScreen(),
+                                  child: RecordAndPlayScreen(RecordInputServiceId:RecordInputServiceId),
                                 ),
                               ],
                             ):SizedBox(),
