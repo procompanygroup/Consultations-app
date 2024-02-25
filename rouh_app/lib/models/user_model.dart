@@ -132,4 +132,22 @@ class User {
         return throw Exception();
       }
   }
+
+  Future<String?> DeleteAccount({  required int clientId}) async {
+
+    var data = json.encode({
+      "id": clientId
+    });
+      var response = await dioManager.dio.post(
+        'client/deleteaccount',
+        data: data,
+      );
+      print(response.statusCode);
+      print(response.data);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return throw Exception();
+      }
+  }
 }
