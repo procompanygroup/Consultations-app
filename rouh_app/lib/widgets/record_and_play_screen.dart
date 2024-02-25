@@ -59,6 +59,8 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
 
     print('Record audio: $audioFile');
     await setAudio(audioFile);
+    await audioPlayer.resume();
+
   }
 
   String formatTime(Duration duration) {
@@ -140,7 +142,6 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
     //audioPlayer.setSource(audioFile.path, isLocal: true);
     await audioPlayer.setPlayerMode(audioplayers.PlayerMode.mediaPlayer);
     audioPlayer.setSourceUrl(audioFile.path);
-    await audioPlayer.resume();
     print('audioPlayer setUrl');
 
     // }
