@@ -11,7 +11,7 @@ class UserInformationLoading extends UserInformationState {}
 
 class UserInformationSuccess extends UserInformationState {
   @override
-  late final User fetchedPerson;
+  late final User? fetchedPerson;
   UserInformationSuccess(this.fetchedPerson);
   get person => fetchedPerson;
 }

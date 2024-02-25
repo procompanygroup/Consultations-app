@@ -11,7 +11,7 @@ class UserInformationCubit extends Cubit<UserInformationState> {
 
   //DioManager dioManager = DioManager();
 
-  void addProfile(User profileData)  {
+  void addProfile(User? profileData)  {
 
     emit(UserInformationSuccess(profileData));
 
