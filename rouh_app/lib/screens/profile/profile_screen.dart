@@ -12,6 +12,7 @@ import '../../models/country.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../login/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -691,14 +692,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Container(
                                   width: 100,
                                   height: 50,
-                                  child: TextButton(
-                                    style: bs_flatFill(context,mysecondarycolor),
-                                    onPressed: () async {
+                                  child:BlocBuilder<UserInformationCubit,UserInformationState>(
+                                    builder:(context,state) {
+                                      return TextButton(
+                                        style: bs_flatFill(context, mysecondarycolor),
+                                        onPressed: () async {
+                                          try {
+                                            await user.DeleteAccount(clientId: user.id as int);
+                                            BlocProvider.of<UserInformationCubit>(context)
+                                                .addProfile(null);
+                                            Navigator.of(context)
+                                                .pushReplacement(MaterialPageRoute(
+                                              builder: (context) => const LoginScreen(),
+                                            ));
+                                          }
+                                          catch (e) {}
+                                        },
+                                        child: Icon(Icons.close,
+                                          color: Colors.grey.shade300,
+                                          size: 35,
+                                        ),
+                                      );
                                     },
-                                    child:  Icon( Icons.close  ,
-                                      color: Colors.grey.shade300,
-                                      size: 35,
-                                    ),
                                   ),
                                 ),
                               ],
