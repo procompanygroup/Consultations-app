@@ -167,9 +167,7 @@ class _PlayRecordScreenState extends State<PlayRecordScreen> {
     //   title: Text("Record And Play Screen"),
     // ),
     // body:
-    return Column(
-      children: [
-        ClipRRect(
+    return ClipRRect(
           borderRadius:
           //BorderRadius.circular(15),
           BorderRadius.all(Radius.circular(75.0)),
@@ -181,27 +179,13 @@ class _PlayRecordScreenState extends State<PlayRecordScreen> {
                 const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                 child: Stack(
                   children: [
-                    PositionedDirectional(
-                      top: 0,
-                      bottom: 0,
-                      start: 0,
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.only(start: 10),
-                          // child: Text(formatTime(duration - position),
-                          child:    Text(formatTime(position),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                      ),
-                    ),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child:  Padding(
-                      padding:  EdgeInsetsDirectional.only(start: 20, end: 30),
-                      child: Expanded(
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child:  Padding(
+                        padding:  EdgeInsetsDirectional.only(start: 20, end: 30),
+                        child: Row(
+                          children: [
+                            Expanded(
                               child: Align(
                                 alignment: Alignment.center,
                                 child: SliderTheme(
@@ -234,63 +218,78 @@ class _PlayRecordScreenState extends State<PlayRecordScreen> {
                                 ),
                               ),
                             ),
-                    ),
-                ),
-                PositionedDirectional(
-                  top: 0,
-                  bottom: 0,
-                  end: 0,
-                  child:
-                    !isPlayerLoad?
-                    Container(
-                      child:Center(child: CircularProgressIndicator()),
-                    ):
-                    GestureDetector(
-                      onTap: () async {
-
-                        if (!isPlayerLoad  )
-                        {
-                          // await stopRecord();
-                          return;
-                        }
-                        if(audioPlayerState == "playing") {
-                          await audioPlayer.pause();
-                        }else if(audioPlayerState == "completed")
-                        {
-                          // String url = '';
-                          // await audioPlayer.play(url);
-                          await loadAgain();
-                        } else
-                        {
-                          // paused
-                          await audioPlayer.resume();
-                        }
-
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
-                        child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(150),
-                              color: Colors.grey.shade50),
-                          child: Icon(
-                            isPlaying ? Icons.pause : Icons.play_arrow,
-                            size: 25,
-                            color: myprimercolor,
-                          ),
+                          ],
                         ),
                       ),
                     ),
+                    PositionedDirectional(
+                      top: 0,
+                      bottom: 0,
+                      start: 0,
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.only(start: 10),
+                          // child: Text(formatTime(duration - position),
+                          child:    Text(formatTime(position),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                      ),
+                    ),
+                    PositionedDirectional(
+                      top: 0,
+                      bottom: 0,
+                      end: 0,
+                      child:
+                        !isPlayerLoad?
+                        Container(
+                          child:Center(child: CircularProgressIndicator()),
+                        ):
+                        GestureDetector(
+                          onTap: () async {
 
-                )
+                            if (!isPlayerLoad  )
+                            {
+                              // await stopRecord();
+                              return;
+                            }
+                            if(audioPlayerState == "playing") {
+                              await audioPlayer.pause();
+                            }else if(audioPlayerState == "completed")
+                            {
+                              // String url = '';
+                              // await audioPlayer.play(url);
+                              await loadAgain();
+                            } else
+                            {
+                              // paused
+                              await audioPlayer.resume();
+                            }
+
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(150),
+                                  color: Colors.grey.shade50),
+                              child: Icon(
+                                isPlaying ? Icons.pause : Icons.play_arrow,
+                                size: 25,
+                                color: myprimercolor,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                    )
                   ],
                 ),
               )),
-        ),
-      ],
-    );
-    // );
+        );
   }
 }
