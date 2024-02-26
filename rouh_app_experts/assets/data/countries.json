@@ -1,0 +1,131 @@
+{
+  "countries": [
+    {
+      "code": "DZ",
+      "name": "الجزائر",
+      "dialCode": "+213",
+      "flag": "assets/svg/algeria-flag-icon.svg"
+    },
+    {
+      "code": "BH",
+      "name": "البحرين",
+      "dialCode": "+973",
+      "flag": "assets/svg/bahrain-flag-icon.svg"
+    },
+    {
+      "code": "DJ",
+      "name": "جيبوتي",
+      "dialCode": "+253",
+      "flag": "assets/svg/bahrain-flag-icon.svg"
+    },
+    {
+      "code": "EG",
+      "name": "مصر",
+      "dialCode": "+20",
+      "flag": "assets/svg/egypt-flag-icon.svg"
+    },
+    {
+      "code": "IQ",
+      "name": "العراق",
+      "dialCode": "+964",
+      "flag": "assets/svg/iraq-flag-icon.svg"
+    },
+    {
+      "code": "JO",
+      "name": "الأردن",
+      "dialCode": "+962",
+      "flag": "assets/svg/jordan-flag-icon.svg"
+    },
+    {
+      "code": "KW",
+      "name": "الكويت",
+      "dialCode": "+965",
+      "flag": "assets/svg/kuwait-flag-icon.svg"
+
+    },
+    {
+      "code": "LB",
+      "name": "لبنان",
+      "dialCode": "+961",
+      "flag": "assets/svg/lebanon-flag-icon.svg"
+    },
+    {
+      "code": "LY",
+      "name": "ليبيا",
+      "dialCode": "+218",
+      "flag": "assets/svg/libya-flag-icon.svg"
+    },
+    {
+      "code": "MA",
+      "name": "المغرب",
+      "dialCode": "+212",
+      "flag": "assets/svg/morocco-flag-icon.svg"
+    },
+    {
+      "code": "MR",
+      "name": "موريتانيا",
+      "dialCode": "+222",
+      "flag": "assets/svg/mauritania-flag-icon.svg"
+    },
+    {
+      "code": "OM",
+      "name": "عمان",
+      "dialCode": "+968",
+      "flag": "assets/svg/oman-flag-icon.svg"
+    },
+    {
+      "code": "PS",
+      "name": "فلسطين",
+      "dialCode": "+970",
+      "flag": "assets/svg/libya-flag-icon.svg"
+    },
+    {
+      "code": "QA",
+      "name": "قطر",
+      "dialCode": "+974",
+      "flag": "assets/svg/qatar-flag-icon.svg"
+    },
+    {
+      "code": "SA",
+      "name": "المملكة العربية السعودية",
+      "dialCode": "+966",
+      "flag": "assets/svg/saudi-arabia-flag-icon.svg"
+    },
+    {
+      "code": "SO",
+      "name": "الصومال",
+      "dialCode": "+252",
+      "flag": "assets/svg/somalia-flag-icon.svg"
+    },
+    {
+      "code": "SD",
+      "name": "السودان",
+      "dialCode": "+249",
+      "flag": "assets/svg/sudan-flag-icon.svg"
+    },
+    {
+      "code": "SY",
+      "name": "سوريا",
+      "dialCode": "+963",
+      "flag": "assets/svg/syria-flag.svg"
+    },
+    {
+      "code": "TN",
+      "name": "تونس",
+      "dialCode": "+216",
+      "flag": "assets/svg/libya-flag-icon.svg"
+    },
+    {
+      "code": "AE",
+      "name": "الإمارات العربية المتحدة",
+      "dialCode": "+971",
+      "flag": "assets/svg/united-arab-emirates.svg"
+    },
+    {
+      "code": "YE",
+      "name": "اليمن",
+      "dialCode": "+967",
+      "flag": "assets/svg/yemen-flag-icon.svg"
+    }
+  ]
+}
