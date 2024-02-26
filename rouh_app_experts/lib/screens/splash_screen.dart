@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'login/login_screen.dart';
+
 
 
 class SplashScreen extends StatefulWidget {
@@ -20,8 +22,8 @@ with SingleTickerProviderStateMixin{
     Future.delayed(Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) =>
-            // LoginScreen()
-            Text("Hello World")
+            LoginScreen()
+            // Text("Hello World")
         )
       );
     });
