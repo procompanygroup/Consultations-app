@@ -200,7 +200,7 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
                                     if (recorder.isRecording) {
                                       await stopRecord();
                                       BlocProvider.of<AudioFileCubit>(context)
-                                          .loadAudioFile(audioFile);
+                                          .loadAudioFile(audioFile,widget.RecordInputServiceId);
                                     } else {
                                       await startRecord();
                                     }

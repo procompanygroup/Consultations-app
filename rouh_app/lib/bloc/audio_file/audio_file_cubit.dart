@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../models/service_file_model.dart';
 import '../../models/service_input_model.dart';
 import '../../models/service_value_model.dart';
 
@@ -12,9 +13,9 @@ class AudioFileCubit extends Cubit<AudioFileState> {
   AudioFileCubit() : super(AudioFileInitial());
 
 
-  void loadAudioFile( File audioFile)  {
+  void loadAudioFile( File? audioFile, int? serviceInputId)  {
 
-    emit(AudioFileLoading(audioFile));
+    emit(AudioFileLoading(new AudioFile( audioFile:audioFile,serviceInputId: serviceInputId)));
 
   }
 }
