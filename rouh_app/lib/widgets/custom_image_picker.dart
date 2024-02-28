@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomImagePicker extends StatefulWidget {
-  const CustomImagePicker({super.key});
+  const CustomImagePicker({super.key, required this.ImageInputServiceId});
+  final int ImageInputServiceId;
 
   @override
   State<CustomImagePicker> createState() => _ImagePickerState();
