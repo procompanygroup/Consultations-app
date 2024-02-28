@@ -308,7 +308,8 @@ class _ExpertInfoState extends State<ExpertInfo> {
                       // PlayRecordScreen
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                        child: PlayRecordScreen(audioUrl: "https://oras.orasweb.com/storage/images/values/records/15562135.mp3"),
+                        // child: PlayRecordScreen(audioUrl: "https://oras.orasweb.com/storage/images/values/records/15562135.mp3"),
+                        child: PlayRecordScreen(audioUrl: widget.expert.record!),
                       ),
                       // Experts Title
                       Padding(
