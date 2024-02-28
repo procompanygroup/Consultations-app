@@ -14,23 +14,15 @@ class User {
   int? gender;
   String? marital_status;
   int? is_active;
+  int? balance;
   String? image;
 
    DioManager dioManager= DioManager() ;
   //Constructor
-  User({ this.id,this.user_name,this.email,this.mobile,this.nationality,this.birthdate,this.gender,this.marital_status,this.is_active,this.image}) ;
-  // {
-  //   id = id;
-  //   user_name = user_name;
-  //   email = email;
-  //   mobile =mobile;
-  //   nationality =nationality;
-  //   birthdate = birthdate;
-  //   gender = gender;
-  //   marital_status = marital_status;
-  //   is_active = is_active;
-  //   image = image;
-  // }
+  User({ this.id,this.user_name,this.email,this.mobile,this.nationality,
+    this.birthdate,this.gender,this.marital_status,this.is_active,
+  this.balance,this.image}) ;
+
 
   factory User.fromJson(Map<String, dynamic> parsedJson) {
     var tmpBirthDate = null;
@@ -46,7 +38,8 @@ class User {
         image: parsedJson['image'],
         is_active: parsedJson['is_active'],
         marital_status: parsedJson['marital_status'],
-        nationality: parsedJson['nationality']
+        nationality: parsedJson['nationality'],
+        balance: parsedJson['points_balance'],
     );
   }
 
