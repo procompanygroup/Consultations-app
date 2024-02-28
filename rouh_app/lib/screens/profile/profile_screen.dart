@@ -827,6 +827,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 //update profile function
   Future<String?> updateProfile() async {
+    var imageFile = imagePath ==""? null : await MultipartFile.fromFile(
+      imagePath,
+    );
 
     FormData formData = FormData.fromMap({
       "id" : user.id,
@@ -836,9 +839,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       "nationality": user.nationality,
       "birthdate": user.birthdate,
       "marital_status": user.marital_status,
-      'image': await MultipartFile.fromFile(
-        imagePath,
-      ),
+      'image':imageFile,
     });
 
     String? res = await user.Update(formData:formData );

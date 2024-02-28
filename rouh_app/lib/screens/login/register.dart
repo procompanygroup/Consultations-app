@@ -754,12 +754,13 @@ class _RegisterState extends State<Register> {
   }
 
   Future<String?> register() async {
-    //DioManager dioManager = DioManager();
 
     const storage = FlutterSecureStorage();
     mobile = await storage.read(key: "mobile") ?? "0";
     user.mobile = mobile;
-    // user.mobile = mobile?.replaceFirst("+", "");
+    var imageFile = imagePath ==""? null : await MultipartFile.fromFile(
+      imagePath,
+    );
     FormData formData = FormData.fromMap({
       "user_name": user.user_name,
       "email": user.email,
@@ -768,30 +769,16 @@ class _RegisterState extends State<Register> {
       "mobile": user.mobile,
       "birthdate": user.birthdate,
       "marital_status": user.marital_status,
-      'image': await MultipartFile.fromFile(
-        imagePath,
-      ),
+      'image': imageFile,
     });
-    // try {
+
       String? res = await user.register(formData:formData );
-      // var response = await dioManager.dio.post(
-      //   'https://oras.orasweb.com/api/registerclient',
-      //   data: formData,
-      // );
-      // if (response.statusCode == 200) {
-      //   return response.data;
-      // } else {
-      //   return "";
-      // }
-    // } catch (e) {
-    //   print(e.toString());
-    // }
-    // return "";
+
     return res;
   }
 
   getImagefromGallery() async {
-    //final status = await ImagePicker();
+
     final pickedfile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedfile != null) {
       setState(() {
