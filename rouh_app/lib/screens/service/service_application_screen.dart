@@ -27,6 +27,8 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   // bool isLoading = true;
   bool hasRecordFile = false;
   int RecordInputServiceId = 0;
+  int ImageInputServiceId = 0;
+  int ImageCount = 0;
 
   bool hasImageFile = false;
   Service service = Service();
@@ -87,6 +89,9 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
       } else if(serviceInput.input?.type == 'image') {
         setState(() {
           hasImageFile = true;
+          ImageInputServiceId = serviceValue.inputservice_id!;
+          ImageCount = serviceInput.input!.imageCount!;
+          print(ImageCount);
         });
       }
 
@@ -564,19 +569,124 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: CustomImagePicker()),
+                                          child:
+                                          ImageCount>0?
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                            :
+                                          Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(0.03),
+                                                    spreadRadius: 5,
+                                                    blurRadius: 7,
+                                                    offset: Offset(0, 3), // changes position of shadow
+                                                  ),
+                                                ],
+                                                color: Colors.grey.shade100),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: Image(
+                                                image: AssetImage("assets/images/default_image.png"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                      ),
+
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: CustomImagePicker()),
+                                          child:
+                                          ImageCount>1?
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                              :
+                                          Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(0.03),
+                                                    spreadRadius: 5,
+                                                    blurRadius: 7,
+                                                    offset: Offset(0, 3), // changes position of shadow
+                                                  ),
+                                                ],
+                                                color: Colors.grey.shade100),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: Image(
+                                                image: AssetImage("assets/images/default_image.png"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                      ),
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: CustomImagePicker()),
+                                          child: ImageCount>2?
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                              :
+                                          Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(0.03),
+                                                    spreadRadius: 5,
+                                                    blurRadius: 7,
+                                                    offset: Offset(0, 3), // changes position of shadow
+                                                  ),
+                                                ],
+                                                color: Colors.grey.shade100),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: Image(
+                                                image: AssetImage("assets/images/default_image.png"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )),
                                       Container(
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
-                                          child: CustomImagePicker()),
+                                          child: ImageCount>3?
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                              :
+                                          Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(0.03),
+                                                    spreadRadius: 5,
+                                                    blurRadius: 7,
+                                                    offset: Offset(0, 3), // changes position of shadow
+                                                  ),
+                                                ],
+                                                color: Colors.grey.shade100),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: Image(
+                                                image: AssetImage("assets/images/default_image.png"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )),
                                     ],
                                   ),
                                 ),
