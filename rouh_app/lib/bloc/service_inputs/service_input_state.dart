@@ -13,8 +13,10 @@ class ServiceInputLoding extends ServiceInputState {
   @override
   late final  List<ServiceInput>? serviceInputs;
   late final   List<ServiceValue>? serviceValues;
-  ServiceInputLoding(this.serviceInputs,this.serviceValues);
+  late final   int? imageInputServiceId;
+  ServiceInputLoding(this.serviceInputs,this.serviceValues,imageInputServiceId);
   get inputs => serviceInputs;
   get values => serviceValues;
+  get inputServiceId => imageInputServiceId;
 }
 class ServiceInputFailure extends ServiceInputState {}

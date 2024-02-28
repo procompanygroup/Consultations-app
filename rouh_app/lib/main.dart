@@ -4,7 +4,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/bloc/audio_file/audio_file_cubit.dart';
-import 'package:rouh_app/bloc/service_images/service_images_cubit.dart';
 import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
 import 'bloc/UserInformation/user_information_cubit.dart';
 import 'mystyle/constantsColors.dart';
@@ -33,9 +32,7 @@ void main() async{
       BlocProvider<AudioFileCubit>(
         create: (BuildContext context) => AudioFileCubit(),
       ),
-      BlocProvider<ServiceImagesCubit>(
-        create: (BuildContext context) => ServiceImagesCubit(),
-      ),
+
     ],
     child: MyApp(),
   ), );

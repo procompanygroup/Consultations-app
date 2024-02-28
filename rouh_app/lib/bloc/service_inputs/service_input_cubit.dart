@@ -12,9 +12,9 @@ class ServiceInputCubit extends Cubit<ServiceInputState> {
 
   //DioManager dioManager = DioManager();
 
-  void loadServiceValues( List<ServiceInput> serviceInputs,List<ServiceValue> serviceValues)  {
+  void loadServiceValues( List<ServiceInput>? serviceInputs,List<ServiceValue>? serviceValues,int? imageInputServiceId)  {
 
-    emit(ServiceInputLoding(serviceInputs,serviceValues));
+    emit(ServiceInputLoding(serviceInputs,serviceValues,imageInputServiceId));
 
   }
 }
