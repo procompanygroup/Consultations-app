@@ -3,10 +3,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomImagePicker extends StatefulWidget {
-  const CustomImagePicker({super.key, required this.ImageInputServiceId});
-  final int ImageInputServiceId;
+import '../constants/global_variable.dart';
 
+class CustomImagePicker extends StatefulWidget {
+  const CustomImagePicker({super.key, required this.ImageInputServiceId,required this.index});
+  final int ImageInputServiceId;
+final int index;
   @override
   State<CustomImagePicker> createState() => _ImagePickerState();
 }
@@ -118,6 +120,7 @@ getImagefromGallery() async {
       image = File(pickedfile.path);
       imagePath = pickedfile.path;
       print(imagePath);
+      serviceImages[widget.index] = imagePath;
       uploading = true;
     });
 

@@ -571,7 +571,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                           height: (screenWidth -100) / 4,
                                           child:
                                           ImageCount>0?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 0,)
                                             :
                                           Container(
                                             width: (screenWidth -100) / 4,
@@ -603,7 +603,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                           height: (screenWidth -100) / 4,
                                           child:
                                           ImageCount>1?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index:1)
                                               :
                                           Container(
                                             width: (screenWidth -100) / 4,
@@ -633,7 +633,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
                                           child: ImageCount>2?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId, index: 2)
                                               :
                                           Container(
                                             width: (screenWidth -100) / 4,
@@ -662,7 +662,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                           width: (screenWidth -100) / 4,
                                           height: (screenWidth -100) / 4,
                                           child: ImageCount>3?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId)
+                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 3)
                                               :
                                           Container(
                                             width: (screenWidth -100) / 4,
@@ -715,7 +715,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                             style: bs_flatFill(context, myprimercolor),
                             onPressed: ()  {
                               BlocProvider.of<ServiceInputCubit>(context)
-                                  .loadServiceValues(serviceInputs,serviceValues);
+                                  .loadServiceValues(serviceInputs,serviceValues,ImageInputServiceId);
                               // serviceInputs.forEach((element) {
                               //   print(element.input?.icon != null? true:false);
                               // });

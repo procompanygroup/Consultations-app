@@ -1,5 +1,4 @@
 // API
-import '../models/service_model.dart';
 
 const String baseUrl = 'https://oras.orasweb.com/api/';
 
