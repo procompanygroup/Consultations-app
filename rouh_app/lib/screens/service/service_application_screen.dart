@@ -722,7 +722,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      SelectExpert(),
+                                      SelectExpert(serviceId: widget.service.id as int),
                                 ),
                               );
                             },

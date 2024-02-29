@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
+import 'package:dio/dio.dart';
+import 'package:rouh_app/models/audio_file_model.dart';
 
 import 'package:rouh_app/models/service_input_model.dart';
 import 'package:rouh_app/models/service_value_model.dart';
@@ -36,7 +39,7 @@ class Service {
     icon: parsedJson['icon'],
     image: parsedJson['image'],
      is_active: parsedJson['is_active'],
-    message: parsedJson['message'],
+    message: parsedJson['message'].toString(),
      serviceInputs : tmpServiceInputs,
      );
   }
@@ -89,7 +92,15 @@ Future<Service?> saveWithValues({
     required int clientId,
     required int expertId,
     required int serviceId,
+  required int imageInputServiceId,
   required List<ServiceValue> serviceValues,
+  AudioFile? audioFile,
+  List<String?>? serviceImages
+  // File? image1,
+  // File? image2,
+  // File? image3,
+  // File? image4,
+
   }) async {
 
      final  inputsValues =List<APIInputValue>.empty(growable: true);
@@ -109,10 +120,32 @@ var jsonInputs = jsonEncode(inputsValues);
      });
 
     var response = await dioManager.dio.post('client/service/savewithvalues',data: data );
-    // print(response.statusCode);
+     print(response.statusCode);
     // print(response.data);
     if (response.statusCode == 200) {
       var service = Service.fromJson(json.decode(response.data));
+      if(service.message == "no balance")
+        {
+
+        }
+      else if(int.parse(service.message as String) > 0)
+        {
+          print("upload");
+          //upload audio and images
+          FormData formData = FormData.fromMap({
+            "selectedservice_id" : service.message,
+            "inputservice_id": imageInputServiceId,
+            "record_inputservice_id": audioFile != null? audioFile.serviceInputId: null,
+            "image_1": serviceImages?[0],
+            "image_2": serviceImages?[1],
+            "image_3": serviceImages?[2],
+            "image_4": serviceImages?[3],
+            'record': audioFile?.audioFile?.path
+          });
+
+             response = await dioManager.dio.post('client/service/savewithvalues',data: data );
+             print(response.statusCode);
+        }
       //message; no balance
       //or
       // message: id of selected service

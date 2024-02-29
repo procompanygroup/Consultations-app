@@ -1,20 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rouh_app/bloc/audio_file/audio_file_cubit.dart';
+import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
+import 'package:rouh_app/models/service_model.dart';
 
+import '../../bloc/UserInformation/user_information_cubit.dart';
+import '../../constants/global_variable.dart';
 import '../../models/expert_model.dart';
 import '../../models/expert_service_model.dart';
+import '../../models/service_value_model.dart';
+import '../../models/user_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/rating_stars.dart';
 
 class SelectExpert extends StatefulWidget {
-  const SelectExpert({super.key});
-
+  const SelectExpert({super.key,required this.serviceId});
+final int serviceId;
   @override
   State<SelectExpert> createState() => _SelectExpertState();
 }
 
 class _SelectExpertState extends State<SelectExpert> {
+  Service service = Service();
+  User user = User();
+  var balance;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    serviceImages = [null,null,null,null];
+      setState(() {
+        user = context.read<UserInformationCubit>().state.fetchedPerson!;
+        balance = user.balance;
+        //print(user.balance);
+      });
+
+
+
+    super.initState();
+    //
+
+
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -28,6 +60,7 @@ class _SelectExpertState extends State<SelectExpert> {
     List<Expert> expertList = [
       Expert(
           expert_name: "Expert_1",
+          id:1,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=1",
           answer_speed: 0.00,
@@ -36,6 +69,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_2",
+          id:2,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=2",
           answer_speed: 0.00,
@@ -44,6 +78,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_3",
+          id:3,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=3",
           answer_speed: 0.00,
@@ -52,6 +87,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_4",
+          id:4,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=4",
           answer_speed: 0.00,
@@ -60,6 +96,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_5",
+          id:5,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=5",
           answer_speed: 0.00,
@@ -68,6 +105,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_6",
+          id:6,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=6",
           answer_speed: 0.00,
@@ -76,6 +114,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_7",
+          id:7,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=7",
           answer_speed: 0.00,
@@ -84,6 +123,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_8",
+          id:8,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=8",
           answer_speed: 0.00,
@@ -92,6 +132,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_9",
+          id:9,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=9",
           answer_speed: 0.00,
@@ -100,6 +141,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_10",
+          id:10,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=10",
           answer_speed: 0.00,
@@ -108,6 +150,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_11",
+          id:11,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=11",
           answer_speed: 0.00,
@@ -116,6 +159,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_12",
+          id:12,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=12",
           answer_speed: 0.00,
@@ -124,6 +168,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_13",
+          id:13,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=13",
           answer_speed: 0.00,
@@ -132,6 +177,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_14",
+          id:14,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=14",
           answer_speed: 0.00,
@@ -140,6 +186,7 @@ class _SelectExpertState extends State<SelectExpert> {
           expert_services: [ExpertService(points: 10)]),
       Expert(
           expert_name: "Expert_15",
+          id:15,
           desc: "desc",
           image: "https://picsum.photos/200/300?random=15",
           answer_speed: 0.00,
@@ -155,9 +202,42 @@ class _SelectExpertState extends State<SelectExpert> {
           crossAxisSpacing: 10,
           children: List.generate(experts.length, (index) {
             Expert expert = experts[index];
+
             return GestureDetector(
-                onTap: () {
+                onTap: () async {
+                if (balance < expert.expert_services![0].points)
+                  {
+                    //yasin
+                  }
+                 else
+                   {
+                     var res = await service.saveWithValues(clientId: user.id as int,
+                         expertId: expert.id as int,
+                         serviceId: widget.serviceId,
+                         imageInputServiceId:context.read<ServiceInputCubit>().state.imageInputServiceId as int ,
+                         serviceValues:context.read<ServiceInputCubit>().state.serviceValues as List<ServiceValue>,
+                        audioFile: context.read<AudioFileCubit>().state.audioFile,
+                         serviceImages: serviceImages
+                     );
+                     if(res == "no balance")
+                       {
+                         //yasin
+                       }
+                     else
+                       {
+                         user = (await user.getUser(mobile: user!.mobile as String))!;
+                         //global parameters
+                         serviceImages = [null,null,null,null];
+                         BlocProvider.of<AudioFileCubit>(context)
+                             .loadAudioFile(null,null);
+                         BlocProvider.of<ServiceInputCubit>(context)
+                             .loadServiceValues(null,null,null);
+                       }
+                   }
                   setState(() {
+                    balance = user.balance;
+                    BlocProvider.of<UserInformationCubit>(context)
+                        .addProfile(user);
                     _selectedExpert = expert.expert_name!;
                     print(_selectedExpert);
                   });
@@ -438,7 +518,7 @@ class _SelectExpertState extends State<SelectExpert> {
                         ),
                       ),
                       Text(
-                        "110",
+                        balance.toString(),
                         style: TextStyle(
                           fontSize: 18,
                           color: mysecondarycolor,
