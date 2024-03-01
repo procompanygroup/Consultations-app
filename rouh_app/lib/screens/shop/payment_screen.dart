@@ -121,8 +121,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               .addProfile(user);
 
           paymentIntent = null;
-          //yasin
+
           //balance updated successfully
+          Navigator.pop(context);
+
         }
         catch(e){
 
