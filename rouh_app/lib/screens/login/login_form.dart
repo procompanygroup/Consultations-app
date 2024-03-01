@@ -7,6 +7,7 @@ import '../../controllers/phone_auth_controller.dart';
 import '../../models/country.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../../widgets/show_dialog.dart';
 import 'login_verification_screen.dart';
 
 class LoginForm extends StatefulWidget {
@@ -50,40 +51,7 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void _showMessageDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text(
-            'Error',
-            style: TextStyle(fontSize: 18),
-          ),
-          content: Text(
-            message,
-            style: const TextStyle(fontSize: 16),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
-  // void _showSnackbar(BuildContext context, String message) {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text(message),
-  //       duration: Duration(seconds: 4),
-  //     ),
-  //   );
-  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -360,17 +328,20 @@ class _LoginFormState extends State<LoginForm> {
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    _showMessageDialog(context,
+                                    ShowMessageDialog(context,
+                                        "Error",
                                         "Connection Failed. Please Retry Later");
                                   } else if (verifyCode == 'noInternet') {
-                                    _showMessageDialog(
-                                        context, "Internet Connection Error");
+                                    ShowMessageDialog( context,
+                                        "Error",
+                                        "Internet Connection Error");
                                     setState(() {
                                       isLoading = false;
                                     });
                                   } else if (verifyCode == 'errorPhone') {
-                                    _showMessageDialog(
-                                        context, "Incorrect Phone Number");
+                                    ShowMessageDialog( context,
+                                        "Error",
+                                        "Incorrect Phone Number");
                                     setState(() {
                                       isLoading = false;
                                     });
