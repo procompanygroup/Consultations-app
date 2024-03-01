@@ -30,21 +30,15 @@ class _SelectExpertState extends State<SelectExpert> {
   void initState() {
     // TODO: implement initState
 
-    serviceImages = [null,null,null,null];
+    //serviceImages = [null,null,null,null];
       setState(() {
         user = context.read<UserInformationCubit>().state.fetchedPerson!;
         balance = user.balance;
         //print(user.balance);
       });
 
-
-
     super.initState();
     //
-
-
-
-
   }
 
   @override
@@ -205,23 +199,26 @@ class _SelectExpertState extends State<SelectExpert> {
 
             return GestureDetector(
                 onTap: () async {
+
                 if (balance < expert.expert_services![0].points)
                   {
                     //yasin
+                    //no balance
                   }
                  else
                    {
                      var res = await service.saveWithValues(clientId: user.id as int,
                          expertId: expert.id as int,
                          serviceId: widget.serviceId,
-                         imageInputServiceId:context.read<ServiceInputCubit>().state.imageInputServiceId as int ,
-                         serviceValues:context.read<ServiceInputCubit>().state.serviceValues as List<ServiceValue>,
+                         imageInputServiceId:context.read<ServiceInputCubit>().state.imageInputServiceId ,
+                         serviceValues:context.read<ServiceInputCubit>().state.serviceValues ,
                         audioFile: context.read<AudioFileCubit>().state.audioFile,
                          serviceImages: serviceImages
                      );
-                     if(res == "no balance")
+                     if(res?.message == "no balance")
                        {
                          //yasin
+                         //no balance
                        }
                      else
                        {
@@ -232,6 +229,8 @@ class _SelectExpertState extends State<SelectExpert> {
                              .loadAudioFile(null,null);
                          BlocProvider.of<ServiceInputCubit>(context)
                              .loadServiceValues(null,null,null);
+                         //yasin
+                         //saved successfully
                        }
                    }
                   setState(() {
