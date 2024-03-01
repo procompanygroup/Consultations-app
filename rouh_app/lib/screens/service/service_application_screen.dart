@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/models/service_input_model.dart';
 
 import '../../bloc/service_inputs/service_input_cubit.dart';
+import '../../constants/global_variable.dart';
 import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../models/service_value_model.dart';
@@ -41,7 +42,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     super.initState();
 
     fillServiceInputList();
-
+    serviceImages = [null,null,null,null];
   }
 
   Future<void> fillServiceInputList() async {

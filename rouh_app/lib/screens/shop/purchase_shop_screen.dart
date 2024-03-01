@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rouh_app/screens/shop/payment_screen.dart';
 
+import '../../bloc/UserInformation/user_information_cubit.dart';
+import '../../models/user_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_appbar.dart';
 
@@ -13,7 +17,21 @@ class PurchaseShop extends StatefulWidget {
 }
 
 class _PurchaseShopState extends State<PurchaseShop> {
+  User user = User();
+  var balance;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    setState(() {
+      user = context.read<UserInformationCubit>().state.fetchedPerson!;
+      balance = user.balance;
+      //print(user.balance);
+    });
+    super.initState();
+    //
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +101,12 @@ class _PurchaseShopState extends State<PurchaseShop> {
                 onTap: () {
                   setState(() {
                     // dina
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PaymentScreen(pointId: point.id as int,price: point.price.toString(),points: point.count as int),
+                      ),
+                    );
                     _selectedPoint = point.price!.toString();
                     print(_selectedPoint);
                   });
@@ -276,7 +300,7 @@ class _PurchaseShopState extends State<PurchaseShop> {
                           ),
                         ),
                         Text(
-                          "110",
+                          balance.toString(),
                           style: TextStyle(
                             fontSize: 18,
                             color: mysecondarycolor,

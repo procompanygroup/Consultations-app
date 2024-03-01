@@ -3,12 +3,18 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
+
+import '../../bloc/UserInformation/user_information_cubit.dart';
+import '../../models/user_model.dart';
 
 class PaymentScreen extends StatefulWidget {
 
   final String price;
-  const PaymentScreen({Key? key, required this.price})
+  final int pointId;
+  final int points;
+  const PaymentScreen({Key? key,required this.pointId,required this.points, required this.price})
       : super(key: key);
 
 
@@ -18,6 +24,16 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   Map<String, dynamic>? paymentIntent;
+  User user = User();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      user = context.read<UserInformationCubit>().state.fetchedPerson!;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +45,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              child: const Text('Make Payment'),
-              onPressed: () async {
-                await makePayment(widget.price );
-              },
+            BlocBuilder<UserInformationCubit,UserInformationState>(
+            builder:(context,state) {
+                  return TextButton(
+                  child: const Text('Make Payment'),
+                  onPressed: () async {
+                  await makePayment(widget.price );
+                  },
+                  );
+                  },
             ),
           ],
         ),
@@ -72,7 +92,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   displayPaymentSheet() async {
     try {
-      await Stripe.instance.presentPaymentSheet().then((value) {
+
+      await Stripe.instance.presentPaymentSheet().then((value) async {
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -90,7 +111,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ));
 
-        paymentIntent = null;
+        try {
+          await user.ChangeBalance(clientId: user.id as int,
+              points: widget.points,
+              pointId: widget.pointId);
+
+          user.balance = (user.balance! + widget.points)!;
+          BlocProvider.of<UserInformationCubit>(context)
+              .addProfile(user);
+
+          paymentIntent = null;
+          //yasin
+          //balance updated successfully
+        }
+        catch(e){
+
+        }
       }).onError((error, stackTrace) {
         throw Exception(error);
       });
