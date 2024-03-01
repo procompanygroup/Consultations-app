@@ -41,7 +41,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
 
     fillServiceList();
     print("clientId: " + clientId.toString());
-    fillExpertList(clientId as int);
+    fillExpertList(clientId!);
   }
 
   Future<void> fillServiceList() async {
