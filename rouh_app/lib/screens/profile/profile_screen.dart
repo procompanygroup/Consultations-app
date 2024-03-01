@@ -13,6 +13,7 @@ import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../login/login_screen.dart';
+import '../shop/purchase_shop_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -117,7 +118,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           // foregroundColor: Colors.red, // <-- Splash color
                         ),
                         onPressed: () {
-
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PurchaseShop(),
+                            ),
+                          );
                         },
                       ),
                     ),

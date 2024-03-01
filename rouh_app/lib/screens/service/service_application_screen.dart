@@ -12,6 +12,7 @@ import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_image_picker.dart';
 import '../../widgets/record_and_play_screen.dart';
+import '../shop/purchase_shop_screen.dart';
 import 'select_expert_screen.dart';
 
 
@@ -490,7 +491,14 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                     Colors.grey.shade50, // <-- Button color
                     // foregroundColor: Colors.red, // <-- Splash color
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PurchaseShop(),
+                      ),
+                    );
+                  },
                   child: Icon(
                     Icons.shopping_cart,
                     size: 35,

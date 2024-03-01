@@ -15,6 +15,7 @@ import '../../mystyle/constantsColors.dart';
 import '../../widgets/rating_stars.dart';
 import '../../widgets/show_dialog.dart';
 import '../main_navigation_screen.dart';
+import '../shop/purchase_shop_screen.dart';
 
 class SelectExpert extends StatefulWidget {
   const SelectExpert({super.key,required this.serviceId});
@@ -474,7 +475,14 @@ class _SelectExpertState extends State<SelectExpert> {
                       // foregroundColor: Colors.red, // <-- Splash color
                     ),
                     onPressed: () {
-                      
+
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PurchaseShop(),
+                        ),
+                      );
+
                     },
                     child: Icon(
                       Icons.shopping_cart,
