@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/screens/shop/payment_screen.dart';
 
 import '../../bloc/UserInformation/user_information_cubit.dart';
+import '../../controllers/globalController.dart';
+import '../../models/point_model.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_appbar.dart';
@@ -19,6 +21,8 @@ class PurchaseShop extends StatefulWidget {
 class _PurchaseShopState extends State<PurchaseShop> {
   User user = User();
   var balance;
+  bool isLoadingPoints = false;
+  List<Point> pointList = <Point>[];
 
   @override
   void initState() {
@@ -29,8 +33,25 @@ class _PurchaseShopState extends State<PurchaseShop> {
       balance = user.balance;
       //print(user.balance);
     });
+
+    fillPointList();
+
+
     super.initState();
     //
+  }
+  Future<void> fillPointList() async {
+    setState(() {
+      isLoadingPoints = true;
+    });
+    globalPoint.GetAll().then((response) {
+      setState(() {
+        print(response);
+        pointList = response!;
+
+        isLoadingPoints = false;
+      });
+    });
   }
 
   @override
@@ -42,7 +63,7 @@ class _PurchaseShopState extends State<PurchaseShop> {
     );
 
 
-
+/*
     String _selectedPoint = "Point_1";
     List<ClassPoint> pointList = [
       ClassPoint(
@@ -89,14 +110,16 @@ class _PurchaseShopState extends State<PurchaseShop> {
       ),
 
     ];
-    _buildPoints(List<ClassPoint> points) {
+    */
+
+    _buildPoints(List<Point> points) {
       return StaggeredGrid.count(
         // padding: EdgeInsets.symmetric(horizontal: 10.0),
           crossAxisCount: 2,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           children: List.generate(points.length, (index) {
-            ClassPoint point = points[index];
+            Point point = points[index];
             return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -104,11 +127,11 @@ class _PurchaseShopState extends State<PurchaseShop> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) =>
-                            PaymentScreen(pointId: point.id as int,price: point.price.toString(),points: point.count as int),
+                            PaymentScreen(pointId: point.id!,price: point.price.toString(),points: point.count as int),
                       ),
                     );
-                    _selectedPoint = point.price!.toString();
-                    print(_selectedPoint);
+                    // _selectedPoint = point.price!.toString();
+                    // print(_selectedPoint);
                   });
                 },
                 child: Container(
@@ -315,13 +338,15 @@ class _PurchaseShopState extends State<PurchaseShop> {
                       child: Divider(color: Colors.grey.shade300),
                     ),
                     // pointList
+                    !isLoadingPoints?
                     Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: _buildPoints(pointList!)),
-                        )),
+                        ))
+                        :Expanded(child: Center(child: CircularProgressIndicator())),
                   ],
                 ),
               ),
@@ -333,7 +358,7 @@ class _PurchaseShopState extends State<PurchaseShop> {
   }
 }
 
-
+/*
 class ClassPoint{
   int? id;
   int? count;
@@ -344,3 +369,4 @@ class ClassPoint{
   ClassPoint(
       { this.id, this.count, this.price, this.countbefor});
 }
+*/
