@@ -28,36 +28,43 @@ class _PurchaseShopState extends State<PurchaseShop> {
     String _selectedPoint = "Point_1";
     List<ClassPoint> pointList = [
       ClassPoint(
+        id:1,
           count: 1,
           price: 5,
           countbefor: 5,
           ),
       ClassPoint(
+        id:2,
         count: 45,
         price: 5,
         countbefor: 0,
       ),
       ClassPoint(
+        id:3,
         count: 85,
         price: 68,
         countbefor: 74,
       ),
       ClassPoint(
+        id:4,
         count: 58,
         price: 56,
         countbefor: 0,
       ),
       ClassPoint(
+        id:5,
         count: 1,
         price: 5,
         countbefor: 5,
       ),
       ClassPoint(
+        id:6,
         count: 1,
         price: 5,
         countbefor: 5,
       ),
       ClassPoint(
+        id:7,
         count: 1,
         price: 5,
         countbefor: 5,
