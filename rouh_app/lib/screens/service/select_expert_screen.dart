@@ -7,6 +7,7 @@ import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
 import 'package:rouh_app/models/service_model.dart';
 import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../constants/global_variable.dart';
+import '../../controllers/globalController.dart';
 import '../../models/expert_model.dart';
 import '../../models/expert_service_model.dart';
 import '../../models/service_value_model.dart';
@@ -28,9 +29,14 @@ class _SelectExpertState extends State<SelectExpert> {
   Service service = Service();
   User user = User();
   var balance;
+  bool isLoadingExperts = false;
+  List<Expert> expertList = <Expert>[];
+
+
   @override
   void initState() {
     // TODO: implement initState
+
 
     //serviceImages = [null,null,null,null];
       setState(() {
@@ -39,10 +45,24 @@ class _SelectExpertState extends State<SelectExpert> {
         //print(user.balance);
       });
 
+      fillExpertList();
+
+
     super.initState();
     //
   }
-
+  Future<void> fillExpertList() async {
+    setState(() {
+      isLoadingExperts = true;
+    });
+    globalExpert.GetByServiceId(serviceId: widget.serviceId).then((response) {
+      setState(() {
+        print(response);
+        expertList = response;
+        isLoadingExperts = false;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -51,7 +71,7 @@ class _SelectExpertState extends State<SelectExpert> {
             // -MediaQuery.of(context).padding.top // safe area
             // - AppBar().preferredSize.height //AppBar
         );
-
+/*
     String _selectedExpert = "Expert_1";
     List<Expert> expertList = [
       Expert(
@@ -190,6 +210,7 @@ class _SelectExpertState extends State<SelectExpert> {
           isFavorite: false,
           expert_services: [ExpertService(points: 10)]),
     ];
+    */
     _buildExperts(List<Expert> experts) {
       return StaggeredGrid.count(
           // padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -248,8 +269,8 @@ class _SelectExpertState extends State<SelectExpert> {
                     balance = user.balance;
                     BlocProvider.of<UserInformationCubit>(context)
                         .addProfile(user);
-                    _selectedExpert = expert.expert_name!;
-                    print(_selectedExpert);
+                    // _selectedExpert = expert.expert_name!;
+                    // print(_selectedExpert);
                   });
                 },
                 child: Container(
@@ -552,13 +573,16 @@ class _SelectExpertState extends State<SelectExpert> {
                     child: Divider(color: Colors.grey.shade300),
                   ),
                   // expertList
+                  !isLoadingExperts?
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                         child: _buildExperts(expertList!)),
-                  )),
+                  ))
+                  :Expanded(child: Center(child: CircularProgressIndicator())),
+
                   SizedBox(height: 10,)
                 ],
               ),
