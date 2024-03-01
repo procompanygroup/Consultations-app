@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/bloc/audio_file/audio_file_cubit.dart';
 import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
 import 'package:rouh_app/models/service_model.dart';
-
 import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../constants/global_variable.dart';
 import '../../models/expert_model.dart';
@@ -14,6 +13,8 @@ import '../../models/service_value_model.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/rating_stars.dart';
+import '../../widgets/show_dialog.dart';
+import '../main_navigation_screen.dart';
 
 class SelectExpert extends StatefulWidget {
   const SelectExpert({super.key,required this.serviceId});
@@ -202,8 +203,9 @@ class _SelectExpertState extends State<SelectExpert> {
 
                 if (balance < expert.expert_services![0].points)
                   {
-                    //yasin
-                    //no balance
+                    ShowMessageDialog( context,
+                        "Error",
+                        "you dont have enough point");
                   }
                  else
                    {
@@ -217,8 +219,9 @@ class _SelectExpertState extends State<SelectExpert> {
                      );
                      if(res?.message == "no balance")
                        {
-                         //yasin
-                         //no balance
+                         ShowMessageDialog( context,
+                             "Error",
+                             "you dont have enough point");
                        }
                      else
                        {
@@ -229,8 +232,15 @@ class _SelectExpertState extends State<SelectExpert> {
                              .loadAudioFile(null,null);
                          BlocProvider.of<ServiceInputCubit>(context)
                              .loadServiceValues(null,null,null);
-                         //yasin
-                         //saved successfully
+
+                         Navigator.pushAndRemoveUntil(
+                             context,
+                             MaterialPageRoute(
+                                 builder: (_) =>
+                                     MainNavigationScreen()),
+                                 (route) =>
+                             route.settings.name ==
+                                 '/mainNavigation');
                        }
                    }
                   setState(() {
@@ -463,7 +473,9 @@ class _SelectExpertState extends State<SelectExpert> {
                       backgroundColor: Colors.grey.shade50, // <-- Button color
                       // foregroundColor: Colors.red, // <-- Splash color
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      
+                    },
                     child: Icon(
                       Icons.shopping_cart,
                       size: 35,
