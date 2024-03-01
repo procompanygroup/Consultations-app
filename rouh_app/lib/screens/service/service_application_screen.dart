@@ -26,6 +26,7 @@ class ServiceApplicationScreen extends StatefulWidget {
 }
 
 class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
+  final _formKey = GlobalKey<FormState>();
   // bool isLoading = true;
   bool hasRecordFile = false;
   int RecordInputServiceId = 0;
@@ -100,6 +101,11 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
       inputsWidgetList.add(
         Builder(
           builder: (context) {
+            if(serviceInput.input?.type == 'date' && serviceValue.value == "")
+              {
+                serviceValue.value =  "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}";
+              }
+
 
             if(serviceInput.input?.type == 'text')
               return  Stack(
@@ -380,7 +386,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
             fontSize: 14,
             color:serviceValue.value != null? Colors.black54:Colors.grey
               )),
-              value:serviceValue.value != null? bool.parse(serviceValue.value!): false,
+              value:serviceValue.value != null && serviceValue.value != "" ? bool.parse(serviceValue.value!): false,
               onChanged: (newValue) {
                 setState(() {
                   serviceValue.value = newValue.toString();
@@ -524,223 +530,228 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-                child: Column(
-                  children: [
-                    SizedBox(height:bodyHeight*0.1 ,),
-                    Text(widget.service.name!,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: mysecondarycolor),
-                    ),
-
-                    Expanded(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child:
-                        // !isLoading?
-                        Column(
-                          children: [
-                            buildForm(serviceValues),
-                            hasRecordFile?Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Text("Record Audio",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: myprimercolor),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                  child: RecordAndPlayScreen(RecordInputServiceId:RecordInputServiceId),
-                                ),
-                              ],
-                            ):SizedBox(),
-                            hasImageFile?Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Text("Add Image",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: myprimercolor),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                          width: (screenWidth -100) / 4,
-                                          height: (screenWidth -100) / 4,
-                                          child:
-                                          ImageCount>0?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 0,)
-                                            :
-                                          Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black.withOpacity(0.03),
-                                                    spreadRadius: 5,
-                                                    blurRadius: 7,
-                                                    offset: Offset(0, 3), // changes position of shadow
-                                                  ),
-                                                ],
-                                                color: Colors.grey.shade100),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
-                                              child: Image(
-                                                image: AssetImage("assets/images/default_image.png"),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          )
-                                      ),
-
-                                      Container(
-                                          width: (screenWidth -100) / 4,
-                                          height: (screenWidth -100) / 4,
-                                          child:
-                                          ImageCount>1?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index:1)
-                                              :
-                                          Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black.withOpacity(0.03),
-                                                    spreadRadius: 5,
-                                                    blurRadius: 7,
-                                                    offset: Offset(0, 3), // changes position of shadow
-                                                  ),
-                                                ],
-                                                color: Colors.grey.shade100),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
-                                              child: Image(
-                                                image: AssetImage("assets/images/default_image.png"),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          )
-                                      ),
-                                      Container(
-                                          width: (screenWidth -100) / 4,
-                                          height: (screenWidth -100) / 4,
-                                          child: ImageCount>2?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId, index: 2)
-                                              :
-                                          Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black.withOpacity(0.03),
-                                                    spreadRadius: 5,
-                                                    blurRadius: 7,
-                                                    offset: Offset(0, 3), // changes position of shadow
-                                                  ),
-                                                ],
-                                                color: Colors.grey.shade100),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
-                                              child: Image(
-                                                image: AssetImage("assets/images/default_image.png"),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          )),
-                                      Container(
-                                          width: (screenWidth -100) / 4,
-                                          height: (screenWidth -100) / 4,
-                                          child: ImageCount>3?
-                                          CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 3)
-                                              :
-                                          Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black.withOpacity(0.03),
-                                                    spreadRadius: 5,
-                                                    blurRadius: 7,
-                                                    offset: Offset(0, 3), // changes position of shadow
-                                                  ),
-                                                ],
-                                                color: Colors.grey.shade100),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
-                                              child: Image(
-                                                image: AssetImage("assets/images/default_image.png"),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ):SizedBox(),
-                          ],
-                        )
-                        // :Center(child: CircularProgressIndicator()),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height:bodyHeight*0.1 ,),
+                      Text(widget.service.name!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: mysecondarycolor),
                       ),
-                    ),
 
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child:
+                          // !isLoading?
+                          Column(
+                            children: [
+                              buildForm(serviceValues),
+                              hasRecordFile?Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Text("Record Audio",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: myprimercolor),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                    child: RecordAndPlayScreen(RecordInputServiceId:RecordInputServiceId),
+                                  ),
+                                ],
+                              ):SizedBox(),
+                              hasImageFile?Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Text("Add Image",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: myprimercolor),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            child:
+                                            ImageCount>0?
+                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 0,)
+                                              :
+                                            Container(
+                                              width: (screenWidth -100) / 4,
+                                              height: (screenWidth -100) / 4,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black.withOpacity(0.03),
+                                                      spreadRadius: 5,
+                                                      blurRadius: 7,
+                                                      offset: Offset(0, 3), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                  color: Colors.grey.shade100),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20),
+                                                child: Image(
+                                                  image: AssetImage("assets/images/default_image.png"),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            )
+                                        ),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50.0, vertical: 10.0),
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        child:BlocBuilder<ServiceInputCubit,ServiceInputState>(
-                        builder:(context,state) {
-                          return TextButton(
-                            child: Text(
-                              'Confirm',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            style: bs_flatFill(context, myprimercolor),
-                            onPressed: ()  {
-                              BlocProvider.of<ServiceInputCubit>(context)
-                                  .loadServiceValues(serviceInputs,serviceValues,ImageInputServiceId);
-                              // serviceInputs.forEach((element) {
-                              //   print(element.input?.icon != null? true:false);
-                              // });
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      SelectExpert(serviceId: widget.service.id as int),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                                        Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            child:
+                                            ImageCount>1?
+                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index:1)
+                                                :
+                                            Container(
+                                              width: (screenWidth -100) / 4,
+                                              height: (screenWidth -100) / 4,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black.withOpacity(0.03),
+                                                      spreadRadius: 5,
+                                                      blurRadius: 7,
+                                                      offset: Offset(0, 3), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                  color: Colors.grey.shade100),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20),
+                                                child: Image(
+                                                  image: AssetImage("assets/images/default_image.png"),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            )
+                                        ),
+                                        Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            child: ImageCount>2?
+                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId, index: 2)
+                                                :
+                                            Container(
+                                              width: (screenWidth -100) / 4,
+                                              height: (screenWidth -100) / 4,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black.withOpacity(0.03),
+                                                      spreadRadius: 5,
+                                                      blurRadius: 7,
+                                                      offset: Offset(0, 3), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                  color: Colors.grey.shade100),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20),
+                                                child: Image(
+                                                  image: AssetImage("assets/images/default_image.png"),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            )),
+                                        Container(
+                                            width: (screenWidth -100) / 4,
+                                            height: (screenWidth -100) / 4,
+                                            child: ImageCount>3?
+                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 3)
+                                                :
+                                            Container(
+                                              width: (screenWidth -100) / 4,
+                                              height: (screenWidth -100) / 4,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black.withOpacity(0.03),
+                                                      spreadRadius: 5,
+                                                      blurRadius: 7,
+                                                      offset: Offset(0, 3), // changes position of shadow
+                                                    ),
+                                                  ],
+                                                  color: Colors.grey.shade100),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20),
+                                                child: Image(
+                                                  image: AssetImage("assets/images/default_image.png"),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ):SizedBox(),
+                            ],
+                          )
+                          // :Center(child: CircularProgressIndicator()),
                         ),
                       ),
-                    ),
-                  ],
+
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50.0, vertical: 10.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          child:BlocBuilder<ServiceInputCubit,ServiceInputState>(
+                          builder:(context,state) {
+                            return TextButton(
+                              child: Text(
+                                'Confirm',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              style: bs_flatFill(context, myprimercolor),
+                              onPressed: ()
+                              {
+                              if (_formKey.currentState!.validate()) {
+
+                                BlocProvider.of<ServiceInputCubit>(context)
+                                    .loadServiceValues(serviceInputs,serviceValues,ImageInputServiceId);
+
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SelectExpert(serviceId: widget.service.id as int),
+                                  ),
+                                );
+                              }
+                              },
+                            );
+                          },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
