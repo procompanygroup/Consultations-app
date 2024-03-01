@@ -92,8 +92,8 @@ Future<Service?> saveWithValues({
     required int clientId,
     required int expertId,
     required int serviceId,
-  required int imageInputServiceId,
-  required List<ServiceValue> serviceValues,
+  required int? imageInputServiceId,
+  required List<ServiceValue>? serviceValues,
   AudioFile? audioFile,
   List<String?>? serviceImages
   // File? image1,
@@ -106,6 +106,7 @@ Future<Service?> saveWithValues({
      final  inputsValues =List<APIInputValue>.empty(growable: true);
     APIInputValue inputValue ;
 
+    if(serviceValues != null)
   serviceValues.forEach((serviceVal) {
     inputValue = APIInputValue( inputservice_id: serviceVal.inputservice_id,value: serviceVal.value);
     inputsValues.add( inputValue);
