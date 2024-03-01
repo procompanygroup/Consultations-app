@@ -135,12 +135,31 @@ class User {
         'client/deleteaccount',
         data: data,
       );
-      print(response.statusCode);
-      print(response.data);
+
       if (response.statusCode == 200) {
         return response.data;
       } else {
         return throw Exception();
       }
+  }
+
+  Future<String?> ChangeBalance({  required int clientId,required int pointId, required int points}) async {
+
+    var data = json.encode({
+      "client_id": clientId,
+      "points": points,
+      "point_id": pointId,
+    });
+    var response = await dioManager.dio.post(
+      'client/changebalance',
+      data: data,
+    );
+    print(response.statusCode);
+    print(response.data);
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      return throw Exception();
+    }
   }
 }
