@@ -136,7 +136,8 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                     .where((element) => element.id == _selectedService)
                     .length >
                 0)
-          listWidget.add(GestureDetector(
+          listWidget.add(
+              GestureDetector(
               onTap: () async {
 
                 setState(() {
@@ -166,7 +167,8 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
 
 
               },
-              child: Container(
+              child:
+              Container(
                 decoration: BoxDecoration(
                   // border: Border.all(color: myprimercolor,width: 2),
                   borderRadius: BorderRadius.circular(35),
@@ -316,7 +318,9 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                     ),
                   ],
                 ),
-              )));
+              )
+              ))
+        ;
       });
       return StaggeredGrid.count(
           crossAxisCount: 2,
