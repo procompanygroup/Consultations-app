@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rouh_app_experts/mystyle/constantsColors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rouh_app_experts/screens/orders/main_orders_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
@@ -22,13 +23,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     List<Color> colorBorder = [
-      Color(0xff015DAC),
+      //Color(0xff015DAC),
+      Colors.transparent,
       Colors.transparent,
       Colors.transparent,
       Colors.transparent
     ];
     const List<Widget> _pages = <Widget>[
-      Text("Page1"),
+      MainOrdersScreen(),
       Text("Page2"),
       Text("Page3"),
       Text("Page4"),
