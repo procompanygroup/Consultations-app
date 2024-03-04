@@ -3,12 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/models/service_input_model.dart';
 
+import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../bloc/audio_file/audio_file_cubit.dart';
 import '../../bloc/service_inputs/service_input_cubit.dart';
 import '../../constants/global_variable.dart';
 import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../models/service_value_model.dart';
+import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_image_picker.dart';
@@ -38,6 +40,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   Service service = Service();
   List<ServiceInput> serviceInputs = <ServiceInput>[];
   List<ServiceValue> serviceValues = <ServiceValue>[];
+  User user = User();
 
   @override
   void initState() {
@@ -46,6 +49,8 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
 
     fillServiceInputList();
     serviceImages = [null,null,null,null];
+
+    user = context.read<UserInformationCubit>().state.fetchedPerson!;
   }
 
   Future<void> fillServiceInputList() async {
