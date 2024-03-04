@@ -108,8 +108,11 @@ Future<Service?> saveWithValues({
 
     if(serviceValues != null)
   serviceValues.forEach((serviceVal) {
-    inputValue = APIInputValue( inputservice_id: serviceVal.inputservice_id,value: serviceVal.value);
-    inputsValues.add( inputValue);
+    if(serviceVal.value != null) {
+      inputValue = APIInputValue(
+          inputservice_id: serviceVal.inputservice_id, value: serviceVal.value);
+      inputsValues.add(inputValue);
+    }
       });
 
 var jsonInputs = jsonEncode(inputsValues);
