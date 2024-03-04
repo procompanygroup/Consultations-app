@@ -48,7 +48,7 @@ class Input {
   String? type;
   String? tooltipe;
   String? icon;
-  int? ispersonal;
+  bool? ispersonal;
   int? imageCount;
   List<InputValues>? inputValues;
 
@@ -57,17 +57,31 @@ class Input {
 
   }
 
-  factory Input.fromJson(dynamic parsedJson) =>
-      Input(id: parsedJson['id'],
-        name: parsedJson['name'],
-        type: parsedJson['type'],
-        tooltipe: parsedJson['tooltipe'] ,
-        icon: parsedJson['icon'] ,
-        ispersonal: parsedJson['ispersonal'],
+  factory Input.fromJson(dynamic parsedJson) {
+    var ispersonalTmp;
+    var inputValuesTmp;
+
+    if (parsedJson['ispersonal'] == null)
+      ispersonalTmp = false;
+    else
+      ispersonalTmp = parsedJson['ispersonal'] == 0 ? false : true;
+
+      if (parsedJson["inputvalues"] != null) {
+        inputValuesTmp =
+            convertListToModel(InputValues.fromJson, parsedJson["inputvalues"]);
+      }
+
+      return Input(id: parsedJson['id'],
+          name: parsedJson['name'],
+          type: parsedJson['type'],
+          tooltipe: parsedJson['tooltipe'],
+          icon: parsedJson['icon'],
+          ispersonal: ispersonalTmp,
           imageCount: parsedJson['image_count'],
-        inputValues : convertListToModel(InputValues.fromJson, parsedJson["inputvalues"],)
+          inputValues: inputValuesTmp
       );
 
+  }
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
       T Function(Map<String, dynamic> map) fromJson, List data) {

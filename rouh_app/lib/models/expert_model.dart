@@ -81,7 +81,7 @@ print("dina +$parsedJson['is_favorite']");
     if(parsedJson['answer_speed'] != null) {
       tmpAnswerSpeed = double.tryParse( parsedJson['answer_speed']);
     }
-    if(parsedJson['is_favorite'] != null)
+    if(parsedJson['is_favorite'] == null)
       tmpFav = false;
      else if(parsedJson['is_favorite'] != null) {
       tmpFav = parsedJson['is_favorite'] == 0 ? false : true;
