@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/models/service_input_model.dart';
 
+import '../../bloc/audio_file/audio_file_cubit.dart';
 import '../../bloc/service_inputs/service_input_cubit.dart';
 import '../../constants/global_variable.dart';
 import '../../controllers/globalController.dart';
@@ -732,17 +733,43 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                               style: bs_flatFill(context, myprimercolor),
                               onPressed: ()
                               {
+                                bool canSave = true;
                               if (_formKey.currentState!.validate()) {
-
+                                if(hasRecordFile)
+                                {
+                                    var audio = context.read<AudioFileCubit>().state.audioFile;
+                                    if(audio == null)
+                                      {
+                                        canSave = false;
+                                        //yasin
+                                        //record is mandatory
+                                      }
+                                }
+                                if(hasImageFile && canSave)
+                                  {
+                                        var contain = serviceImages.contains( (element) => element != null);
+                                       // print(contain);
+                                        if (contain == false)
+                                          {
+                                              canSave = false;
+                                            //yasin
+                                            //image is mandatory
+                                          }
+                                  }
+                              if(canSave) {
                                 BlocProvider.of<ServiceInputCubit>(context)
-                                    .loadServiceValues(serviceInputs,serviceValues,ImageInputServiceId);
+                                    .loadServiceValues(
+                                    serviceInputs, serviceValues,
+                                    ImageInputServiceId);
 
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        SelectExpert(serviceId: widget.service.id as int),
+                                        SelectExpert(serviceId: widget.service
+                                            .id as int),
                                   ),
                                 );
+                              }
                               }
                               },
                             );
@@ -830,7 +857,6 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
       ),
     );
   }
-
 
 }
 
