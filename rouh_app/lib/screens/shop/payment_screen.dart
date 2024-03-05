@@ -29,8 +29,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    setState(() {
+    setState(()  {
+      // paymentIntent = await createPaymentIntent(widget.price, 'USD');
       user = context.read<UserInformationCubit>().state.fetchedPerson!;
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        makePayment(widget.price);
+        createPaymentIntent(widget.price, 'USD');
+      });
     });
     super.initState();
   }
@@ -45,16 +50,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<UserInformationCubit,UserInformationState>(
-            builder:(context,state) {
-                  return TextButton(
-                  child: const Text('Make Payment'),
-                  onPressed: () async {
-                  await makePayment(widget.price );
-                  },
-                  );
-                  },
-            ),
+            //BlocBuilder<UserInformationCubit,UserInformationState>(
+            //builder:(context,state) {
+                  // return TextButton(
+                  // child: const Text('Make Payment'),
+                  // onPressed: () async {
+                  // await makePayment(widget.price );
+                  // },
+                  // );
+                //  },
+            //),
           ],
         ),
       ),
@@ -182,17 +187,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           },
         ),
       );
+      //Make post request to Stripe
       var response = await dio.post('https://api.stripe.com/v1/payment_intents',data:body);
       print(response.data);
-      //Make post request to Stripe
-      // var response = await http.post(
-      //   Uri.parse('https://api.stripe.com/v1/payment_intents'),
-      //   headers: {
-      //     'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
-      //     'Content-Type': 'application/x-www-form-urlencoded'
-      //   },
-      //   body: body,
-      // );
+
       return json.decode(response.data);
     } catch (err) {
       throw Exception(err.toString());
@@ -200,7 +198,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   calculateAmount(String amount) {
-    final calculatedAmout = (int.parse(amount)) * 100;
-    return calculatedAmout.toString();
+    final calculatedAmout = (double.parse(amount)) * 100;
+    return calculatedAmout.toInt().toString();
   }
 }
