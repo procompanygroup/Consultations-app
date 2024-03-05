@@ -738,29 +738,37 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                               style: bs_flatFill(context, myprimercolor),
                               onPressed: ()
                               {
-                                bool canSave = true;
+                                bool canSave = false;
                               if (_formKey.currentState!.validate()) {
                                 if(hasRecordFile)
                                 {
                                     var audio = context.read<AudioFileCubit>().state.audioFile;
-                                    if(audio == null)
+                                    if(audio != null)
                                       {
-                                        canSave = false;
+                                        canSave = true;
                                         //yasin
                                         //record is mandatory
                                       }
                                 }
                                 if(hasImageFile && canSave)
                                   {
-                                        var contain = serviceImages.contains( (element) => element != null);
-                                       // print(contain);
-                                        if (contain == false)
-                                          {
-                                              canSave = false;
-                                            //yasin
-                                            //image is mandatory
-                                          }
+                                    for (var p in serviceImages ?? []) {
+                                      if(p != null) {
+                                        canSave = true;
+                                        break;
+                                      }
+                                    }
+
+                                       //  var contain = serviceImages.contains( (element) => element != null);
+                                       // // print(contain);
+                                       //  if (contain == false)
+                                       //    {
+                                       //        canSave = false;
+                                       //      //yasin
+                                       //      //image is mandatory
+                                       //    }
                                   }
+                                print(canSave);
                               if(canSave) {
                                 BlocProvider.of<ServiceInputCubit>(context)
                                     .loadServiceValues(

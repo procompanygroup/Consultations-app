@@ -120,7 +120,7 @@ var jsonInputs = jsonEncode(inputsValues);
        "client_id": clientId,
        "expert_id": expertId,
        "service_id": serviceId,
-       "valueServices":jsonInputs
+       "valueServices":inputsValues
      });
 
     var response = await dioManager.dio.post('client/service/savewithvalues',data: data );
@@ -147,7 +147,7 @@ var jsonInputs = jsonEncode(inputsValues);
             'record': audioFile?.audioFile?.path
           });
 
-             response = await dioManager.dio.post('client/service/savewithvalues',data: data );
+             response = await dioManager.dio.post('client/service/uploadfilesvalue',data: formData );
              print(response.statusCode);
         }
       //message; no balance
