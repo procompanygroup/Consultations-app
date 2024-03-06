@@ -36,7 +36,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         id: 1,
         title: "Duis aute irure dolor",
         state: "close",
-        created_at: DateTime.now(),
+        created_date: DateTime.now(),
         answer_speed: 45.6,
         rate: 12,
       ),
@@ -44,7 +44,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         id: 2,
         title: "Duis aute irure dolor",
         state: "waitConfirm",
-        created_at: DateTime.now(),
+        created_date: DateTime.now(),
         answer_speed: 0,
         rate: 0,
       ),
@@ -52,7 +52,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         id: 3,
         title: "Duis aute irure dolor",
         state: "rejected",
-        created_at: DateTime.now(),
+        created_date: DateTime.now(),
         answer_speed: 0,
         rate: 0,
       ),
@@ -60,7 +60,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         id: 4,
         title: "Duis aute irure dolor",
         state: "waitResponce",
-        created_at: DateTime.now(),
+        created_date: DateTime.now(),
         answer_speed: 0,
         rate: 0,
       ),
@@ -543,9 +543,9 @@ class ClassOrder{
   int id;
   String title;
   String state;
-  DateTime created_at;
+  DateTime created_date;
   double answer_speed;
   double rate;
 
-  ClassOrder({ required this.id, required this.title, required this.state, required this.created_at,required this.answer_speed,required this.rate});
+  ClassOrder({ required this.id, required this.title, required this.state, required this.created_date,required this.answer_speed,required this.rate});
 }
