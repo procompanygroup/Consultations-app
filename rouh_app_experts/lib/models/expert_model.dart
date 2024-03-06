@@ -11,9 +11,10 @@ class Expert {
   String? expert_name;
   String? first_name;
   String? last_name;
+  String? full_name;
   String? email;
   String? mobile;
-  String? nationality;
+  //String? nationality;
   DateTime? birthdate;
   int? gender;
   String? marital_status;
@@ -27,10 +28,11 @@ class Expert {
   int? call_cost;
   double? answer_speed;
   String? image;
-  bool? isFavorite;
-  List<ExpertService>? expert_services;
-  List<Service>? services;
-  List<ExpertComment>? selectedServices;
+  //bool? isFavorite;
+ // List<ExpertService>? expert_services;
+  //List<Service>? services;
+  //List<ExpertComment>? selectedServices;
+
   DioManager dioManager = DioManager();
 
   //Constructor
@@ -38,33 +40,34 @@ class Expert {
       { this.id, this.expert_name,
         this.first_name,
         this.last_name,
-        this.email, this.mobile, this.nationality, this.birthdate, this.gender, this.marital_status,
-        this.is_active,this.points_balance,this.cash_balance,this.cash_balance_todate,this.rates,this.record,this.desc,
-        this.call_cost,this.answer_speed, this.image,this.isFavorite, this.expert_services,this.services,this.selectedServices});
+        this.full_name,
+        this.email, this.mobile,  this.birthdate, this.gender, this.marital_status,
+        this.is_active,this.points_balance,this.cash_balance,this.cash_balance_todate,this.rates,
+        this.record,this.desc,
+        this.call_cost,this.answer_speed, this.image});
 
   factory Expert.fromJson(Map<String, dynamic> parsedJson) {
-    var tmpExpertServices;
-    var tmpServices;
-    var tmpSelectedServices;
+    // var tmpExpertServices;
+    // var tmpServices;
+    // var tmpSelectedServices;
     var tmpBirthDate;
     var tmpCashBalance;
     var tmpCashBalanceTodate;
     var tmpRates;
     var tmpAnswerSpeed;
-    var tmpFav;
-print("dina +$parsedJson['is_favorite']");
-    if(parsedJson["experts_services"] != null)
-    {
-      tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
-    }
-    if(parsedJson["services"] != null)
-    {
-      tmpServices = convertListToModel(Service.fromJson, parsedJson["services"]);
-    }
-    if(parsedJson["selectedservices"] != null)
-    {
-      tmpSelectedServices = convertListToModel(ExpertComment.fromJson, parsedJson["selectedservices"]);
-    }
+
+    // if(parsedJson["experts_services"] != null)
+    // {
+    //   tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
+    // }
+    // if(parsedJson["services"] != null)
+    // {
+    //   tmpServices = convertListToModel(Service.fromJson, parsedJson["services"]);
+    // }
+    // if(parsedJson["selectedservices"] != null)
+    // {
+    //   tmpSelectedServices = convertListToModel(ExpertComment.fromJson, parsedJson["selectedservices"]);
+    // }
     if(parsedJson["birthdate"] != null)
     {
       tmpBirthDate = DateTime.tryParse(parsedJson['birthdate']);
@@ -81,18 +84,14 @@ print("dina +$parsedJson['is_favorite']");
     if(parsedJson['answer_speed'] != null) {
       tmpAnswerSpeed = double.tryParse( parsedJson['answer_speed']);
     }
-    if(parsedJson['is_favorite'] != null)
-      tmpFav = false;
-     else if(parsedJson['is_favorite'] != null) {
-      tmpFav = parsedJson['is_favorite'] == 0 ? false : true;
-      //tmpFav = bool.tryParse( parsedJson['is_favorite'].toString());
-    }
+
 
     return Expert(
       id: parsedJson['id'],
       expert_name: parsedJson['user_name'],
       first_name: parsedJson['first_name'],
       last_name: parsedJson['last_name'],
+      full_name: parsedJson['full_name'],
       mobile: parsedJson['mobile'],
       birthdate: tmpBirthDate,
       email: parsedJson['email'],
@@ -100,7 +99,6 @@ print("dina +$parsedJson['is_favorite']");
       image: parsedJson['image'],
       is_active: parsedJson['is_active'],
       marital_status: parsedJson['marital_status'],
-      nationality: parsedJson['nationality'],
       call_cost: parsedJson['call_cost'],
       answer_speed: tmpAnswerSpeed,
       cash_balance:tmpCashBalance,
@@ -109,33 +107,32 @@ print("dina +$parsedJson['is_favorite']");
       record:  parsedJson['record'],
       points_balance:  parsedJson['points_balance'],
       rates:  tmpRates,
-      isFavorite: tmpFav,
-      expert_services: tmpExpertServices,
-      services: tmpServices,
-      selectedServices: tmpSelectedServices,
+      //expert_services: tmpExpertServices,
+      //services: tmpServices,
+      //selectedServices: tmpSelectedServices,
     );
   }
 
-  Future<List<Expert>> GetByServiceId({
-    required int serviceId,
+  Future<Expert?> GetExpert({
+    required String userName,
+    required String password,
   }) async {
     var data = json.encode({
-      "id": serviceId
+      "user_name": userName,
+      "password": password
     });
 
-    var response = await dioManager.dio.post('client/expert/getexpertsbyserviceid',
+    var response = await dioManager.dio.post('expert/getexpert',
       data: data,
     );
 
-    List<Expert> experts;
     if (response.statusCode == 200) {
-      experts = convertListToModel<Expert>(Expert.fromJson,jsonDecode(response.data));
-
+      return Expert.fromJson(json.decode(response.data));
+      // return User.fromJson(response.data);
     }
     else {
-      experts = List<Expert>.empty();
+      return throw Exception();
     }
-    return experts;
   }
 
 
