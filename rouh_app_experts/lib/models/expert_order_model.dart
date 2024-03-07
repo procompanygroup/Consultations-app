@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:rouh_app_experts/models/user_model.dart';
+
 import '../controllers/dio_manager_controller.dart';
 
 class ExpertOrder {
@@ -17,7 +19,8 @@ class ExpertOrder {
   double? answerSpeed;
   String? title;
   String? answerState;
-
+  User? client;
+  List<ServiceValue>? serviceValues;
 
   DioManager dioManager = DioManager();
 
@@ -35,7 +38,9 @@ class ExpertOrder {
         this.rate,
         this.rateDate,
         this.title,
-      this.answerSpeed});
+      this.answerSpeed,
+      this.client,
+      this.serviceValues});
 
 
   factory ExpertOrder.fromJson(Map<String, dynamic> parsedJson) {
@@ -44,6 +49,8 @@ class ExpertOrder {
     var tmpRateDate;
     var tmpOrderAdminDate;
     var tmpAnswerSpeed;
+    var tmpClient;
+    var tmpServiceValues;
 
     if(parsedJson["order_date"] != null)
     {
@@ -59,6 +66,12 @@ class ExpertOrder {
     }
     if(parsedJson['answer_speed'] != null) {
       tmpAnswerSpeed = double.tryParse( parsedJson['answer_speed']);
+    }
+    if(parsedJson['client'] != null) {
+      tmpClient = User.fromJson( parsedJson['client']);
+    }
+    if(parsedJson['valueservices'] != null) {
+      tmpServiceValues = convertListToModel(ServiceValue.fromJson, parsedJson['valueservices']);
     }
 
 
@@ -76,6 +89,8 @@ class ExpertOrder {
       answerSpeed: tmpAnswerSpeed,
       title: parsedJson['title'],
       answerState: parsedJson['answer_state'],
+      client: tmpClient,
+      serviceValues: tmpServiceValues,
     );
   }
 
@@ -98,14 +113,87 @@ class ExpertOrder {
 
     }
     else {
-      orders = List<ExpertOrder>.empty();;
+      orders = List<ExpertOrder>.empty();
     }
     return orders;
   }
 
+  Future<ExpertOrder> GetOrderById({
+    required int selectedServiceId,
+  }) async {
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId
+    });
+
+    var response = await dioManager.dio.post('expert/getorderbyid',
+      data: data,
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print((response.data));
+      return ExpertOrder.fromJson(json.decode(response.data));
+
+    }
+    else {
+      return throw Exception();
+    }
+  }
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
       T Function(Map<String, dynamic> map) fromJson, List data) {
     return data.map((e) => fromJson((e as Map).cast())).toList();
+  }
+}
+
+class ServiceValue {
+int? id;
+int? selectedServiceId;
+int? inputServiceId;
+String? name;
+String? type;
+String? tooltipe;
+bool? isPersonal;
+int? imageCount;
+String? svgPath;
+String? value;
+String? icon;
+
+//Constructor
+  ServiceValue(
+    { this.id,
+      this.selectedServiceId,
+      this.inputServiceId,
+      this.name,
+      this.type,
+      this.tooltipe,
+      this.isPersonal,
+      this.imageCount,
+      this.svgPath,
+      this.value,
+      this.icon,
+  });
+
+  factory ServiceValue.fromJson(dynamic parsedJson) {
+
+    var tmpIsPersonal;
+    if (parsedJson['ispersonal'] == null)
+      tmpIsPersonal = false;
+    else
+      tmpIsPersonal = parsedJson['ispersonal'] == 0 ? false : true;
+
+    return ServiceValue(
+      id: parsedJson['id'],
+      selectedServiceId: parsedJson['selectedservice_id'],
+      inputServiceId: parsedJson['inputservice_id'],
+      isPersonal: tmpIsPersonal,
+      tooltipe: parsedJson['tooltipe'],
+      type: parsedJson['type'],
+      name: parsedJson['name'],
+      value: parsedJson['value_convert'],
+      imageCount: parsedJson['image_count'],
+      svgPath: parsedJson['svg_path'],
+      icon: parsedJson['icon'],
+    );
   }
 }
