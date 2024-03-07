@@ -135,16 +135,31 @@ var jsonInputs = jsonEncode(inputsValues);
       else if(int.parse(service.message as String) > 0)
         {
           print("upload");
+          var imageFile1 = serviceImages![0] ==null? null : await MultipartFile.fromFile(
+              serviceImages![0]!,
+          );
+          var imageFile2 = serviceImages![1] ==null? null : await MultipartFile.fromFile(
+              serviceImages![1]!,
+          );
+          var imageFile3 = serviceImages![2] ==null? null : await MultipartFile.fromFile(
+              serviceImages![2]!,
+          );
+          var imageFile4 = serviceImages![3] ==null? null : await MultipartFile.fromFile(
+              serviceImages![3]!,
+          );
+          var recordFile = audioFile?.audioFile ==null? null : await MultipartFile.fromFile(
+            audioFile!.audioFile!.path,
+          );
           //upload audio and images
           FormData formData = FormData.fromMap({
             "selectedservice_id" : service.message,
             "inputservice_id": imageInputServiceId,
             "record_inputservice_id": audioFile != null? audioFile.serviceInputId: null,
-            "image_1": serviceImages?[0],
-            "image_2": serviceImages?[1],
-            "image_3": serviceImages?[2],
-            "image_4": serviceImages?[3],
-            'record': audioFile?.audioFile?.path
+            "image_1": imageFile1,
+            "image_2": imageFile2,
+            "image_3": imageFile3,
+            "image_4": imageFile4,
+            'record': recordFile
           });
 
              response = await dioManager.dio.post('client/service/uploadfilesvalue',data: formData );
