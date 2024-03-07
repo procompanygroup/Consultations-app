@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../controllers/dio_manager_controller.dart';
+import 'auth_model.dart';
 import 'expert_service_model.dart';
 import 'service_model.dart';
 import 'comment_model.dart';
@@ -111,6 +112,29 @@ class Expert {
       //services: tmpServices,
       //selectedServices: tmpSelectedServices,
     );
+  }
+
+
+  Future<String?> login({
+    required String userName,
+    required String password,
+  }) async {
+    var data = json.encode({
+      "user_name": userName,
+      "password": password
+    });
+
+    var response = await dioManager.dio.post('loginexpert',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return AuthModel.fromJson(json.decode(response.data)).token;
+    }
+    else {
+      return "";
+    }
+
   }
 
   Future<Expert?> GetExpert({

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/expert/expert_information_cubit.dart';
 import '../../models/country.dart';
+import '../../models/expert_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../main_navigation_screen.dart';
@@ -237,33 +240,60 @@ class _LoginFormState extends State<LoginForm> {
                   child: Container(
                     width: double.infinity,
                     height: 50,
-                    child: TextButton(
-                        child: Text(
-                          'LOGIN',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        style: bs_flatFill(context, myprimercolor),
-                        // onPressed: () {},
-                        onPressed: isLoading
-                            ? () {}
-                            : () async {
-                                if (_formKey.currentState!.validate()) {
+                    child: BlocBuilder<ExpertInformationCubit,ExpertInformationState>(
+                    builder:(context,state) {
+                      return TextButton(
+                          child: Text(
+                            'LOGIN',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          style: bs_flatFill(context, myprimercolor),
+                          // onPressed: () {},
+                          onPressed: isLoading
+                              ? () {}
+                              : () async {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              var expert = Expert();
+                              var token = await expert.login(
+                                  userName: _userName, password: _userPassword);
+
+                              // store token
+                              if (token != "") {
+                                const storage = FlutterSecureStorage();
+                                // for write
+                                await storage.write(
+                                    key: 'token',
+                                    value: token); // Save token
+                                // get user Info
+                                var userInfo = await expert.GetExpert(
+                                    userName: _userName,
+                                    password: _userPassword);
+                                BlocProvider.of<ExpertInformationCubit>(
+                                    context)
+                                    .addProfile(userInfo!);
+
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            MainNavigationScreen()),
+                                        (route) =>
+                                    route.settings.name ==
+                                        '/mainNavigation');
+                              }
+                              else
+                                {
                                   setState(() {
-                                    isLoading = true;
+                                    isLoading = false;
                                   });
-
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              MainNavigationScreen()),
-                                          (route) =>
-                                      route.settings.name ==
-                                          '/mainNavigation');
-
-
                                 }
-                              }),
+                            }
+                          });
+                    },
+                    ),
                   ),
                 ),
               ],
