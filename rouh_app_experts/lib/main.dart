@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/expert/expert_information_cubit.dart';
 import 'mystyle/constantsColors.dart';
 import 'screens/main_navigation_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
-  runApp(const MyApp());
+  // runApp(const MyApp());
+
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<ExpertInformationCubit>(
+        create: (BuildContext context) => ExpertInformationCubit(),
+      ),
+      // BlocProvider<ServiceInputCubit>(
+      //   create: (BuildContext context) => ServiceInputCubit(),
+      // ),
+
+    ],
+    child: MyApp(),
+  ), );
 }
 
 class MyApp extends StatelessWidget {
