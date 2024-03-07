@@ -39,28 +39,12 @@ class ExpertOrder {
 
 
   factory ExpertOrder.fromJson(Map<String, dynamic> parsedJson) {
-    // var tmpExpertServices;
-    // var tmpServices;
-    // var tmpSelectedServices;
+
     var tmpOrderDate;
     var tmpRateDate;
     var tmpOrderAdminDate;
-    var tmpCashBalanceTodate;
-    var tmpRates;
     var tmpAnswerSpeed;
 
-    // if(parsedJson["experts_services"] != null)
-    // {
-    //   tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
-    // }
-    // if(parsedJson["services"] != null)
-    // {
-    //   tmpServices = convertListToModel(Service.fromJson, parsedJson["services"]);
-    // }
-    // if(parsedJson["selectedservices"] != null)
-    // {
-    //   tmpSelectedServices = convertListToModel(ExpertComment.fromJson, parsedJson["selectedservices"]);
-    // }
     if(parsedJson["order_date"] != null)
     {
       tmpOrderDate = DateTime.tryParse(parsedJson['order_date']);
@@ -93,5 +77,35 @@ class ExpertOrder {
       title: parsedJson['title'],
       answerState: parsedJson['answer_state'],
     );
+  }
+
+  Future<List<ExpertOrder>> GetOrders({
+    required int expertId,
+  }) async {
+    var data = json.encode({
+      "expert_id": expertId
+    });
+
+    var response = await dioManager.dio.post('expert/getorders',
+      data: data,
+    );
+
+    List<ExpertOrder> orders;
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print((response.data));
+      orders = convertListToModel<ExpertOrder>(ExpertOrder.fromJson,jsonDecode(response.data));
+
+    }
+    else {
+      orders = List<ExpertOrder>.empty();;
+    }
+    return orders;
+  }
+
+  // used  for convert a List of value
+  static List<T> convertListToModel<T>(
+      T Function(Map<String, dynamic> map) fromJson, List data) {
+    return data.map((e) => fromJson((e as Map).cast())).toList();
   }
 }
