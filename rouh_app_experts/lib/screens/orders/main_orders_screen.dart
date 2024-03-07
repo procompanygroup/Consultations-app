@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rouh_app_experts/widgets/rating_stars.dart';
 
+import '../../controllers/globalController.dart';
+import '../../models/expert_order_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_appbar.dart';
 
@@ -13,11 +15,40 @@ class MainOrdersScreen extends StatefulWidget {
 }
 
 class _MainOrdersScreenState extends State<MainOrdersScreen> {
-  bool isLoadingOrder = false;
+  bool isLoadingExpertOrders = true;
   String _selectedState = "all";
+
   List<String> stateList = [
    "all", "close", "waitConfirm" ,"rejected" ,"waitResponce"
   ];
+
+  List<ExpertOrder> expertOrderList = <ExpertOrder>[];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fillExpertOrderList();
+
+  }
+
+  Future<void> fillExpertOrderList() async {
+
+    // dina pass expert id
+    globalExpertOrder.GetOrders(expertId: 1)
+        .then((response) {
+      setState(() {
+        print(response);
+        expertOrderList =response;
+        isLoadingExpertOrders =false;
+        // print("Test:" + isLoading.toString());
+
+      });
+    });
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +59,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
     );
 
 
-
+/*
     String _selectedOrder = "Order_1";
     List<ClassOrder> orderList = [
       // close - waitConfirm -rejected - waitResponce
@@ -68,11 +99,11 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
 
 
     ];
-
+*/
     _buildStates(List<String> states) {
-      List<Widget> serviceWidgetList = [];
+      List<Widget> statesWidgetList = [];
       states.forEach((String state) {
-        serviceWidgetList.add(
+        statesWidgetList.add(
           GestureDetector(
             onTap: () {
               setState(() {
@@ -109,38 +140,16 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         );
       });
       return Row(
-        children: serviceWidgetList,
+        children: statesWidgetList,
       );
     }
-
-    _buildOrders(List<ClassOrder> orders) {
+    _buildOrders(List<ExpertOrder> orders) {
       List<Widget> orderWidgetList = [];
-      orders.forEach((ClassOrder order) {
+      orders.forEach((ExpertOrder order) {
         orderWidgetList.add(
           GestureDetector(
             onTap: () async {
-
-              print(order.state);
-              /*
-              setState(() {
-                isLoadingExpertInfo = true;
-              });
-              var expertInfo =  await globalExpert.GetExpertWithComments(expertId: expert.id!);
-              print("expertInfo != null:" + (expertInfo != null).toString());
-              setState(() {
-                isLoadingExpertInfo = false;
-              });
-
-              if(expertInfo != null)
-              {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ExpertInfo(expert: expertInfo),
-                  ),
-                );
-              }
-*/
+              print(order.formState);
             },
             child: Column(
               children: [
@@ -199,7 +208,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                               SizedBox(height: 10,),
                               // Row 2
                               // close State
-                              order.state == "close" ?
+                              order.formState == "close" ?
                               Row(
                                 children: [
                                   Row(
@@ -214,7 +223,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.state ,
+                                        order.formState! ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade300,
@@ -240,7 +249,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                             ),
                                             SizedBox(width: 5,),
                                             Text(
-                                              order.answer_speed.toString(),
+                                              order.answerSpeed.toString(),
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: mysecondarycolor,
@@ -249,13 +258,13 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                             ),
                                           ],
                                         ),
-                                        RatingStars(rating: order.rate, size: 12)
+                                        RatingStars(rating:double.parse(order.rate.toString()) , size: 12)
                                       ],
                                     ),
                                   ),
                                 ],
                               ):
-                              order.state == "waitConfirm" ?
+                              order.formState == "waitConfirm" ?
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -271,7 +280,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.state ,
+                                        order.formState! ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: myprimercolor,
@@ -300,7 +309,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   ),
                                 ],
                               )
-                              :order.state == "rejected" ?
+                                  :order.formState == "rejected" ?
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -316,7 +325,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.state ,
+                                        order.formState! ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: mysecondarycolor,
@@ -345,7 +354,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   ),
                                 ],
                               )
-                              :Row(
+                                  :Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
@@ -360,7 +369,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.state ,
+                                        order.formState! ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: myprimercolor,
@@ -396,9 +405,9 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                             padding: const EdgeInsets.only(top: 2.5),
                             child: SvgPicture.asset(
                               // close - waitConfirm -rejected - waitResponce
-                              order.state == "close" ?"assets/svg/done_check.svg":
-                              order.state == "waitConfirm" ?"assets/svg/wiat_pointInCircle.svg":
-                              order.state == "rejected" ?"assets/svg/rejected_close.svg":
+                              order.formState == "close" ?"assets/svg/done_check.svg":
+                              order.formState == "waitConfirm" ?"assets/svg/wiat_pointInCircle.svg":
+                              order.formState == "rejected" ?"assets/svg/rejected_close.svg":
                               "assets/svg/wait_circle.svg",
                               width: 15,
                               color: mysecondarycolor,
@@ -520,9 +529,9 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                         scrollDirection: Axis.vertical,
                         child: _buildOrders(
                              _selectedState == "all" ||   _selectedState == ""
-                                ?  orderList!
-                                 : orderList!
-                                .where((element) => element.state! == _selectedState)
+                                ?  expertOrderList!
+                                 : expertOrderList!
+                                .where((element) => element.formState! == _selectedState)
                                 .toList()
                             )),
                   )),
@@ -531,7 +540,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
               ),
             ],
           ),
-          if (isLoadingOrder )
+          if (isLoadingExpertOrders)
             Center(child: CircularProgressIndicator()),
         ],
       ),
@@ -539,6 +548,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
   }
 }
 
+/*
 class ClassOrder{
   int id;
   String title;
@@ -549,3 +559,4 @@ class ClassOrder{
 
   ClassOrder({ required this.id, required this.title, required this.state, required this.created_date,required this.answer_speed,required this.rate});
 }
+*/
