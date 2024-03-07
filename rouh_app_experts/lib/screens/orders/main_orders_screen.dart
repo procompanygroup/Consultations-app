@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rouh_app_experts/bloc/expert/expert_information_cubit.dart';
 import 'package:rouh_app_experts/widgets/rating_stars.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../controllers/globalController.dart';
+import '../../models/expert_model.dart';
 import '../../models/expert_order_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_appbar.dart';
@@ -24,18 +27,20 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
 
   List<ExpertOrder> expertOrderList = <ExpertOrder>[];
 
+  late int expertId ;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    expertId = context.read<ExpertInformationCubit>().state.fetchedExpert!.id!;
     fillExpertOrderList();
 
   }
 
   Future<void> fillExpertOrderList() async {
-
-    // dina pass expert id
-    globalExpertOrder.GetOrders(expertId: 1)
+    
+    globalExpertOrder.GetOrders(expertId: expertId)
         .then((response) {
       setState(() {
         print(response);
