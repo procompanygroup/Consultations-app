@@ -15,21 +15,23 @@ import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_image_picker.dart';
 import '../../widgets/record_and_play_screen.dart';
+import '../../widgets/show_dialog.dart';
 import '../shop/purchase_shop_screen.dart';
 import 'select_expert_screen.dart';
 
-
 class ServiceApplicationScreen extends StatefulWidget {
-
   const ServiceApplicationScreen({super.key, required this.service});
+
   final Service service;
 
   @override
-  State<ServiceApplicationScreen> createState() => _ServiceApplicationScreenState();
+  State<ServiceApplicationScreen> createState() =>
+      _ServiceApplicationScreenState();
 }
 
 class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   final _formKey = GlobalKey<FormState>();
+
   // bool isLoading = true;
   bool hasRecordFile = false;
   int RecordInputServiceId = 0;
@@ -48,7 +50,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     super.initState();
 
     fillServiceInputList();
-    serviceImages = [null,null,null,null];
+    serviceImages = [null, null, null, null];
 
     user = context.read<UserInformationCubit>().state.fetchedPerson!;
   }
@@ -83,19 +85,19 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     print(serviceValues![0].inputservice_id);
 */
   }
+
   // Widget buildForm(List<ServiceInput> _serviceInputs, List<ServiceValue> _serviceValues)
-  Widget buildForm(List<ServiceValue> _serviceValues)
-  {
+  Widget buildForm(List<ServiceValue> _serviceValues) {
     List<Widget> inputsWidgetList = [];
     _serviceValues.forEach((ServiceValue serviceValue) {
-      var serviceInput = serviceInputs.firstWhere((element) => element.id ==serviceValue.inputservice_id);
-      if(serviceInput.input?.type == 'record') {
+      var serviceInput = serviceInputs
+          .firstWhere((element) => element.id == serviceValue.inputservice_id);
+      if (serviceInput.input?.type == 'record') {
         setState(() {
           hasRecordFile = true;
           RecordInputServiceId = serviceValue.inputservice_id!;
-
         });
-      } else if(serviceInput.input?.type == 'image') {
+      } else if (serviceInput.input?.type == 'image') {
         setState(() {
           hasImageFile = true;
           ImageInputServiceId = serviceValue.inputservice_id!;
@@ -107,109 +109,136 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
       inputsWidgetList.add(
         Builder(
           builder: (context) {
-            if(serviceInput.input?.type == 'date' && serviceValue.value == "")
+
+            if (serviceInput.input?.type == 'date' &&
+                serviceValue.value == "") {
+              serviceValue.value =
+                  "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}";
+            }
+            if (serviceInput.input?.type == 'bool' && serviceValue.value == "" )
+              serviceValue.value = "False";
+
+
+            if (serviceInput.input!.ispersonal!) {
+              if (serviceInput.input!.name! == "user_name")
+                serviceValue.value = user.user_name;
+              else if (serviceInput.input!.name! == "mobile")
+                serviceValue.value = user.mobile;
+              else if (serviceInput.input!.name! == "nationality")
+                serviceValue.value = user.nationality;
+              else if (serviceInput.input!.name! == "birthdate")
+                serviceValue.value = user.birthdate.toString();
+              else if (serviceInput.input!.name! == "gender")
+                serviceValue.value = user.gender.toString();
+              else if (serviceInput.input!.name! == "marital_status")
+                serviceValue.value = user.marital_status;
+            }
+
+            print(serviceValue.value);
+
+            InputValues? inputValue;
+            if (serviceInput.input?.type == 'list')
               {
-                serviceValue.value =  "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}";
+                 inputValue = serviceInput.input!.inputValues!.where((element) =>element.value == serviceValue.value).firstOrNull;
               }
 
-
-            if(serviceInput.input?.type == 'text')
-              return  Stack(
-          children: [
-            Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-          child:TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ) {
-                      return '';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    serviceValue.value = value;
-                    // print(serviceValue.value);
-                  },
-                  decoration: InputDecoration(
-                      errorStyle: TextStyle(fontSize: 0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey.shade300,
-                          // width: 2.0,
-                        ),
-                      ),
-                      filled: true,
-                      // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
-                      contentPadding: EdgeInsetsDirectional.only(
-                          start: 60, top: 5, end: 10, bottom: 5),
-                      hintStyle: TextStyle(color: Colors.grey),
-                      // labelText: "Country",
-                      hintText: serviceInput.input?.name,
-                      fillColor: Colors.grey.shade50),
-
-                ),
-            ),
-            Positioned(
-              bottom: 0,
-              top: 0,
-              child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                  start: 25,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    serviceInput.input?.icon != null?
-                    Container(
-                      width: 30,
-                      height: 30,
-                      child: SvgPicture.network(
-                        serviceInput.input!.icon!,
-                        width: 30,
-                        height: 30,
-                        color: Colors.grey.shade300,
-                      ),
-                    )
-                   :Icon(
-                  Icons.account_circle,
-                      size: 30,
-                      color: Colors.grey.shade300,
-                  ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: VerticalDivider(
-                        // color: Colors.grey
-                          color: Colors.grey.shade300),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
-        );
-            else if(serviceInput.input?.type == 'date')
+            if (serviceInput.input?.type == 'text')
               return Stack(
                 children: [
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                      initialValue: serviceValue.value,
+                      onChanged: (value) {
+                        serviceValue.value = value;
+                        // print(serviceValue.value);
+                      },
+                      decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade300,
+                              // width: 2.0,
+                            ),
+                          ),
+                          filled: true,
+                          // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
+                          contentPadding: EdgeInsetsDirectional.only(
+                              start: 60, top: 5, end: 10, bottom: 5),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          // labelText: "Country",
+                          // labelText: serviceValue.value,
+                          hintText: serviceInput.input?.name,
+                          fillColor: Colors.grey.shade50),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    top: 0,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: 25,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          serviceInput.input?.icon != null
+                              ? Container(
+                                  width: 30,
+                                  height: 30,
+                                  child: SvgPicture.network(
+                                    serviceInput.input!.icon!,
+                                    width: 30,
+                                    height: 30,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.account_circle,
+                                  size: 30,
+                                  color: Colors.grey.shade300,
+                                ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: VerticalDivider(
+                                // color: Colors.grey
+                                color: Colors.grey.shade300),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              );
+            else if (serviceInput.input?.type == 'date')
+              return Stack(
+                children: [
+                  Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                       child: Container(
                         height: 45,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: Colors.grey.shade50,
                             borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
-                                color: Colors.grey.shade300)),
+                            border: Border.all(color: Colors.grey.shade300)),
                         child: InkWell(
                           onTap: () {
                             showDatePicker(
                               context: context,
-                              initialDate: DateTime.now(),
+                              initialDate: serviceValue.value != "" ?  DateTime.parse(serviceValue.value.toString()) : DateTime.now(),
                               firstDate: DateTime(1900),
                               lastDate: DateTime(2100),
                             ).then((selectedDate) {
@@ -217,8 +246,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                 setState(() {
                                   final dateOnly =
                                       "${selectedDate.year}/${selectedDate.month}/${selectedDate.day}";
-                                  serviceValue.value =
-                                      dateOnly.toString();
+                                  serviceValue.value = dateOnly.toString();
                                 });
                               }
                             });
@@ -226,14 +254,17 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           child: Align(
                             alignment: AlignmentDirectional.centerStart,
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.only(start: 60, end: 10),
-                              child: Text(serviceValue.value != null?
-                                  serviceValue.value.toString()
-                                  :serviceInput.input!.name! ,
-                              style: TextStyle(
-                                fontSize: 14,
-                                 color:serviceValue.value != null? Colors.black54:Colors.grey
-                              ),
+                              padding: const EdgeInsetsDirectional.only(
+                                  start: 60, end: 10),
+                              child: Text(
+                                serviceValue.value != null
+                                    ? ( serviceValue.value.toString().split(" ")[0])
+                                    : serviceInput.input!.name!,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: serviceValue.value != null
+                                        ? Colors.black54
+                                        : Colors.grey),
                               ),
                             ),
                           ),
@@ -267,26 +298,26 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                       ),
                       child: Row(
                         children: <Widget>[
-                          serviceInput.input?.icon != null?
-                          Container(
-                            width: 30,
-                            height: 30,
-                            child: SvgPicture.network(
-                              serviceInput.input!.icon!,
-                              width: 30,
-                              height: 30,
-                              color: Colors.grey.shade300,
-                            ),
-                          )
-                              :Icon(
-                            Icons.date_range,
-                            size: 30,
-                            color: Colors.grey.shade300,
-                          ),
+                          serviceInput.input?.icon != null
+                              ? Container(
+                                  width: 30,
+                                  height: 30,
+                                  child: SvgPicture.network(
+                                    serviceInput.input!.icon!,
+                                    width: 30,
+                                    height: 30,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.date_range,
+                                  size: 30,
+                                  color: Colors.grey.shade300,
+                                ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: VerticalDivider(
-                              // color: Colors.grey
+                                // color: Colors.grey
                                 color: Colors.grey.shade300),
                           ),
                         ],
@@ -295,17 +326,18 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                   ),
                 ],
               );
-            else if(serviceInput.input?.type == 'list')
+            else if (serviceInput.input?.type == 'list')
               return Stack(
                 children: [
                   Padding(
                     padding:
-                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child: DropdownButtonFormField<InputValues>(
                       validator: (value) => value == null ? '' : null,
                       //isDense: true,
                       hint: Text('Choose'),
-                      // value: _selectedCountry,
+                      value:inputValue,
+                      // value: serviceValue.value != "" ?  serviceValue.value.toString() : InputValues(),
                       icon: Icon(Icons.arrow_drop_down),
                       iconSize: 24,
                       elevation: 16,
@@ -340,7 +372,8 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           hintText: "Country",
                           fillColor: Colors.grey.shade50),
                       items: serviceInput.input!.inputValues!
-                          .map<DropdownMenuItem<InputValues>>((InputValues inputValues) {
+                          .map<DropdownMenuItem<InputValues>>(
+                              (InputValues inputValues) {
                         return DropdownMenuItem<InputValues>(
                           value: inputValues,
                           child: Text(inputValues.value!),
@@ -357,26 +390,26 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                       ),
                       child: Row(
                         children: <Widget>[
-                          serviceInput.input?.icon != null?
-                          Container(
-                            width: 30,
-                            height: 30,
-                            child: SvgPicture.network(
-                              serviceInput.input!.icon!,
-                              width: 30,
-                              height: 30,
-                              color: Colors.grey.shade300,
-                            ),
-                          )
-                              :Icon(
-                            Icons.account_circle,
-                            size: 30,
-                            color: Colors.grey.shade300,
-                          ),
+                          serviceInput.input?.icon != null
+                              ? Container(
+                                  width: 30,
+                                  height: 30,
+                                  child: SvgPicture.network(
+                                    serviceInput.input!.icon!,
+                                    width: 30,
+                                    height: 30,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.account_circle,
+                                  size: 30,
+                                  color: Colors.grey.shade300,
+                                ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: VerticalDivider(
-                              // color: Colors.grey
+                                // color: Colors.grey
                                 color: Colors.grey.shade300),
                           ),
                         ],
@@ -385,33 +418,36 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                   )
                 ],
               );
-            else if(serviceInput.input?.type == 'bool')
-            return CheckboxListTile(
-              title: Text(serviceInput.input!.name!,
-            style: TextStyle(
-            fontSize: 14,
-            color:serviceValue.value != null? Colors.black54:Colors.grey
-              )),
-              value:serviceValue.value != null && serviceValue.value != "" ? bool.parse(serviceValue.value!): false,
-              onChanged: (newValue) {
-                setState(() {
-                  serviceValue.value = newValue.toString();
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-            );
-            else if(serviceInput.input?.type == 'longtext')
-              return  Stack(
+            else if (serviceInput.input?.type == 'bool')
+              return CheckboxListTile(
+                title: Text(serviceInput.input!.name!,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: serviceValue.value != null
+                            ? Colors.black54
+                            : Colors.grey)),
+                value: serviceValue.value != null && serviceValue.value != ""
+                    ? bool.parse(serviceValue.value!)
+                    : false,
+                onChanged: (newValue) {
+                  setState(() {
+                    serviceValue.value = newValue.toString();
+                  });
+                },
+                controlAffinity:
+                    ListTileControlAffinity.leading, //  <-- leading Checkbox
+              );
+            else if (serviceInput.input?.type == 'longtext')
+              return Stack(
                 children: [
                   Padding(
                     padding:
-                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                    child:TextFormField(
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: TextFormField(
                       maxLines: 5,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ) {
+                        if (value == null || value.isEmpty) {
                           return '';
                         }
                         return null;
@@ -444,7 +480,8 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                   ),
                 ],
               );
-            else return SizedBox();
+            else
+              return SizedBox();
           },
         ),
       );
@@ -461,416 +498,536 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
     double bodyHeight = (MediaQuery.of(context).size.height //screen
         // -MediaQuery.of(context).padding.top // safe area
         // -AppBar().preferredSize.height //AppBar
-    );
+        );
 
     return Scaffold(
       //backgroundColor: const Color(0xff022440),
-      body: Stack(
-        children: [
-          //Top
+      body: Stack(children: [
+        //Top
         Container(
-        height: bodyHeight * 0.30,
-        width: screenWidth,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xff015DAC), Color(0xff022440)],
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-            )),
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(bottom: bodyHeight * 0.05),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Transform(
-                transform: Matrix4.identity().scaled(-1.0, 1.0, 1.0),
-                child: InkWell(
-                    child: SvgPicture.asset(
-                      "assets/svg/back-arrow.svg",
-                      width: 35,
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    }),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.only(end: 10),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(5),
-                    backgroundColor:
-                    Colors.grey.shade50, // <-- Button color
-                    // foregroundColor: Colors.red, // <-- Splash color
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            PurchaseShop(),
+          height: bodyHeight * 0.30,
+          width: screenWidth,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            colors: [Color(0xff015DAC), Color(0xff022440)],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+          )),
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(bottom: bodyHeight * 0.05),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Transform(
+                  transform: Matrix4.identity().scaled(-1.0, 1.0, 1.0),
+                  child: InkWell(
+                      child: SvgPicture.asset(
+                        "assets/svg/back-arrow.svg",
+                        width: 35,
                       ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.shopping_cart,
-                    size: 35,
-                    color: myprimercolor,
+                      onTap: () {
+                        Navigator.pop(context);
+                      }),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.only(end: 10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(5),
+                      backgroundColor: Colors.grey.shade50, // <-- Button color
+                      // foregroundColor: Colors.red, // <-- Splash color
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PurchaseShop(),
+                        ),
+                      );
+                    },
+                    child: Icon(
+                      Icons.shopping_cart,
+                      size: 35,
+                      color: myprimercolor,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-          // Body
-          Padding(
-            padding: EdgeInsets.only(top: bodyHeight * 0.20),
-            child: Container(
-              height: bodyHeight * 0.80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50)),
-                border: Border.all(color: Colors.grey),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      SizedBox(height:bodyHeight*0.1 ,),
-                      Text(widget.service.name!,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: mysecondarycolor),
-                      ),
-
-                      Expanded(
-                        child: SingleChildScrollView(
+        // Body
+        Padding(
+          padding: EdgeInsets.only(top: bodyHeight * 0.20),
+          child: Container(
+            height: bodyHeight * 0.80,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+              border: Border.all(color: Colors.grey),
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: bodyHeight * 0.1,
+                    ),
+                    Text(
+                      widget.service.name!,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: mysecondarycolor),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           child:
-                          // !isLoading?
-                          Column(
+                              // !isLoading?
+                              Column(
                             children: [
                               buildForm(serviceValues),
-                              hasRecordFile?Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Text("Record Audio",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: myprimercolor),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                    child: RecordAndPlayScreen(RecordInputServiceId:RecordInputServiceId),
-                                  ),
-                                ],
-                              ):SizedBox(),
-                              hasImageFile?Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Text("Add Image",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: myprimercolor),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              hasRecordFile
+                                  ? Column(
                                       children: [
-                                        Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            child:
-                                            ImageCount>0?
-                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 0,)
-                                              :
-                                            Container(
-                                              width: (screenWidth -100) / 4,
-                                              height: (screenWidth -100) / 4,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black.withOpacity(0.03),
-                                                      spreadRadius: 5,
-                                                      blurRadius: 7,
-                                                      offset: Offset(0, 3), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  color: Colors.grey.shade100),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(20),
-                                                child: Image(
-                                                  image: AssetImage("assets/images/default_image.png"),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )
+                                        Padding(
+                                          padding: const EdgeInsets.all(5),
+                                          child: Text(
+                                            "Record Audio",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                                color: myprimercolor),
+                                          ),
                                         ),
-
-                                        Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            child:
-                                            ImageCount>1?
-                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index:1)
-                                                :
-                                            Container(
-                                              width: (screenWidth -100) / 4,
-                                              height: (screenWidth -100) / 4,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black.withOpacity(0.03),
-                                                      spreadRadius: 5,
-                                                      blurRadius: 7,
-                                                      offset: Offset(0, 3), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  color: Colors.grey.shade100),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(20),
-                                                child: Image(
-                                                  image: AssetImage("assets/images/default_image.png"),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 5.0),
+                                          child: RecordAndPlayScreen(
+                                              RecordInputServiceId:
+                                                  RecordInputServiceId),
                                         ),
-                                        Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            child: ImageCount>2?
-                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId, index: 2)
-                                                :
-                                            Container(
-                                              width: (screenWidth -100) / 4,
-                                              height: (screenWidth -100) / 4,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black.withOpacity(0.03),
-                                                      spreadRadius: 5,
-                                                      blurRadius: 7,
-                                                      offset: Offset(0, 3), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  color: Colors.grey.shade100),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(20),
-                                                child: Image(
-                                                  image: AssetImage("assets/images/default_image.png"),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )),
-                                        Container(
-                                            width: (screenWidth -100) / 4,
-                                            height: (screenWidth -100) / 4,
-                                            child: ImageCount>3?
-                                            CustomImagePicker(ImageInputServiceId:ImageInputServiceId,index: 3)
-                                                :
-                                            Container(
-                                              width: (screenWidth -100) / 4,
-                                              height: (screenWidth -100) / 4,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  border: Border.all(color: Colors.grey.shade200, width: 1),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black.withOpacity(0.03),
-                                                      spreadRadius: 5,
-                                                      blurRadius: 7,
-                                                      offset: Offset(0, 3), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  color: Colors.grey.shade100),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(20),
-                                                child: Image(
-                                                  image: AssetImage("assets/images/default_image.png"),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )),
                                       ],
-                                    ),
-                                  ),
-                                ],
-                              ):SizedBox(),
+                                    )
+                                  : SizedBox(),
+                              hasImageFile
+                                  ? Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(5),
+                                          child: Text(
+                                            "Add Image",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                                color: myprimercolor),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 5.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                  width:
+                                                      (screenWidth - 100) / 4,
+                                                  height:
+                                                      (screenWidth - 100) / 4,
+                                                  child: ImageCount > 0
+                                                      ? CustomImagePicker(
+                                                          ImageInputServiceId:
+                                                              ImageInputServiceId,
+                                                          index: 0,
+                                                        )
+                                                      : Container(
+                                                          width: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          height: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade200,
+                                                                      width: 1),
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.03),
+                                                                      spreadRadius:
+                                                                          5,
+                                                                      blurRadius:
+                                                                          7,
+                                                                      offset: Offset(
+                                                                          0,
+                                                                          3), // changes position of shadow
+                                                                    ),
+                                                                  ],
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade100),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/default_image.png"),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        )),
+                                              Container(
+                                                  width:
+                                                      (screenWidth - 100) / 4,
+                                                  height:
+                                                      (screenWidth - 100) / 4,
+                                                  child: ImageCount > 1
+                                                      ? CustomImagePicker(
+                                                          ImageInputServiceId:
+                                                              ImageInputServiceId,
+                                                          index: 1)
+                                                      : Container(
+                                                          width: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          height: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade200,
+                                                                      width: 1),
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.03),
+                                                                      spreadRadius:
+                                                                          5,
+                                                                      blurRadius:
+                                                                          7,
+                                                                      offset: Offset(
+                                                                          0,
+                                                                          3), // changes position of shadow
+                                                                    ),
+                                                                  ],
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade100),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/default_image.png"),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        )),
+                                              Container(
+                                                  width:
+                                                      (screenWidth - 100) / 4,
+                                                  height:
+                                                      (screenWidth - 100) / 4,
+                                                  child: ImageCount > 2
+                                                      ? CustomImagePicker(
+                                                          ImageInputServiceId:
+                                                              ImageInputServiceId,
+                                                          index: 2)
+                                                      : Container(
+                                                          width: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          height: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade200,
+                                                                      width: 1),
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.03),
+                                                                      spreadRadius:
+                                                                          5,
+                                                                      blurRadius:
+                                                                          7,
+                                                                      offset: Offset(
+                                                                          0,
+                                                                          3), // changes position of shadow
+                                                                    ),
+                                                                  ],
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade100),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/default_image.png"),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        )),
+                                              Container(
+                                                  width:
+                                                      (screenWidth - 100) / 4,
+                                                  height:
+                                                      (screenWidth - 100) / 4,
+                                                  child: ImageCount > 3
+                                                      ? CustomImagePicker(
+                                                          ImageInputServiceId:
+                                                              ImageInputServiceId,
+                                                          index: 3)
+                                                      : Container(
+                                                          width: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          height: (screenWidth -
+                                                                  100) /
+                                                              4,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade200,
+                                                                      width: 1),
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.03),
+                                                                      spreadRadius:
+                                                                          5,
+                                                                      blurRadius:
+                                                                          7,
+                                                                      offset: Offset(
+                                                                          0,
+                                                                          3), // changes position of shadow
+                                                                    ),
+                                                                  ],
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade100),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/default_image.png"),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        )),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(),
                             ],
                           )
                           // :Center(child: CircularProgressIndicator()),
-                        ),
-                      ),
-
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50.0, vertical: 10.0),
-                        child: Container(
-                          width: double.infinity,
-                          height: 50,
-                          child:BlocBuilder<ServiceInputCubit,ServiceInputState>(
-                          builder:(context,state) {
+                          ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50.0, vertical: 10.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        child:
+                            BlocBuilder<ServiceInputCubit, ServiceInputState>(
+                          builder: (context, state) {
                             return TextButton(
                               child: Text(
                                 'Confirm',
                                 style: TextStyle(fontSize: 18),
                               ),
                               style: bs_flatFill(context, myprimercolor),
-                              onPressed: ()
-                              {
+                              onPressed: () {
                                 bool canSave = false;
-                              if (_formKey.currentState!.validate()) {
-                                if(hasRecordFile)
-                                {
-                                    var audio = context.read<AudioFileCubit>().state.audioFile;
-                                    if(audio != null)
-                                      {
-                                        canSave = true;
-                                        //yasin
-                                        //record is mandatory
-                                      }
-                                }
-                                if(hasImageFile && canSave)
-                                  {
+                                if (_formKey.currentState!.validate()) {
+                                  if (hasRecordFile) {
+                                    var audio = context
+                                        .read<AudioFileCubit>()
+                                        .state
+                                        .audioFile;
+                                    if (audio != null) {
+                                      canSave = true;
+                                    } else {
+                                      ShowMessageDialog(context, "تحذير",
+                                          "التسجيل الصوتي مطلوب");
+                                    }
+                                  }
+                                  if (hasImageFile && canSave) {
                                     for (var p in serviceImages ?? []) {
-                                      if(p != null) {
+                                      if (p != null) {
                                         canSave = true;
                                         break;
                                       }
                                     }
 
-                                       //  var contain = serviceImages.contains( (element) => element != null);
-                                       // // print(contain);
-                                       //  if (contain == false)
-                                       //    {
-                                       //        canSave = false;
-                                       //      //yasin
-                                       //      //image is mandatory
-                                       //    }
+                                    if (canSave == false) {
+                                      ShowMessageDialog(context, "تحذير",
+                                          "يجب ادخال صورة على الأقل");
+                                    }
+                                    //  var contain = serviceImages.contains( (element) => element != null);
+                                    // // print(contain);
+                                    //  if (contain == false)
+                                    //    {
+                                    //        canSave = false;
+                                    //      //yasin
+                                    //      //image is mandatory
+                                    //    }
                                   }
-                                print(canSave);
-                              if(canSave) {
-                                BlocProvider.of<ServiceInputCubit>(context)
-                                    .loadServiceValues(
-                                    serviceInputs, serviceValues,
-                                    ImageInputServiceId);
+                                  print(canSave);
+                                  if (canSave) {
+                                    BlocProvider.of<ServiceInputCubit>(context)
+                                        .loadServiceValues(serviceInputs,
+                                            serviceValues, ImageInputServiceId);
 
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SelectExpert(serviceId: widget.service
-                                            .id as int),
-                                  ),
-                                );
-                              }
-                              }
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => SelectExpert(
+                                            serviceId:
+                                                widget.service.id as int),
+                                      ),
+                                    );
+                                  }
+                                }
                               },
                             );
                           },
-                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
+        ),
 
-          //Image
-          Container(
-            height: bodyHeight * 0.30,
-            width: screenWidth,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Stack(children: [
-                 Container(
-                  width: bodyHeight * 0.20,
-                  height: bodyHeight * 0.20,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(80),
-                      border: Border.all(color: Colors.white, width: 3),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.03),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                      color: Colors.blueGrey),
-                  child: ClipRRect(
+        //Image
+        Container(
+          height: bodyHeight * 0.30,
+          width: screenWidth,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(children: [
+              Container(
+                width: bodyHeight * 0.20,
+                height: bodyHeight * 0.20,
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(80),
-                    child: Image(
-                      image: NetworkImage("https://picsum.photos/200/300?random=4"),
-                      fit: BoxFit.cover,
-                        errorBuilder:
-                        (BuildContext context, Object exception, StackTrace? stackTrace) {
-                  return Image(
-                  image: AssetImage("assets/images/default_image.png"),
-                  fit: BoxFit.fitHeight,
-                  );
-                  },
-                    ),
-                  ),
-                ),
-
-                Positioned(
-                  right: 5,
-                  bottom: 5,
-                  child:
-                  Container(
-                    //height: MediaQuery.of(context).size.height * 0.65,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                      border: Border.all(color: Colors.grey.shade300, width: 3),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.03),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Icon(Icons.favorite,
-                        color: mysecondarycolor,
-                        size: 25,
+                    border: Border.all(color: Colors.white, width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
                       ),
+                    ],
+                    color: Colors.blueGrey),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(80),
+                  child: Image(
+                    image:
+                        NetworkImage("https://picsum.photos/200/300?random=4"),
+                    fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Image(
+                        image: AssetImage("assets/images/default_image.png"),
+                        fit: BoxFit.fitHeight,
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 5,
+                bottom: 5,
+                child: Container(
+                  //height: MediaQuery.of(context).size.height * 0.65,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    border: Border.all(color: Colors.grey.shade300, width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Icon(
+                      Icons.favorite,
+                      color: mysecondarycolor,
+                      size: 25,
                     ),
                   ),
                 ),
-              ]),
-            ),
+              ),
+            ]),
           ),
-    ]
-      ),
+        ),
+      ]),
     );
   }
-
 }
-
-
