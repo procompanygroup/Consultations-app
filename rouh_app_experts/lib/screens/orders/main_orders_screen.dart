@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rouh_app_experts/bloc/expert/expert_information_cubit.dart';
+import 'package:rouh_app_experts/screens/orders/order_info_screen.dart';
 import 'package:rouh_app_experts/widgets/rating_stars.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +23,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
   String _selectedState = "all";
 
   List<String> stateList = [
-   "all", "close", "waitConfirm" ,"rejected" ,"waitResponce"
+   "all", "no_answer", "wait" ,"reject" ,"agree"
   ];
 
   List<ExpertOrder> expertOrderList = <ExpertOrder>[];
@@ -50,7 +51,6 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
 
       });
     });
-
   }
 
 
@@ -114,6 +114,9 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
               setState(() {
                 _selectedState = state;
                 print(_selectedState);
+
+
+
               });
             },
             child: Padding(
@@ -155,6 +158,14 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
           GestureDetector(
             onTap: () async {
               print(order.formState);
+              print(order.serviceValues);
+
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      OrderInfoScreen(expertOrder:order),
+                ),
+              );
             },
             child: Column(
               children: [
