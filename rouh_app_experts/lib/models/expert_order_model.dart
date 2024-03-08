@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 import 'package:rouh_app_experts/models/user_model.dart';
 
@@ -106,9 +107,8 @@ class ExpertOrder {
     );
 
     List<ExpertOrder> orders;
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
-      print((response.data));
       orders = convertListToModel<ExpertOrder>(ExpertOrder.fromJson,jsonDecode(response.data));
 
     }
@@ -129,15 +129,60 @@ class ExpertOrder {
       data: data,
     );
 
-    print(response.statusCode);
     if (response.statusCode == 200) {
-      print((response.data));
       return ExpertOrder.fromJson(json.decode(response.data));
 
     }
     else {
       return throw Exception();
     }
+  }
+
+  Future<String?> GetWaitAnswer({
+    required int selectedServiceId,
+
+  }) async {
+
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId
+    });
+
+    var response = await dioManager.dio.post('expert/uploadanswer',data: data );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+     var jsonParsed = json.decode(response.data);
+
+      return jsonParsed["record_path"];
+    }
+    else {
+      return throw Exception();
+    }
+
+  }
+
+  Future<int?> UploadAnswer({
+    required int selectedServiceId,
+    required String audioPath,
+
+  }) async {
+
+    var recordFile = await MultipartFile.fromFile(
+      audioPath,
+    );
+    FormData formData = FormData.fromMap({
+      "selectedservice_id" : selectedServiceId,
+      'record': recordFile
+    });
+
+    var response = await dioManager.dio.post('expert/uploadanswer',data: formData );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return 1;
+    }
+    else {
+      return throw Exception();
+    }
+
   }
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
