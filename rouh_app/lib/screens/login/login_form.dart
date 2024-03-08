@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../controllers/globalController.dart';
 import '../../controllers/phone_auth_controller.dart';
 import '../../models/country.dart';
 import '../../mystyle/button_style.dart';
@@ -38,6 +39,7 @@ class _LoginFormState extends State<LoginForm> {
       // print(response),
       setState(() {
         listCountry = response;
+        globalCountryList = listCountry;
         _selectedCountry = listCountry.first;
       }),
       // print( listCountry[0].name)
@@ -79,7 +81,6 @@ class _LoginFormState extends State<LoginForm> {
                       const EdgeInsets.only(left: 10, right: 10, bottom: 10.0),
                   child: Divider(color: Colors.grey.shade300),
                 ),
-
                 // select country
                 Stack(
                   children: [
