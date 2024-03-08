@@ -16,7 +16,6 @@ class ExpertOrder {
   String? formState;
   DateTime? orderDate;
   DateTime? orderAdminDate;
-  DateTime? rateDate;
   double? answerSpeed;
   String? title;
   String? answerState;
@@ -37,7 +36,6 @@ class ExpertOrder {
         this.orderDate,
         this.orderNum,
         this.rate,
-        this.rateDate,
         this.title,
       this.answerSpeed,
       this.client,
@@ -47,7 +45,6 @@ class ExpertOrder {
   factory ExpertOrder.fromJson(Map<String, dynamic> parsedJson) {
 
     var tmpOrderDate;
-    var tmpRateDate;
     var tmpOrderAdminDate;
     var tmpAnswerSpeed;
     var tmpClient;
@@ -56,10 +53,6 @@ class ExpertOrder {
     if(parsedJson["order_date"] != null)
     {
       tmpOrderDate = DateTime.tryParse(parsedJson['order_date']);
-    }
-    if(parsedJson["rate_date"] != null)
-    {
-      tmpRateDate = DateTime.tryParse(parsedJson['rate_date']);
     }
     if(parsedJson["order_admin_date"] != null)
     {
@@ -86,7 +79,6 @@ class ExpertOrder {
       orderDate: tmpOrderDate,
       formState: parsedJson['form_state'],
       orderAdminDate: tmpOrderAdminDate,
-      rateDate: tmpRateDate,
       answerSpeed: tmpAnswerSpeed,
       title: parsedJson['title'],
       answerState: parsedJson['answer_state'],
