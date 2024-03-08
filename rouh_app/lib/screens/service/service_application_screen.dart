@@ -8,6 +8,7 @@ import '../../bloc/audio_file/audio_file_cubit.dart';
 import '../../bloc/service_inputs/service_input_cubit.dart';
 import '../../constants/global_variable.dart';
 import '../../controllers/globalController.dart';
+import '../../models/country.dart';
 import '../../models/service_model.dart';
 import '../../models/service_value_model.dart';
 import '../../models/user_model.dart';
@@ -21,7 +22,6 @@ import 'select_expert_screen.dart';
 
 class ServiceApplicationScreen extends StatefulWidget {
   const ServiceApplicationScreen({super.key, required this.service});
-
   final Service service;
 
   @override
@@ -31,6 +31,9 @@ class ServiceApplicationScreen extends StatefulWidget {
 
 class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  // List<Country> listCountry = <Country>[];
+  Country _selectedCountry = new Country(code: "",name: "", dialCode: "",flag: "");
 
   // bool isLoading = true;
   bool hasRecordFile = false;
@@ -48,6 +51,16 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+/*
+    Country.readJson().then((response) => {
+      // print(response),
+      setState(() {
+        listCountry = response;
+        _selectedCountry = listCountry[2];
+      }),
+      // print( listCountry[0].name)
+    });
+*/
 
     fillServiceInputList();
     serviceImages = [null, null, null, null];
@@ -117,7 +130,8 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
             }
             if (serviceInput.input?.type == 'bool' && serviceValue.value == "" )
               serviceValue.value = "False";
-
+            if (serviceInput.input!.name! == "nationality")
+               _selectedCountry = globalCountryList.first;
 
             if (serviceInput.input!.ispersonal!) {
               if (serviceInput.input!.name! == "user_name")
@@ -125,7 +139,9 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
               else if (serviceInput.input!.name! == "mobile")
                 serviceValue.value = user.mobile;
               else if (serviceInput.input!.name! == "nationality")
-                serviceValue.value = user.nationality;
+               { serviceValue.value = user.nationality;
+               _selectedCountry = globalCountryList.where((element) => element.name == serviceValue.value).first;
+               }
               else if (serviceInput.input!.name! == "birthdate")
                 serviceValue.value = user.birthdate.toString();
               else if (serviceInput.input!.name! == "gender")
@@ -142,7 +158,92 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                  inputValue = serviceInput.input!.inputValues!.where((element) =>element.value == serviceValue.value).firstOrNull;
               }
 
-            if (serviceInput.input?.type == 'text')
+            if ( serviceInput.input!.name! == "nationality")
+              return Stack(
+                children: [
+                  Padding(
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: DropdownButtonFormField<Country>(
+                      validator: (value) => value == null ? '' : null,
+                      //isDense: true,
+                      hint: Text('Choose'),
+                      value: _selectedCountry,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      isExpanded: true,
+                      style: TextStyle(color: Colors.grey),
+                      // underline: Container(
+                      //   height: 2,
+                      //   color: Colors.grey,
+                      // ),
+                      onChanged: (Country? newValue) {
+                        setState(() {
+                          _selectedCountry = newValue!;
+                          serviceValue.value = _selectedCountry.name;
+                          print("_selectedCountry.flag :" + _selectedCountry.flag.toString());
+                        });
+                      },
+                      decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade300,
+                              // width: 2.0,
+                            ),
+                          ),
+                          filled: true,
+                          // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
+                          contentPadding: EdgeInsetsDirectional.only(
+                              start: 60, top: 5, end: 10, bottom: 5),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          // labelText: "Country",
+                          hintText: "Country",
+                          fillColor: Colors.grey.shade50),
+                      items: globalCountryList
+                          .map<DropdownMenuItem<Country>>((Country value) {
+                        return DropdownMenuItem<Country>(
+                          value: value,
+                          child: Text(value.name!),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    top: 0,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: 25,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 30,
+                            height: 20,
+                            child: SvgPicture.asset(
+                              _selectedCountry.flag!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: VerticalDivider(
+                              // color: Colors.grey
+                                color: Colors.grey.shade300),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              );
+            else if (serviceInput.input?.type == 'text')
               return Stack(
                 children: [
                   Padding(
