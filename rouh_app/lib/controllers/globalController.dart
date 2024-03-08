@@ -1,4 +1,5 @@
 import '../constants/global.dart';
+import '../models/country.dart';
 import '../models/expert_model.dart';
 import '../models/point_model.dart';
 import '../models/service_input_model.dart';
@@ -7,7 +8,9 @@ import '../models/service_value_model.dart';
 
 Point globalPoint = Point();
 
-
+//#region Country
+List<Country> globalCountryList = <Country>[];
+//#endregion
 //#region Constant
 List<String> globallistMaritalStatus = ["Single", "Married", "Divorced", "Widowed"];
 List<String> globallistGender = ["Male", "Female"];
