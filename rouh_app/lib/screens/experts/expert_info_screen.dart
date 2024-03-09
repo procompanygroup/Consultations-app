@@ -5,6 +5,7 @@ import 'package:rouh_app/widgets/rating_stars.dart';
 import 'package:rouh_app/widgets/record_and_play_screen.dart';
 
 import '../../controllers/globalController.dart';
+import '../../models/comment_model.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
@@ -20,21 +21,22 @@ class ExpertInfo extends StatefulWidget {
 }
 
 class _ExpertInfoState extends State<ExpertInfo> {
-  int _selectedService = 0;
-  List<Service> serviceList = <Service>[];
+  // int _selectedService = 0;
+  // List<Service> serviceList = <Service>[];
 
-  int _selectedCommentTest = 0;
-  List<CommentTest> commentTestList = <CommentTest>[];
+  // int _selectedCommentTest = 0;
+  // List<CommentTest> commentTestList = <CommentTest>[];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    fillServiceList();
-    fillCommentTestList();
+    // fillServiceList();
+    // fillCommentTestList();
 
   }
+  /*
   Future<void> fillServiceList() async {
 
     getGlobalServiceWithoutCallWithAllList()
@@ -48,6 +50,8 @@ class _ExpertInfoState extends State<ExpertInfo> {
       });
     });
   }
+  */
+  /*
   Future<void> fillCommentTestList() async {
     commentTestList.add(
         CommentTest(name: "Commenter-1", date: "2022/2/2"
@@ -67,6 +71,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
 
 
   }
+  */
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -83,10 +88,12 @@ class _ExpertInfoState extends State<ExpertInfo> {
             Service service = services[index];
             return GestureDetector(
                 onTap: () {
-                  setState(() {
-                    _selectedService = service.id!;
-                    print(_selectedService);
-                  });
+                  print(service.name);
+
+                  // setState(() {
+                    // _selectedService = service.id!;
+                    // print(_selectedService);
+                  // });
                 },
                 child: Container(
                   width: 90,
@@ -133,10 +140,10 @@ class _ExpertInfoState extends State<ExpertInfo> {
                 ));
           }));
     }
-    _buildCommentTests(List<CommentTest> commentTests) {
+    _buildExpertComments(List<ExpertComment> expertComments) {
       return Column(
-          children: List.generate(commentTests.length, (index) {
-            CommentTest commentTest = commentTests[index];
+          children: List.generate(expertComments.length, (index) {
+            ExpertComment expertComment = expertComments[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child:  Container(
@@ -147,8 +154,8 @@ class _ExpertInfoState extends State<ExpertInfo> {
                         Column(
                         children: [
                             // comment image
-                            CustomImage(url: commentTest.url,
-                              height: 40, width: 40,
+                            CustomImage(url: expertComment.client!.image!,
+                              height: 45, width: 45,
                               radius: 10,
                               borderColor:  Colors.blue,
                               borderWidth:  0.5,
@@ -156,9 +163,9 @@ class _ExpertInfoState extends State<ExpertInfo> {
                             SizedBox(height: 5,),
                             // comment name
                             Container(
-                              width: 40,
+                              width: 45,
                               child: Text(
-                                commentTest.name! ,
+                                expertComment.client!.user_name! ,
                                 style: TextStyle(
                                   fontSize: 8,
                                   color: mysecondarycolor,
@@ -167,9 +174,9 @@ class _ExpertInfoState extends State<ExpertInfo> {
                             ),
                             // comment date
                             Container(
-                              width: 40,
+                              width: 45,
                               child:Text(
-                                commentTest.date!,
+                                expertComment.comment_date!.toString().split(" ")[0],
                                 style: TextStyle(
                                   fontSize: 8,
                                   color: Colors.grey.shade400,
@@ -182,7 +189,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                         Padding(
                           padding:  EdgeInsetsDirectional.only(start: 20,),
                           child: Container(
-                            width: screenWidth - 40 -10 - 40 - 35,
+                            width: screenWidth - 45 -10 - 40 - 35,
                             decoration: BoxDecoration(
                               border: Border.all(color: mysecondarycolor,width: 1),
                               borderRadius: BorderRadius.circular(20),
@@ -191,7 +198,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                               child: Text(
-                                commentTest.desc! ,
+                                expertComment.comment!,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey.shade600,
@@ -258,7 +265,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                             ),
                           ),
                           SizedBox(height: 5,),
-                          Text("Folow",
+                          Text("أبلغني",
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.white),
@@ -316,7 +323,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                         child: Align(
                           alignment: AlignmentDirectional.centerStart,
-                          child: Text("Experts",
+                          child: Text("الخبرات",
                             style: TextStyle(
                                 fontSize: 16,
                                 color: myprimercolor),
@@ -328,7 +335,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: _buildServices(serviceList!)),
+                                child: _buildServices(widget.expert.services!)),
                           ),
                   Expanded(
                     child: Padding(
@@ -356,7 +363,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                                           Padding(
                                             padding: const EdgeInsets.all(5),
                                             child: Text(
-                                              "Information apout expert" ,
+                                              "معلومات حول الخبير" ,
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: mysecondarycolor,
@@ -402,7 +409,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 5),
                                         child: Text(
-                                          "Comments" ,
+                                          "التعليقات" ,
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: myprimercolor
@@ -417,7 +424,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
                                   padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
-                                      child: _buildCommentTests(commentTestList!)),
+                                      child: _buildExpertComments(widget.expert.selectedServices!)),
                                 ),
 
 
@@ -457,7 +464,8 @@ class _ExpertInfoState extends State<ExpertInfo> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(80),
                       child: Image(
-                        image: NetworkImage("https://picsum.photos/200/300?random=4"),
+                        // image: NetworkImage("https://picsum.photos/200/300?random=4"),
+                        image: NetworkImage(widget.expert.image!),
                         fit: BoxFit.cover,
                         errorBuilder:
                             (BuildContext context, Object exception, StackTrace? stackTrace) {
@@ -499,7 +507,7 @@ class _ExpertInfoState extends State<ExpertInfo> {
     );
   }
 }
-
+/*
 class CommentTest{
   String? name;
   String? date;
@@ -509,3 +517,4 @@ class CommentTest{
   CommentTest({this.name, this.date, this.desc, this.url});
 
 }
+*/
