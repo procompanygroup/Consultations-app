@@ -115,7 +115,7 @@ Future<Service?> saveWithValues({
     }
       });
 
-var jsonInputs = jsonEncode(inputsValues);
+//var jsonInputs = jsonEncode(inputsValues);
      var data = json.encode({
        "client_id": clientId,
        "expert_id": expertId,
@@ -124,8 +124,7 @@ var jsonInputs = jsonEncode(inputsValues);
      });
 
     var response = await dioManager.dio.post('client/service/savewithvalues',data: data );
-     print(response.statusCode);
-    // print(response.data);
+
     if (response.statusCode == 200) {
       var service = Service.fromJson(json.decode(response.data));
       if(service.message == "no balance")
@@ -134,34 +133,81 @@ var jsonInputs = jsonEncode(inputsValues);
         }
       else if(int.parse(service.message as String) > 0)
         {
-          print("upload");
-          var imageFile1 = serviceImages![0] ==null? null : await MultipartFile.fromFile(
-              serviceImages![0]!,
-          );
-          var imageFile2 = serviceImages![1] ==null? null : await MultipartFile.fromFile(
-              serviceImages![1]!,
-          );
-          var imageFile3 = serviceImages![2] ==null? null : await MultipartFile.fromFile(
-              serviceImages![2]!,
-          );
-          var imageFile4 = serviceImages![3] ==null? null : await MultipartFile.fromFile(
-              serviceImages![3]!,
-          );
-          var recordFile = audioFile?.audioFile ==null? null : await MultipartFile.fromFile(
-            audioFile!.audioFile!.path,
-          );
-          //upload audio and images
-          FormData formData = FormData.fromMap({
-            "selectedservice_id" : service.message,
-            "inputservice_id": imageInputServiceId,
-            "record_inputservice_id": audioFile != null? audioFile.serviceInputId: null,
-            "image_1": imageFile1,
-            "image_2": imageFile2,
-            "image_3": imageFile3,
-            "image_4": imageFile4,
-            'record': recordFile
-          });
+          // var imageFile1 = serviceImages![0] ==null? "@''" : await MultipartFile.fromFile(
+          //     serviceImages![0]!,
+          // );
+          // var imageFile2 = serviceImages![1] ==null? null : await MultipartFile.fromFile(
+          //     serviceImages![1]!,
+          // );
+          // var imageFile3 = serviceImages![2] ==null? null : await MultipartFile.fromFile(
+          //     serviceImages![2]!,
+          // );
+          // var imageFile4 = serviceImages![3] ==null? null : await MultipartFile.fromFile(
+          //     serviceImages![3]!,
+          // );
+          // var recordFile = audioFile?.audioFile ==null? null : await MultipartFile.fromFile(
+          //   audioFile!.audioFile!.path,
+          // );
+          final map = <String, dynamic>{};
+          map['selectedservice_id'] = service.message;
 
+          if(audioFile != null)
+            {
+              var recordInputId= audioFile.serviceInputId;
+              var recordFile = audioFile?.audioFile ==null? null : await MultipartFile.fromFile(
+                  audioFile!.audioFile!.path,
+                );
+              map['record_inputservice_id'] = recordInputId;
+              map['record'] = recordFile;
+            }
+          if(serviceImages![0] !=null || serviceImages![1] !=null || serviceImages![2] !=null ||serviceImages![3] !=null )
+            {
+              map['inputservice_id'] = imageInputServiceId;
+
+              if(serviceImages![0] !=null)
+                {
+                  var imageFile1 = await MultipartFile.fromFile(
+                    serviceImages![0]!,
+                  );
+                  map['image_1'] = imageFile1;
+
+                }
+              if(serviceImages![1] !=null)
+                {
+                  var imageFile2 = await MultipartFile.fromFile(
+                    serviceImages![1]!,
+                  );
+                  map['image_2'] = imageFile2;
+
+                }
+              if(serviceImages![2] !=null)
+                {
+                  var imageFile3 = await MultipartFile.fromFile(
+                    serviceImages![2]!,
+                  );
+                  map['image_3'] = imageFile3;
+                }
+              if(serviceImages![3] !=null)
+                {
+                  var imageFile4 = await MultipartFile.fromFile(
+                    serviceImages![3]!,
+                  );
+                  map['image_4'] = imageFile4;
+                }
+            }
+
+          //upload audio and images
+          // FormData formData = FormData.fromMap({
+          //   "selectedservice_id" : service.message,
+          //   "inputservice_id": imageInputServiceId,
+          //   "record_inputservice_id": audioFile != null? audioFile.serviceInputId: null,
+          //   "image_1": imageFile1,
+          //   "image_2": imageFile2,
+          //   "image_3": imageFile3,
+          //   "image_4": imageFile4,
+          //   'record': recordFile
+          // });
+         var formData = FormData.fromMap(map);
              response = await dioManager.dio.post('client/service/uploadfilesvalue',data: formData );
              print(response.statusCode);
         }
