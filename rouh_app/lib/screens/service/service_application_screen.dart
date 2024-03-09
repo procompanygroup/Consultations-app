@@ -1085,7 +1085,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                   borderRadius: BorderRadius.circular(80),
                   child: Image(
                     image:
-                        NetworkImage(service.image!),
+                        NetworkImage(widget.service.image!),
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
