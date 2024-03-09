@@ -12,6 +12,16 @@ List<String> globallistMaritalStatus = ["Single", "Married", "Divorced", "Widowe
 List<String> globallistGender = ["Male", "Female"];
 //#endregion
 
+//#region Constant
+
+String boolToTextConverter(String state)
+{
+  if(state=="True" || state == "1")
+    return "نعم";
+  else
+    return "لا";
+}
+//#endregion
 
 //#region Service
 Service globalService = Service();
@@ -88,13 +98,5 @@ Future<List<Service>> getGlobalServiceWithoutCallWithAllList() async {
 //#region expert
 Expert globalExpert = Expert();
 
-List<Expert> globalExpertWithFavoriteList = <Expert>[];
 
-Future<List<Expert>> getGlobalExpertWithFavoriteList(int clientId) async {
-  if(globalExpertWithFavoriteList.isEmpty)
-  {
-    globalExpertWithFavoriteList = await globalExpert.GetWithFavorite(clientId:clientId);
-  }
-  return globalExpertWithFavoriteList;
-}
 //#endregion
