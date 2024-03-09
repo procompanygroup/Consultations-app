@@ -20,6 +20,7 @@ class MainOrdersScreen extends StatefulWidget {
 
 class _MainOrdersScreenState extends State<MainOrdersScreen> {
   bool isLoadingExpertOrders = true;
+  bool isLoadingOrderInfo = false;
   String _selectedState = "all";
 
   List<String> stateList = [
@@ -157,15 +158,27 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         orderWidgetList.add(
           GestureDetector(
             onTap: () async {
-              print(order.formState);
-              print(order.serviceValues);
 
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      OrderInfoScreen(expertOrder:order),
-                ),
-              );
+              // print(service.id!.toString());
+
+              setState(() {
+                isLoadingOrderInfo = true;
+              });
+
+              var resultOrder = await globalExpertOrder.GetOrderById(selectedServiceId: order.selectedServiceId!);
+
+              setState(() {
+                isLoadingOrderInfo = false;
+              });
+              if(resultOrder != null)
+              {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        OrderInfoScreen(expertOrder: resultOrder),
+                  ),
+                );
+              }
             },
             child: Column(
               children: [
@@ -556,7 +569,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
               ),
             ],
           ),
-          if (isLoadingExpertOrders)
+          if (isLoadingExpertOrders || isLoadingOrderInfo)
             Center(child: CircularProgressIndicator()),
         ],
       ),
