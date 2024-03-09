@@ -11,8 +11,8 @@ import '../../mystyle/constantsColors.dart';
 // import '../bloc/audio_file/audio_file_cubit.dart';
 
 class RecordAndPlayScreen extends StatefulWidget {
-  const RecordAndPlayScreen({Key? key, required this.RecordInputServiceId}) : super(key: key);
-final int RecordInputServiceId;
+  const RecordAndPlayScreen({Key? key}) : super(key: key);
+// final int RecordInputServiceId;
   @override
   State<RecordAndPlayScreen> createState() => _RecordAndPlayScreenState();
 }
