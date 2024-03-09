@@ -29,10 +29,10 @@ class Expert {
   int? call_cost;
   double? answer_speed;
   String? image;
+  List<ExpertComment>? selectedServices;
   //bool? isFavorite;
  // List<ExpertService>? expert_services;
   //List<Service>? services;
-  //List<ExpertComment>? selectedServices;
 
   DioManager dioManager = DioManager();
 
@@ -45,12 +45,15 @@ class Expert {
         this.email, this.mobile,  this.birthdate, this.gender, this.marital_status,
         this.is_active,this.points_balance,this.cash_balance,this.cash_balance_todate,this.rates,
         this.record,this.desc,
-        this.call_cost,this.answer_speed, this.image});
+        this.call_cost,this.answer_speed,
+        this.image,
+      this.selectedServices,
+      });
 
   factory Expert.fromJson(Map<String, dynamic> parsedJson) {
     // var tmpExpertServices;
     // var tmpServices;
-    // var tmpSelectedServices;
+    var tmpSelectedServices;
     var tmpBirthDate;
     var tmpCashBalance;
     var tmpCashBalanceTodate;
@@ -65,10 +68,10 @@ class Expert {
     // {
     //   tmpServices = convertListToModel(Service.fromJson, parsedJson["services"]);
     // }
-    // if(parsedJson["selectedservices"] != null)
-    // {
-    //   tmpSelectedServices = convertListToModel(ExpertComment.fromJson, parsedJson["selectedservices"]);
-    // }
+    if(parsedJson["selectedservices"] != null)
+    {
+      tmpSelectedServices = convertListToModel(ExpertComment.fromJson, parsedJson["selectedservices"]);
+    }
     if(parsedJson["birthdate"] != null)
     {
       tmpBirthDate = DateTime.tryParse(parsedJson['birthdate']);
@@ -110,7 +113,7 @@ class Expert {
       rates:  tmpRates,
       //expert_services: tmpExpertServices,
       //services: tmpServices,
-      //selectedServices: tmpSelectedServices,
+      selectedServices: tmpSelectedServices,
     );
   }
 
@@ -159,55 +162,6 @@ class Expert {
     }
   }
 
-
-
-  Future<List<Expert>> GetWithFavorite({
-    required int clientId,
-  }) async {
-    var data = json.encode({
-      "client_id": clientId
-    });
-
-    var response = await dioManager.dio.post('client/expert/getwithfav',
-      data: data,
-    );
-
-    List<Expert> experts;
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print((response.data));
-      experts = convertListToModel<Expert>(Expert.fromJson,jsonDecode(response.data));
-
-    }
-    else {
-      experts = List<Expert>.empty();;
-    }
-    return experts;
-  }
-
-  Future<bool> SaveFavorite({
-    required int clientId,
-    required int expertId,
-    required bool isFavorite
-  }) async {
-    var data = json.encode({
-      "client_id": clientId,
-      "expert_id": expertId,
-      "is_favorite": isFavorite,
-    });
-
-    var response = await dioManager.dio.post('client/expert/savefav',
-      data: data,
-    );
-
-    if (response.statusCode == 200) {
-      return true;
-
-    }
-    else {
-      return false;
-    }
-  }
 
   Future<Expert> GetExpertWithComments({
     required int expertId,
