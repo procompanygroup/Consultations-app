@@ -170,7 +170,7 @@ class Expert {
       "id": expertId
     });
 
-    var response = await dioManager.dio.post('client/expert/getwithcomments',
+    var response = await dioManager.dio.post('expert/getwithcomments',
       data: data,
     );
 
