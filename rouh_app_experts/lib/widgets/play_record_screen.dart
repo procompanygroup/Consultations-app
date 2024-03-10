@@ -212,7 +212,7 @@ class _PlayRecordScreenState extends State<PlayRecordScreen> {
                                       await audioPlayer.seek(position);
 
                                       /// Optional: Play audio if was paused
-                                      await audioPlayer.resume();
+                                      // await audioPlayer.resume();
                                     },
                                   ),
                                 ),
