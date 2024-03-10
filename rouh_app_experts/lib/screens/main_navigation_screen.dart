@@ -3,6 +3,8 @@ import 'package:rouh_app_experts/mystyle/constantsColors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rouh_app_experts/screens/orders/main_orders_screen.dart';
 
+import 'profile/profile_screen.dart';
+
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
   @override
@@ -32,7 +34,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     const List<Widget> _pages = <Widget>[
       MainOrdersScreen(),
       Text("Page2"),
-      Text("Page3"),
+      ProfileScreen(),
       Text("Page4"),
     ];
     return Scaffold(
