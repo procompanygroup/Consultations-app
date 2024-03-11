@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 
 import 'package:rouh_app_experts/models/user_model.dart';
@@ -154,12 +155,12 @@ class ExpertOrder {
 
   Future<int?> UploadAnswer({
     required int selectedServiceId,
-    required String audioPath,
+    required File audioFile,
 
   }) async {
 
     var recordFile = await MultipartFile.fromFile(
-      audioPath,
+        audioFile.path,filename: "record.mp3"
     );
     FormData formData = FormData.fromMap({
       "selectedservice_id" : selectedServiceId,
