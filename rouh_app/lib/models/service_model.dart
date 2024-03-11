@@ -115,7 +115,6 @@ Future<Service?> saveWithValues({
     }
       });
 
-//var jsonInputs = jsonEncode(inputsValues);
      var data = json.encode({
        "client_id": clientId,
        "expert_id": expertId,
@@ -133,21 +132,7 @@ Future<Service?> saveWithValues({
         }
       else if(int.parse(service.message as String) > 0)
         {
-          // var imageFile1 = serviceImages![0] ==null? "@''" : await MultipartFile.fromFile(
-          //     serviceImages![0]!,
-          // );
-          // var imageFile2 = serviceImages![1] ==null? null : await MultipartFile.fromFile(
-          //     serviceImages![1]!,
-          // );
-          // var imageFile3 = serviceImages![2] ==null? null : await MultipartFile.fromFile(
-          //     serviceImages![2]!,
-          // );
-          // var imageFile4 = serviceImages![3] ==null? null : await MultipartFile.fromFile(
-          //     serviceImages![3]!,
-          // );
-          // var recordFile = audioFile?.audioFile ==null? null : await MultipartFile.fromFile(
-          //   audioFile!.audioFile!.path,
-          // );
+
           final map = <String, dynamic>{};
           map['selectedservice_id'] = service.message;
 
@@ -155,8 +140,9 @@ Future<Service?> saveWithValues({
             {
               var recordInputId= audioFile.serviceInputId;
               var recordFile = audioFile?.audioFile ==null? null : await MultipartFile.fromFile(
-                  audioFile!.audioFile!.path,
+                  audioFile!.audioFile!.path,filename: "record.mp3"
                 );
+
               map['record_inputservice_id'] = recordInputId;
               map['record'] = recordFile;
             }
@@ -196,17 +182,6 @@ Future<Service?> saveWithValues({
                 }
             }
 
-          //upload audio and images
-          // FormData formData = FormData.fromMap({
-          //   "selectedservice_id" : service.message,
-          //   "inputservice_id": imageInputServiceId,
-          //   "record_inputservice_id": audioFile != null? audioFile.serviceInputId: null,
-          //   "image_1": imageFile1,
-          //   "image_2": imageFile2,
-          //   "image_3": imageFile3,
-          //   "image_4": imageFile4,
-          //   'record': recordFile
-          // });
          var formData = FormData.fromMap(map);
              response = await dioManager.dio.post('client/service/uploadfilesvalue',data: formData );
              print(response.statusCode);
