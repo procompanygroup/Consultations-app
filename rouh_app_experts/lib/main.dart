@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rouh_app_experts/bloc/audio_file/audio_file_cubit.dart';
 
 import 'bloc/expert/expert_information_cubit.dart';
 import 'mystyle/constantsColors.dart';
@@ -15,9 +16,9 @@ void main() async {
       BlocProvider<ExpertInformationCubit>(
         create: (BuildContext context) => ExpertInformationCubit(),
       ),
-      // BlocProvider<ServiceInputCubit>(
-      //   create: (BuildContext context) => ServiceInputCubit(),
-      // ),
+      BlocProvider<AudioFileCubit>(
+        create: (BuildContext context) => AudioFileCubit(),
+      ),
 
     ],
     child: MyApp(),
