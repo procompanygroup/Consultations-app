@@ -30,6 +30,7 @@ class Expert {
   double? answer_speed;
   String? image;
   List<ExpertService>? expert_services;
+  List<Service>? services;
   List<ExpertComment>? selectedServices;
   //bool? isFavorite;
   //List<Service>? services;
@@ -48,6 +49,7 @@ class Expert {
         this.call_cost,this.answer_speed,
         this.image,
         this.expert_services,
+        this.services,
       this.selectedServices,
       });
 
