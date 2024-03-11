@@ -8,6 +8,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../mystyle/constantsColors.dart';
+import '../bloc/audio_file/audio_file_cubit.dart';
 // import '../bloc/audio_file/audio_file_cubit.dart';
 
 class RecordAndPlayScreen extends StatefulWidget {
@@ -183,97 +184,110 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
                     children: [
                       Container(
                         width: screenWidth - 10,
-                        child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    padding: const EdgeInsets.all(1),
-                                    backgroundColor:
-                                    Colors.grey.shade50, // <-- Button color
-                                  ),
-                                  onPressed: () async {
-                                    if (recorder.isRecording) {
-                                      await stopRecord();
-                                    } else {
-                                      await startRecord();
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: Icon(
-                                    recorder.isRecording ? Icons.stop : Icons
-                                        .mic,
-                                    size: 30,
-                                    color: myprimercolor,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: SliderTheme(
-                                      data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: myprimercolor,
-                                        inactiveTrackColor: Colors.white,
-                                        trackShape: RectangularSliderTrackShape(),
-                                        trackHeight: 5.0,
-                                        thumbColor: myprimercolor,
-                                        thumbShape: RoundSliderThumbShape(
-                                          //enabledThumbRadius: 12.0),
-                                            enabledThumbRadius: 0.0),
-                                        overlayColor: Colors.red.withAlpha(32),
-                                        overlayShape: RoundSliderOverlayShape(
-                                            overlayRadius: 28.0),
+                        child: BlocBuilder<AudioFileCubit,AudioFileState>(
+                              builder:(context,state) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: const CircleBorder(),
+                                        padding: const EdgeInsets.all(1),
+                                        backgroundColor:
+                                        Colors.grey.shade50, // <-- Button color
                                       ),
-                                      child: Slider(
-                                        min: 0,
-                                        max: duration.inSeconds.toDouble(),
-                                        value: position.inSeconds.toDouble(),
-                                        onChanged: (value) async {
-                                          final position =
-                                          Duration(seconds: value.toInt());
-                                          await audioPlayer.seek(position);
-
-                                          /// Optional: Play audio if was paused
-                                          await audioPlayer.resume();
-                                        },
+                                      onPressed: () async {
+                                        if (recorder.isRecording) {
+                                          await stopRecord();
+                                          BlocProvider.of<AudioFileCubit>(context)
+                                              .loadAudioFile(audioFile);
+                                        } else {
+                                          await startRecord();
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        recorder.isRecording
+                                            ? Icons.stop
+                                            : Icons
+                                            .mic,
+                                        size: 30,
+                                        color: myprimercolor,
                                       ),
                                     ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    padding: const EdgeInsets.all(1),
-                                    backgroundColor:
-                                    Colors.grey.shade50, // <-- Button color
-                                  ),
-                                  onPressed: () async {
-                                    if (!isPlayerLoad || recorder.isRecording) {
-                                      // await stopRecord();
-                                      return;
-                                    }
-                                    if (audioPlayerState == "playing") {
-                                      await audioPlayer.pause();
-                                    } else
-                                    if (audioPlayerState == "completed") {
-                                      // String url = '';
-                                      // await audioPlayer.play(url);
-                                      await loadAgain();
-                                    } else {
-                                      // paused
-                                      await audioPlayer.resume();
-                                    }
-                                  },
-                                  child: Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                    size: 30,
-                                    color: myprimercolor,
-                                  ),
-                                ),
-                              ],
-                            ),
+                                    Expanded(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: SliderTheme(
+                                          data: SliderTheme.of(context)
+                                              .copyWith(
+                                            activeTrackColor: myprimercolor,
+                                            inactiveTrackColor: Colors.white,
+                                            trackShape: RectangularSliderTrackShape(),
+                                            trackHeight: 5.0,
+                                            thumbColor: myprimercolor,
+                                            thumbShape: RoundSliderThumbShape(
+                                              //enabledThumbRadius: 12.0),
+                                                enabledThumbRadius: 0.0),
+                                            overlayColor: Colors.red.withAlpha(
+                                                32),
+                                            overlayShape: RoundSliderOverlayShape(
+                                                overlayRadius: 28.0),
+                                          ),
+                                          child: Slider(
+                                            min: 0,
+                                            max: duration.inSeconds.toDouble(),
+                                            value: position.inSeconds
+                                                .toDouble(),
+                                            onChanged: (value) async {
+                                              final position =
+                                              Duration(seconds: value.toInt());
+                                              await audioPlayer.seek(position);
+
+                                              /// Optional: Play audio if was paused
+                                              await audioPlayer.resume();
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: const CircleBorder(),
+                                        padding: const EdgeInsets.all(1),
+                                        backgroundColor:
+                                        Colors.grey.shade50, // <-- Button color
+                                      ),
+                                      onPressed: () async {
+                                        if (!isPlayerLoad ||
+                                            recorder.isRecording) {
+                                          // await stopRecord();
+                                          return;
+                                        }
+                                        if (audioPlayerState == "playing") {
+                                          await audioPlayer.pause();
+                                        } else
+                                        if (audioPlayerState == "completed") {
+                                          // String url = '';
+                                          // await audioPlayer.play(url);
+                                          await loadAgain();
+                                        } else {
+                                          // paused
+                                          await audioPlayer.resume();
+                                        }
+                                      },
+                                      child: Icon(
+                                        isPlaying ? Icons.pause : Icons
+                                            .play_arrow,
+                                        size: 30,
+                                        color: myprimercolor,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                        ),
                       ),
                       Align(
                         alignment: Alignment.topCenter,
