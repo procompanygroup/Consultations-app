@@ -9,8 +9,11 @@ import '../../bloc/expert/expert_information_cubit.dart';
 import '../../controllers/globalController.dart';
 import '../../models/country.dart';
 import '../../models/expert_model.dart';
+import '../../models/service_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
+import '../../widgets/rating_stars.dart';
+import '../../widgets/record_and_play_screen.dart';
 import '../login/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,7 +24,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
   Expert expert = Expert();
   var image = File('');
   String imagePath = "";
@@ -70,7 +72,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
         -MediaQuery.of(context).padding.top // safe area
         // -AppBar().preferredSize.height //AppBar
     );
+    _buildServices(List<Service> services) {
+      return Row(
+          children: List.generate(services.length, (index) {
+            Service service = services[index];
+            return GestureDetector(
+                onTap: () {
+                  print(service.name);
 
+                  // setState(() {
+                  // _selectedService = service.id!;
+                  // print(_selectedService);
+                  // });
+                },
+                child: Container(
+                  width: 90,
+                  height: 65,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: mysecondarycolor,width: 1),
+                    borderRadius: BorderRadius.circular(20),
+                    // color: mysecondarycolor,
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        service.icon != null?
+                        Container(
+                          width: 35,
+                          height: 35,
+                          child: SvgPicture.network(
+                            service.icon!,
+                            width: 35,
+                            height: 35,
+                            color: mysecondarycolor,
+                          ),
+                        )
+                            : Icon(
+                          Icons.account_circle,
+                          size: 35,
+                          color: mysecondarycolor,
+                        ),
+                        Expanded(
+                          child: Text(
+                            service.name!.toString(),
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey.shade400,
+                              // fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ));
+          }));
+    }
     return Scaffold(
       //backgroundColor: const Color(0xff022440),
       body: Stack(
@@ -108,235 +167,120 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-                  child:  Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child:   Column(
-                              children: [
-                                //user_name
-                                Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      child: TextFormField(
-                                        autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                        validator: (value) {
-                                          if (value!.isEmpty || value.length < 6) {
-                                            return '';
-                                          }
-                                          return null;
-                                        },
-                                        controller: TextEditingController(text: expert.expert_name),
-                                        // initialValue: user.user_name,
-                                        onChanged: (value) {
-                                          expert.expert_name = value;
-                                        },
-                                        decoration: InputDecoration(
-                                          errorStyle:
-                                          const TextStyle(fontSize: 0, height: 0),
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(25.0),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(25.0),
-                                            borderSide: BorderSide(
-                                              color: Colors.grey.shade300,
-                                              // width: 2.0,
-                                            ),
-                                          ),
-                                          filled: true,
-                                          contentPadding:
-                                          const EdgeInsetsDirectional.only(
-                                              start: 70,
-                                              top: 5,
-                                              end: 60,
-                                              bottom: 5),
-                                          hintStyle: const TextStyle(
-                                              color: Colors.grey, fontSize: 13),
-                                          hintText: "UserName",
-                                          fillColor: Colors.grey.shade50,
-                                        ),
-                                        keyboardType: TextInputType.text,
-                                        // inputFormatters: [
-                                        //   LengthLimitingTextInputFormatter(9)
-                                        // ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      top: 0,
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional.only(
-                                          start: 25,
-                                        ),
-                                        child: Row(
-                                          children: <Widget>[
-                                            SvgPicture.asset(
-                                              'assets/svg/profile.svg',
-                                              width: 50,
-                                              height: 30,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 15),
-                                              child: VerticalDivider(
-                                                // color: Colors.grey
-                                                  color: Colors.grey.shade300),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                //email
-                                Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      child: TextFormField(
-                                        autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                        validator: (value) {
-                                          if (value!.isEmpty || !value.contains('@')) {
-                                            return '';
-                                          }
-                                          return null;
-                                        },
-                                        controller: TextEditingController(text: expert.email),
-                                        // initialValue: user.email,
-                                        onChanged: (value) {
-                                          expert.email = value;
-                                        },
-                                        decoration: InputDecoration(
-                                          //test the height
-                                          errorStyle:
-                                          const TextStyle(fontSize: 0, height: 0),
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child:   Column(
+                            children: [
 
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(25.0),
+                              // expert_name
+                              Text(expert.expert_name!,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: mysecondarycolor),
+                              ),
+                              // RatingStars
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical:5),
+                                child: Container(
+                                    width: 125,
+                                    child: Center(
+                                        child: RatingStars(
+                                            rating: expert.rates!, size: 20))),
+                              ),
+                              //answer_speed
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Spacer(),
+                                  Text(expert.expert_name!,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade500),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  Text(expert.answer_speed!.toString(),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: mysecondarycolor),
+                                  ),
+                                  Spacer(),
+
+                                ],
+                              ),
+
+                              SizedBox(height: 10,),
+
+
+                              //nationality
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Stack(
+                                  children: [
+                                    Padding(
+                                        padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                        child: Container(
+                                          height: 50,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(25),
+                                              border: Border.all(color: Colors.grey.shade300)),
+                                          child: Padding(
+                                            padding:  EdgeInsetsDirectional.only(start: 120,end: 10),
+                                            child: Align(
+                                                alignment: AlignmentDirectional.centerStart,
+                                                child: Text(expert.mobile!,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color:  Colors.grey.shade400,
+                                                  ),)),
                                           ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(25.0),
-                                            borderSide: BorderSide(
-                                              color: Colors.grey.shade300,
-                                              // width: 2.0,
-                                            ),
-                                          ),
-                                          filled: true,
-                                          contentPadding:
-                                          const EdgeInsetsDirectional.only(
-                                              start: 70,
-                                              top: 5,
-                                              end: 60,
-                                              bottom: 5),
-                                          hintStyle: const TextStyle(
-                                              color: Colors.grey, fontSize: 13),
-                                          hintText: "Email",
-                                          fillColor: Colors.grey.shade50,
-                                        ),
-                                        keyboardType: TextInputType.emailAddress,
-                                        // inputFormatters: [
-                                        //   LengthLimitingTextInputFormatter(9)
-                                        // ],
-                                      ),
-                                    ),
+                                        )),
+
+                                    // icon number
                                     Positioned(
                                       bottom: 0,
                                       top: 0,
+                                      //   left: 0,
+                                      right: 0,
+                                      //   child:
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.only(
-                                          start: 25,
+                                        padding: EdgeInsets.only(
+                                          right: 25,
                                         ),
                                         child: Row(
                                           children: <Widget>[
-                                            SvgPicture.asset(
-                                              'assets/svg/mail-icon.svg',
-                                              width: 40,
-                                              height: 20,
-                                            ),
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 15),
+                                              padding:
+                                              const EdgeInsets.symmetric(vertical: 15),
                                               child: VerticalDivider(
                                                 // color: Colors.grey
                                                   color: Colors.grey.shade300),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                //nationality
-                                Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      child: DropdownButtonFormField<Country>(
-                                        validator: (value) => value == null ? '' : null,
-                                        //isDense: true,
-                                        hint: const Text('Choose'),
-                                        value: _selectedCountry,
-                                        icon: const Icon(Icons.arrow_drop_down),
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        isExpanded: true,
-                                        style: const TextStyle(color: Colors.grey),
-                                        onChanged: (Country? newValue) {
-                                          setState(() {
-                                            _selectedCountry = newValue!;
-                                            // expert.nationality = _selectedCountry.name;
-                                          });
-                                        },
-                                        decoration: InputDecoration(
-                                            errorStyle: const TextStyle(fontSize: 0),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25.0),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25.0),
-                                              borderSide: BorderSide(
-                                                color: Colors.grey.shade300,
-                                                // width: 2.0,
+                                            Container(
+                                              width: 30,
+                                              child: SvgPicture.asset(
+                                                'assets/svg/mobile-phone-icon.svg',
+                                                width: 50,
+                                                height: 30,
                                               ),
                                             ),
-                                            filled: true,
-                                            // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
-                                            contentPadding:
-                                            const EdgeInsetsDirectional.only(
-                                                start: 60,
-                                                top: 5,
-                                                end: 10,
-                                                bottom: 5),
-                                            hintStyle:
-                                            const TextStyle(color: Colors.grey),
-                                            // labelText: "Country",
-                                            hintText: "Country",
-                                            fillColor: Colors.grey.shade50),
-                                        items: listCountry
-                                            .map<DropdownMenuItem<Country>>(
-                                                (Country value) {
-                                              return DropdownMenuItem<Country>(
-                                                value: value,
-                                                child: Text(value.name!),
-                                              );
-                                            }).toList(),
+                                          ],
+                                        ),
                                       ),
                                     ),
+                                    // flag
                                     Positioned(
                                       bottom: 0,
                                       top: 0,
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.only(
+                                        padding: EdgeInsetsDirectional.only(
                                           start: 25,
                                         ),
                                         child: Row(
@@ -350,96 +294,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 15),
-                                              child: VerticalDivider(
-                                                // color: Colors.grey
-                                                  color: Colors.grey.shade300),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                //birthdate
-                                Stack(
-                                  children: [
-                                    Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                                        child: Container(
-                                          height: 45,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey.shade50,
-                                              borderRadius: BorderRadius.circular(25),
-                                              border: Border.all(
-                                                  color: Colors.grey.shade300)),
-                                          child: InkWell(
-                                            onTap: () {
-                                              showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime(1900),
-                                                lastDate: DateTime(2100),
-                                              ).then((selectedDate) {
-                                                if (selectedDate != null) {
-                                                  setState(() {
-                                                    expert.birthdate =selectedDate;
-                                                  });
-                                                }
-                                              });
-                                            },
-                                            child: Align(
-                                              alignment: AlignmentDirectional.centerStart,
-                                              child: Padding(
-                                                padding: const EdgeInsetsDirectional.only(start: 60, end: 10),
-                                                child: Text(expert.birthdate != null?
-                                                "${expert.birthdate!.year}/${expert.birthdate!.month}/${expert.birthdate!.day}"
-                                                    :'birth date' ,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color:expert.birthdate != null? Colors.black54:Colors.grey
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )),
-                                    Positioned(
-                                      bottom: 0,
-                                      top: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: Align(
-                                        alignment: AlignmentDirectional.centerEnd,
-                                        child: Padding(
-                                          padding: EdgeInsetsDirectional.only(
-                                            end: 20,
-                                          ),
-                                          child: Icon(
-                                            Icons.arrow_drop_down,
-                                            size: 25,
-                                            color: Colors.black54,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      top: 0,
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.only(
-                                          start: 25,
-                                        ),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.date_range,
-                                              size: 30,
-                                              color: Colors.grey.shade300,
-                                            ),
-                                            Padding(
                                               padding: const EdgeInsets.symmetric(vertical: 15),
                                               child: VerticalDivider(
                                                 // color: Colors.grey
@@ -449,247 +303,199 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                //gender
-                                Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      child: DropdownButtonFormField<String>(
-                                        validator: (value) => value == null ? '' : null,
-                                        //isDense: true,
-                                        hint: const Text('Choose'),
-                                        value: _selectedGender,
-                                        icon: const Icon(Icons.arrow_drop_down),
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        isExpanded: true,
-                                        style: const TextStyle(color: Colors.grey),
-                                        // underline: Container(
-                                        //   height: 2,
-                                        //   color: Colors.grey,
-                                        // ),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            _selectedGender = newValue!;
-                                            expert.gender =
-                                            _selectedGender == "Male" ? 1 : 2;
-                                          });
-                                        },
-                                        decoration: InputDecoration(
-                                            errorStyle: const TextStyle(fontSize: 0),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25.0),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25.0),
-                                              borderSide: BorderSide(
-                                                color: Colors.grey.shade300,
-                                              ),
-                                            ),
-                                            filled: true,
-                                            contentPadding:
-                                            const EdgeInsetsDirectional.only(
-                                                start: 60,
-                                                top: 5,
-                                                end: 10,
-                                                bottom: 5),
-                                            hintStyle:
-                                            const TextStyle(color: Colors.grey),
-                                            hintText: "Gender",
-                                            fillColor: Colors.grey.shade50),
-                                        items: globallistGender.map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                      ),
-                                    ),
+                                    // code number
                                     Positioned(
                                       bottom: 0,
                                       top: 0,
+                                      //   left: 0,
+                                      left: 50,
+                                      //   child:
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.only(
-                                          start: 25,
+                                        padding: EdgeInsets.only(
+                                          left: 25,
                                         ),
-                                        child: Row(
-                                          children: <Widget>[
-                                            SvgPicture.asset(
-                                              'assets/svg/male-and-female.svg',
-                                              width: 40,
-                                              height: 23,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 15),
-                                              child: VerticalDivider(
-                                                // color: Colors.grey
-                                                  color: Colors.grey.shade300),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                //marital_status
-                                Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      child: DropdownButtonFormField<String>(
-                                        validator: (value) => value == null ? '' : null,
-                                        //isDense: true,
-                                        hint: const Text('Choose'),
-                                        value: expert.marital_status,
-                                        icon: const Icon(Icons.arrow_drop_down),
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        isExpanded: true,
-                                        style: const TextStyle(color: Colors.grey),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            expert.marital_status = newValue!;
-                                          });
-                                        },
-                                        decoration: InputDecoration(
-                                            errorStyle: const TextStyle(fontSize: 0),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25.0),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25.0),
-                                              borderSide: BorderSide(
-                                                color: Colors.grey.shade300,
+                                        child: Container(
+                                          width: 60,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                _selectedCountry.dialCode!,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 13,
+                                                    color: myprimercolor),
                                               ),
-                                            ),
-                                            filled: true,
-                                            contentPadding:
-                                            const EdgeInsetsDirectional.only(
-                                                start: 60,
-                                                top: 5,
-                                                end: 10,
-                                                bottom: 5),
-                                            hintStyle:
-                                            const TextStyle(color: Colors.grey),
-                                            hintText: "marital status",
-                                            fillColor: Colors.grey.shade50),
-                                        items: globallistMaritalStatus
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 0, top: 15, right: 10, bottom: 15),
+                                                child: VerticalDivider(
+                                                  // color: Colors.grey
+                                                    color: Colors.grey.shade300),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    Positioned(
-                                      bottom: 0,
-                                      top: 0,
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional.only(
-                                          start: 25,
-                                        ),
-                                        child: Row(
-                                          children: <Widget>[
-                                            SvgPicture.asset(
-                                              'assets/svg/interlocking-rings.svg',
-                                              width: 40,
-                                              height: 20,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 15),
-                                              child: VerticalDivider(
-                                                // color: Colors.grey
-                                                  color: Colors.grey.shade300),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
                                   ],
                                 ),
+                              ),
 
-                              ],
+
+                              //email
+                              Stack(
+                                children: [
+                                  Padding(
+                                      padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                      child: Container(
+                                        height: 50,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(25),
+                                            border: Border.all(color: Colors.grey.shade300)),
+                                        child: Padding(
+                                          padding:  EdgeInsetsDirectional.only(start: 60,end: 10),
+                                          child: Align(
+                                              alignment: AlignmentDirectional.centerStart,
+                                              child: Text(expert.email!,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color:  Colors.grey.shade400,
+                                              ),)),
+                                        ),
+                                      )),
+                                  Positioned(
+                                    bottom: 0,
+                                    top: 0,
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                        start: 25,
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          SvgPicture.asset(
+                                            'assets/svg/mail-icon.svg',
+                                            width: 40,
+                                            height: 20,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 15),
+                                            child: VerticalDivider(
+                                              // color: Colors.grey
+                                                color: Colors.grey.shade300),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              //desc
+                              Padding(
+                                  padding:
+                                  EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                  child: Container(
+                                    // height: 50,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(25),
+                                        border: Border.all(color: Colors.grey.shade300)),
+                                    child: Padding(
+                                      padding:
+                                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      child:  Padding(
+                                        padding:  EdgeInsetsDirectional.all(5),
+                                        child: Align(
+                                            alignment: AlignmentDirectional.centerStart,
+                                            child: Text(expert.desc!,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color:  Colors.grey.shade400,
+                                              ),)),
+                                      ),
+                                    ),
+                                  )),
+
+
+
+                              // Experts Title
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                                child: Align(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  child: Text("الخبرات",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: myprimercolor),
+                                  ),
+                                ),
+                              ),
+                              // serviceList
+                  /*
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: _buildServices(expert.services!)),
+                              ),
+                              */
+                              // Record Title
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                                child: Align(
+                                  alignment: AlignmentDirectional.center,
+                                  child: Text("رسالة صوتية",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: myprimercolor),
+                                  ),
+                                ),
+                              ),
+                              // Record
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30.0, vertical: 5.0),
+                                child: RecordAndPlayScreen(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Save
+                      Container(
+                        width: screenWidth,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                          child: Container(
+                            width: screenWidth - 20 - 100  ,
+                            height: 50,
+                            child: BlocBuilder<ExpertInformationCubit,ExpertInformationState>(
+                              builder:(context,state) {
+                                return TextButton(
+                                  style: bs_flatFill(
+                                      context, myprimercolor),
+                                  onPressed: () async {
+                                      try {
+                          
+                                      }
+                                      catch (e) {}
+                                  },
+                                  child: Text(
+                                    'Save',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
-                        // Save
-                        Container(
-                          width: screenWidth,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenWidth - 20 - 40  - 10 - 100,
-                                  height: 50,
-                                  child: BlocBuilder<ExpertInformationCubit,ExpertInformationState>(
-                                    builder:(context,state) {
-                                      return TextButton(
-                                        style: bs_flatFill(
-                                            context, myprimercolor),
-                                        onPressed: () async {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            try {
-                                              await updateProfile();
-                                              // expert = await expert.getExpert(mobile: expert.mobile as String) as Expert;
-                                              BlocProvider.of<ExpertInformationCubit>(context)
-                                                  .addProfile(expert!);
-                                            }
-                                            catch (e) {}
-                                          }
-                                        },
-                                        child: Text(
-                                          'Save',
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                SizedBox(width: 10,),
-                                Container(
-                                  width: 100,
-                                  height: 50,
-                                  child:BlocBuilder<ExpertInformationCubit,ExpertInformationState>(
-                                    builder:(context,state) {
-                                      return TextButton(
-                                        style: bs_flatFill(context, mysecondarycolor),
-                                        onPressed: () async {
-                                          try {
-                                            // await expert.DeleteAccount(clientId: expert.id as int);
-                                            BlocProvider.of<ExpertInformationCubit>(context)
-                                                .addProfile(null);
-                                            Navigator.of(context)
-                                                .pushReplacement(MaterialPageRoute(
-                                              builder: (context) => const LoginScreen(),
-                                            ));
-                                          }
-                                          catch (e) {}
-                                        },
-                                        child: Icon(Icons.close,
-                                          color: Colors.grey.shade300,
-                                          size: 35,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
