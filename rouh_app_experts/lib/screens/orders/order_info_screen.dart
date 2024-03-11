@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app_experts/widgets/play_record_screen.dart';
 import 'package:rouh_app_experts/widgets/view_image.dart';
 
+import '../../bloc/audio_file/audio_file_cubit.dart';
 import '../../controllers/globalController.dart';
 import '../../models/expert_order_model.dart';
 import '../../mystyle/button_style.dart';
@@ -629,8 +631,15 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                             style: TextStyle(fontSize: 18),
                           ),
                           style: bs_flatFill(context, myprimercolor),
-                          onPressed: () {
-
+                          onPressed: () async {
+                            var order = ExpertOrder();
+                              var res = await order.UploadAnswer(selectedServiceId: widget.expertOrder!.selectedServiceId!,
+                                  audioFile: context.read<AudioFileCubit>().state.audioFile!);
+                            //after save
+                            if(res == 1) {
+                              BlocProvider.of<AudioFileCubit>(context)
+                                  .loadAudioFile(null);
+                            }
                           },
                         )),
                   ),
