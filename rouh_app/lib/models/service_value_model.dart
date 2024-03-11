@@ -14,7 +14,10 @@ class ServiceValue {
   Future<List<ServiceValue>> generateInputValues({required List<ServiceInput>? serviceInputs}) async {
    List<ServiceValue> serviceValues=[];
     for (var i = 0; i < serviceInputs!.length; i++) {
-      serviceValues.add( ServiceValue( inputservice_id:serviceInputs[i].id,selectedservice_id: serviceInputs[i].service_id));
+      if(serviceInputs[i].input?.type! == "bool")
+        serviceValues.add( ServiceValue( inputservice_id:serviceInputs[i].id, value: "false",selectedservice_id: serviceInputs[i].service_id));
+        else
+        serviceValues.add( ServiceValue( inputservice_id:serviceInputs[i].id,selectedservice_id: serviceInputs[i].service_id));
     }
   return serviceValues;
     
