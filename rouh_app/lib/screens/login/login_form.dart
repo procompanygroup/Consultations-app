@@ -318,8 +318,7 @@ class _LoginFormState extends State<LoginForm> {
                                     isLoading = true;
                                   });
 
-                                  // print(_selectedCountry.dialCode! + _phoneNumber ),
-                                  print("Send messager");
+
                                   fullNumber =
                                       _selectedCountry.dialCode! + _phoneNumber;
                                   verifyCode = await controller.sendSMS(
@@ -353,7 +352,9 @@ class _LoginFormState extends State<LoginForm> {
                                     const storage = FlutterSecureStorage();
                                     // for write mobile phone
                                     await storage.write(
-                                        key: 'mobile', value: fullNumber);
+                                        key: 'mobile', value: _phoneNumber);
+                                    await storage.write(
+                                        key: 'dialCode', value: _selectedCountry.dialCode);
                                     // Navigator.of(context).push(
                                     //   MaterialPageRoute(
                                     //     builder: (context) =>
@@ -369,7 +370,9 @@ class _LoginFormState extends State<LoginForm> {
                                       builder: (context) =>
                                           LoginVerificationScreen(
                                               verifyCode: verifyCode,
-                                              fullNumber: fullNumber),
+                                              fullNumber: fullNumber,
+                                          phoneNumber :_phoneNumber,
+                                          dialCode:_selectedCountry.dialCode),
                                     ),
                                   );
                                   // }

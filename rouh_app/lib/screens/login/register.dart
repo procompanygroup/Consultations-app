@@ -631,7 +631,7 @@ class _RegisterState extends State<Register> {
                                 String? res = await register();
 
                               if (int.parse(res ?? "0") > 0) {
-                                mobile = mobile?.replaceFirst("+", "");
+                                //mobile = mobile?.replaceFirst("+", "");
                                 var token =
                                 await user.login(mobile: mobile ?? "");
                                 // print(token);
@@ -756,8 +756,11 @@ class _RegisterState extends State<Register> {
   Future<String?> register() async {
 
     const storage = FlutterSecureStorage();
-    mobile = await storage.read(key: "mobile") ?? "0";
-    user.mobile = mobile;
+
+    var mobileNum = await storage.read(key: "mobile") ?? "0";
+   var dialCode = await storage.read(key: "dialCode") ?? "0";
+    mobile = "$dialCode$mobileNum";
+    //user.mobile = mobile;
     var imageFile = imagePath ==""? null : await MultipartFile.fromFile(
       imagePath,
     );
@@ -766,7 +769,8 @@ class _RegisterState extends State<Register> {
       "email": user.email,
       "gender": user.gender,
       "nationality": user.nationality,
-      "mobile": user.mobile,
+      "mobile_num": mobileNum,
+      "country_num": dialCode,
       "birthdate": user.birthdate,
       "marital_status": user.marital_status,
       'image': imageFile,

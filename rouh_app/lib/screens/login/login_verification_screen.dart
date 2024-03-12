@@ -18,8 +18,8 @@ import '../../bloc/UserInformation/user_information_cubit.dart';
 
 
 class LoginVerificationScreen extends StatefulWidget {
-  final fullNumber, verifyCode;
-  const LoginVerificationScreen({Key? key, this.fullNumber, this.verifyCode})
+  final fullNumber, verifyCode,phoneNumber,dialCode;
+  const LoginVerificationScreen({Key? key, this.fullNumber, this.verifyCode,this.phoneNumber,this.dialCode})
       : super(key: key);
 
   @override
@@ -496,11 +496,14 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      var mobile = widget.fullNumber
-                                          ?.replaceFirst("+", "");
+                                      // var mobile = widget.fullNumber
+                                      //     ?.replaceFirst("+", "");
+                                      //
+                                      // var token = await user.login(
+                                      //     mobile: mobile);
 
-                                      var token = await user.login(
-                                          mobile: mobile);
+                                  var token = await user.login(
+                                          mobile: widget.fullNumber);
 
                                       // store token
                                       if (token != "") {
@@ -511,7 +514,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                             value: token); // Save token
                                         // get user Info
                                         var userInfo = await user.getUser(
-                                            mobile: mobile);
+                                            mobile: widget.fullNumber);
                                         BlocProvider.of<UserInformationCubit>(context)
                                             .addProfile(userInfo!);
                                        // profileCubit.addProfile(userInfo!);
@@ -529,11 +532,14 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                                 '/mainNavigation');
                                       } else {
                                         const storage = FlutterSecureStorage();
-                                        var mobile = widget.fullNumber
-                                            ?.replaceFirst("+", "");
+
                                         // for write mobile phone
                                         await storage.write(
-                                            key: 'mobile', value: mobile);
+                                            key: 'mobile', value: widget.phoneNumber);
+                                        await storage.write(
+                                            key: 'dialCode', value: widget.dialCode);
+                                        // await storage.write(
+                                        //     key: 'mobile', value: widget.fullNumber);
 
                                         Navigator.of(context)
                                             .pushReplacement(MaterialPageRoute(

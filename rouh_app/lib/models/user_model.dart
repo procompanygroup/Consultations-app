@@ -9,6 +9,8 @@ class User {
   String? user_name;
   String? email;
   String? mobile;
+  String? mobile_num;
+  String? country_num;
   String? nationality;
   DateTime? birthdate;
   int? gender;
@@ -19,7 +21,10 @@ class User {
 
    DioManager dioManager= DioManager() ;
   //Constructor
-  User({ this.id,this.user_name,this.email,this.mobile,this.nationality,
+  User({ this.id,this.user_name,this.email,this.mobile,
+    this.mobile_num,
+    this.country_num,
+    this.nationality,
     this.birthdate,this.gender,this.marital_status,this.is_active,
   this.balance,this.image}) ;
 
@@ -32,6 +37,8 @@ class User {
         id: parsedJson['id'],
         user_name: parsedJson['user_name'],
         mobile: parsedJson['mobile'],
+        mobile_num: parsedJson['mobile_num'],
+      country_num: parsedJson['country_num'],
         birthdate:tmpBirthDate ,
         email: parsedJson['email'],
         gender: parsedJson['gender'],
