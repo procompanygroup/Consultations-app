@@ -158,9 +158,11 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         orderWidgetList.add(
           GestureDetector(
             onTap: () async {
+              // order.formState == "agree" ?
+               print(order.formState!);
 
-              // print(service.id!.toString());
-
+               if(order.formState != "agree")
+                 {
               setState(() {
                 isLoadingOrderInfo = true;
               });
@@ -179,6 +181,10 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                   ),
                 );
               }
+
+                 }
+
+
             },
             child: Column(
               children: [
@@ -215,7 +221,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       child: Padding(
                                         padding:  EdgeInsetsDirectional.only(start: 25),
                                         child: Text(
-                                          "Duis aute irure dolor in reprehenderit" ,
+                                          order.title! ,
                                           style: TextStyle(
                                               fontSize: 14,
                                               color: myprimercolor,
@@ -224,7 +230,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                     ),
                                     Text(
-                                      "2022/22/22" ,
+                                      order.orderDate!.toString().split(" ")[0],
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey.shade600,
@@ -237,13 +243,13 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                               SizedBox(height: 10,),
                               // Row 2
                               // close State
-                              order.formState == "close" ?
+                              order.formState == "agree" ?
                               Row(
                                 children: [
                                   Row(
                                     children: [
                                       Text(
-                                        "Status" ,
+                                        "الحالة" ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade500,
@@ -269,7 +275,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                         Row(
                                           children: [
                                             Text(
-                                              "Respond Answer:" ,
+                                              "سرعة الرد:" ,
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.grey.shade500,
@@ -293,14 +299,14 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   ),
                                 ],
                               ):
-                              order.formState == "waitConfirm" ?
+                              order.formState == "wait" ?
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
                                       Text(
-                                        "Status" ,
+                                        "الحالة" ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade500,
@@ -321,7 +327,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   Row(
                                     children: [
                                       Text(
-                                        "Review" ,
+                                        "مراجعة" ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade500,
@@ -338,14 +344,14 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   ),
                                 ],
                               )
-                                  :order.formState == "rejected" ?
+                                  :order.formState == "reject" ?
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
                                       Text(
-                                        "Status" ,
+                                        "الحالة" ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade500,
@@ -366,7 +372,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   Row(
                                     children: [
                                       Text(
-                                        "New Reply" ,
+                                        "رد جديد" ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade500,
@@ -383,13 +389,13 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   ),
                                 ],
                               )
-                                  :Row(
+                              :Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
                                       Text(
-                                        "Status" ,
+                                        "الحالة" ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade500,
@@ -410,7 +416,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                   Row(
                                     children: [
                                       Text(
-                                        "Respond" ,
+                                        "رد على الطلب" ,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade500,
