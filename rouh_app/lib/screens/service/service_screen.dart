@@ -68,12 +68,17 @@ class _ServiceScreenState extends State<ServiceScreen> {
             onTap: ()  async {
               // print(service.id!.toString());
 
+              if(service.name == "callservice")
+              {
+                 print(service.id!.toString());
+              }
+              else
+                {
+
               setState(() {
                 isLoadingServicesApplication = true;
               });
-
               var result = await fillServiceInputApplicationList(service.id!);
-
               setState(() {
                 isLoadingServicesApplication = false;
               });
@@ -86,6 +91,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 ),
               );
             }
+
+                }
             },
             child: Container(
               decoration: BoxDecoration(
