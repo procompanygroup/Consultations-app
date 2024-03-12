@@ -184,7 +184,7 @@ Future<Service?> saveWithValues({
 
          var formData = FormData.fromMap(map);
              response = await dioManager.dio.post('client/service/uploadfilesvalue',data: formData );
-             print(response.statusCode);
+
         }
       //message; no balance
       //or

@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:rouh_app/models/expert_model.dart';
+
+import '../controllers/dio_manager_controller.dart';
 
 class Order {
   //Instance variables
@@ -20,7 +24,7 @@ class Order {
   Expert? expert;
   List<ServiceValue>? serviceValues;
 
-
+  DioManager dioManager = DioManager();
   //Constructor
   Order({ this.selectedServiceId,
     this.expert_id,
@@ -75,6 +79,26 @@ class Order {
   static List<T> convertListToModel<T>(
       T Function(Map<String, dynamic> map) fromJson, List data) {
     return data.map((e) => fromJson((e as Map).cast())).toList();
+  }
+
+  Future<Order> GetOrderWithAnswer({
+    required int selectedServiceId,
+  }) async {
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId
+    });
+
+    var response = await dioManager.dio.post('client/expert/getorderwithanswer',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return Order.fromJson(json.decode(response.data));
+
+    }
+    else {
+      return Order();
+    }
   }
 }
 
