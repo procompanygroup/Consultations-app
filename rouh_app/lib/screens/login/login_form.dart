@@ -180,7 +180,8 @@ class _LoginFormState extends State<LoginForm> {
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
-                                  value.length < 9) {
+                                  value.length > 9 ||
+                                  value.length < 4) {
                                 return '';
                               }
                               return null;
