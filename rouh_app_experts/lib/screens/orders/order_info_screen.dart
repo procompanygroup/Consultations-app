@@ -140,7 +140,6 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
             // print("serviceValue.value: " +  serviceValue.value!);
             // print(boolToTextConverter(bool.parse(serviceValue.value!)));
             if (serviceValue.type == 'text' ||
-                serviceValue.type == 'date' ||
                 serviceValue.type == 'list')
               return Container(
                 height: 40,
@@ -148,6 +147,19 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                   padding: const EdgeInsets.all(5),
                   child: Text(
                     serviceValue.value!,
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ),
+              );
+            else if (serviceValue.type == 'date')
+              return Container(
+                height: 40,
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    serviceValue.value!.toString().split(" ")[0],
                     style: TextStyle(
                       color: Colors.grey.shade600,
                     ),
@@ -320,6 +332,8 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                         child: Row(
                                           children: [
                                             Container(
+                                              height: 27.5,
+                                              width: 27.5,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(25)),
@@ -370,6 +384,8 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                   Row(
                                     children: [
                                       Container(
+                                        height: 27.5,
+                                        width: 27.5,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(25)),
@@ -589,6 +605,8 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                     child: Row(
                       children: [
                         Container(
+                          height: 27.5,
+                          width: 27.5,
                           decoration: BoxDecoration(
                             borderRadius:
                             BorderRadius.all(Radius.circular(25)),
