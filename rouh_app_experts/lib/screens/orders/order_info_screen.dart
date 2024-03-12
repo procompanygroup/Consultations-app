@@ -84,12 +84,12 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                 height: 40,
                 child: Padding(
                   padding: const EdgeInsets.all(5),
-                  child: serviceValue.icon != null
+                  child: serviceValue.svgPath  != null
                       ? Container(
                           width: 30,
                           height: 30,
                           child: SvgPicture.network(
-                            serviceValue.icon!,
+                            serviceValue.svgPath!,
                             width: 30,
                             height: 30,
                             color: Colors.grey.shade400,
