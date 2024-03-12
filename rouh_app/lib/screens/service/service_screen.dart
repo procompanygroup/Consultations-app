@@ -9,6 +9,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/constantsColors.dart';
+import 'callservice/call_experts.dart';
 import 'service_application_screen.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -71,6 +72,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
               if(service.name == "callservice")
               {
                  print(service.id!.toString());
+                 Navigator.of(context).push(
+                   MaterialPageRoute(
+                     builder: (context) =>
+                         CallExperts(),
+                   ),
+                 );
               }
               else
                 {
@@ -163,7 +170,19 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(5),
-                        child: Icon(Icons.favorite,
+                        child:
+                        service.icon != null
+                            ? Container(
+                          width: 30,
+                          height: 30,
+                          child: SvgPicture.network(
+                            service.icon!,
+                            width: 30,
+                            height: 30,
+                            color: mysecondarycolor,
+                          ),
+                        )
+                            : Icon(Icons.favorite,
                           color: mysecondarycolor,
                           size: 30,
                         ),
