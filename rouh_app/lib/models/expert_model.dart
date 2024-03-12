@@ -172,7 +172,7 @@ class Expert {
 
     }
     else {
-      experts = List<Expert>.empty();;
+      experts = List<Expert>.empty();
     }
     return experts;
   }
@@ -221,7 +221,7 @@ class Expert {
     }
   }
 
-  Future<List<Expert>?> GetAvailable() async {
+  Future<List<Expert>> GetAvailable() async {
 
     var response = await dioManager.dio.post('client/expert/getavailable',
     );
@@ -229,11 +229,12 @@ class Expert {
     List<Expert> experts;
     if (response.statusCode == 200) {
       experts = convertListToModel<Expert>(Expert.fromJson,jsonDecode(response.data));
-      return experts;
     }
     else {
-      return throw Exception();
+      experts = List<Expert>.empty();
     }
+    return experts;
+    
   }
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
