@@ -651,23 +651,35 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                           ),
                           style: bs_flatFill(context, myprimercolor),
                           onPressed: () async {
-                            var order = ExpertOrder();
-                              var res = await order.UploadAnswer(selectedServiceId: widget.expertOrder!.selectedServiceId!,
-                                  audioFile: context.read<AudioFileCubit>().state.audioFile!);
-                            //after save
-                            if(res == 1) {
-                              BlocProvider.of<AudioFileCubit>(context)
-                                  .loadAudioFile(null);
+                                  if (hasRecordFile) {
+                                      var audio = context
+                                          .read<AudioFileCubit>()
+                                          .state.audioFile;
+                                  if (audio != null) {
+                                    var order = ExpertOrder();
+                                    var res = await order.UploadAnswer(selectedServiceId: widget.expertOrder!.selectedServiceId!,
+                                        audioFile: context.read<AudioFileCubit>().state.audioFile!);
+                                    //after save
+                                    if(res == 1) {
+                                      BlocProvider.of<AudioFileCubit>(context)
+                                          .loadAudioFile(null);
 
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) =>
-                                          MainNavigationScreen()),
-                                      (route) =>
-                                  route.settings.name ==
-                                      '/mainNavigation');
-                            }
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  MainNavigationScreen()),
+                                              (route) =>
+                                          route.settings.name ==
+                                              '/mainNavigation');
+                                    }
+                                  } else {
+                                    //yasin
+                                  // ShowMessageDialog(context, "تحذير",
+                                  // "التسجيل الصوتي مطلوب");
+                                  }
+                                  }
+
                           },
                         )),
                   ),
