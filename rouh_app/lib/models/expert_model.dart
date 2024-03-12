@@ -28,6 +28,7 @@ class Expert {
   double? answer_speed;
   String? image;
   bool? isFavorite;
+  bool? isAvailble;
   List<ExpertService>? expert_services;
   List<Service>? services;
   List<ExpertComment>? selectedServices;
@@ -40,7 +41,12 @@ class Expert {
         this.last_name,
         this.email, this.mobile, this.nationality, this.birthdate, this.gender, this.marital_status,
         this.is_active,this.points_balance,this.cash_balance,this.cash_balance_todate,this.rates,this.record,this.desc,
-        this.call_cost,this.answer_speed, this.image,this.isFavorite, this.expert_services,this.services,this.selectedServices});
+        this.call_cost,this.answer_speed, this.image,
+        this.isFavorite,
+        this.isAvailble,
+        this.expert_services,
+        this.services,
+        this.selectedServices});
 
   factory Expert.fromJson(Map<String, dynamic> parsedJson) {
     var tmpExpertServices;
@@ -52,7 +58,8 @@ class Expert {
     var tmpRates;
     var tmpAnswerSpeed;
     var tmpFav;
-print("dina +$parsedJson['is_favorite']");
+    var tmpAvailable;
+
     if(parsedJson["experts_services"] != null)
     {
       tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
@@ -87,6 +94,11 @@ print("dina +$parsedJson['is_favorite']");
       tmpFav = parsedJson['is_favorite'] == 0 ? false : true;
       //tmpFav = bool.tryParse( parsedJson['is_favorite'].toString());
     }
+     if(parsedJson['is_available'] == null)
+      tmpAvailable = false;
+     else if(parsedJson['is_available'] != null) {
+       tmpAvailable = parsedJson['is_available'] == 0 ? false : true;
+    }
 
     return Expert(
       id: parsedJson['id'],
@@ -110,6 +122,7 @@ print("dina +$parsedJson['is_favorite']");
       points_balance:  parsedJson['points_balance'],
       rates:  tmpRates,
       isFavorite: tmpFav,
+      isAvailble: tmpAvailable,
       expert_services: tmpExpertServices,
       services: tmpServices,
       selectedServices: tmpSelectedServices,
@@ -199,10 +212,24 @@ print("dina +$parsedJson['is_favorite']");
       data: data,
     );
 
-    List<Expert> experts;
     if (response.statusCode == 200) {
       return Expert.fromJson(jsonDecode(response.data));
 
+    }
+    else {
+      return throw Exception();
+    }
+  }
+
+  Future<List<Expert>?> GetAvailable() async {
+
+    var response = await dioManager.dio.post('client/expert/getavailable',
+    );
+
+    List<Expert> experts;
+    if (response.statusCode == 200) {
+      experts = convertListToModel<Expert>(Expert.fromJson,jsonDecode(response.data));
+      return experts;
     }
     else {
       return throw Exception();
