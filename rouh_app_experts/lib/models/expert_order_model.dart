@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:rouh_app_experts/models/user_model.dart';
 
 import '../controllers/dio_manager_controller.dart';
+import 'answer_model.dart';
 
 class ExpertOrder {
   //Instance variables
@@ -168,14 +169,33 @@ class ExpertOrder {
     });
 
     var response = await dioManager.dio.post('expert/uploadanswer',data: formData );
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       return 1;
     }
     else {
       return throw Exception();
     }
+  }
 
+  Future<Answer> GetAnswer({
+    required int selectedServiceId,
+
+  }) async {
+
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId
+    });
+
+
+    var response = await dioManager.dio.post('expert/getwaitanswer',data: data );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return Answer.fromJson(json.decode(response.data));
+    }
+    else {
+      return Answer();
+    }
   }
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
