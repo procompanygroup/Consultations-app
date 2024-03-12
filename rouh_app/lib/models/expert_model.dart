@@ -234,7 +234,51 @@ class Expert {
       experts = List<Expert>.empty();
     }
     return experts;
-    
+
+  }
+
+  Future<bool> AddRate({
+    required int selectedServiceId,
+    required int rate,
+  }) async {
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId,
+      "rate": rate,
+    });
+
+    var response = await dioManager.dio.post('client/addrate',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+
+    }
+    else {
+      return false;
+    }
+  }
+
+  Future<bool> AddComment({
+    required int selectedServiceId,
+    required String comment,
+  }) async {
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId,
+      "comment": comment,
+    });
+
+    var response = await dioManager.dio.post('client/addcomment',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+
+    }
+    else {
+      return false;
+    }
   }
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
