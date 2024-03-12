@@ -33,7 +33,6 @@ class Expert {
   List<Service>? services;
   List<ExpertComment>? selectedServices;
   //bool? isFavorite;
-  //List<Service>? services;
 
   DioManager dioManager = DioManager();
 
@@ -55,7 +54,7 @@ class Expert {
 
   factory Expert.fromJson(Map<String, dynamic> parsedJson) {
      var tmpExpertServices;
-    // var tmpServices;
+     var tmpServices;
     var tmpSelectedServices;
     var tmpBirthDate;
     var tmpCashBalance;
@@ -67,10 +66,10 @@ class Expert {
     {
       tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
     }
-    // if(parsedJson["services"] != null)
-    // {
-    //   tmpServices = convertListToModel(Service.fromJson, parsedJson["services"]);
-    // }
+    if(parsedJson["services"] != null)
+    {
+      tmpServices = convertListToModel(Service.fromJson, parsedJson["services"]);
+    }
     if(parsedJson["selectedservices"] != null)
     {
       tmpSelectedServices = convertListToModel(ExpertComment.fromJson, parsedJson["selectedservices"]);
@@ -115,7 +114,7 @@ class Expert {
       points_balance:  parsedJson['points_balance'],
       rates:  tmpRates,
       expert_services: tmpExpertServices,
-      //services: tmpServices,
+      services: tmpServices,
       selectedServices: tmpSelectedServices,
     );
   }
