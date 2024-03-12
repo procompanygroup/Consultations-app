@@ -436,14 +436,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               // serviceList
-                  /*
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    child: _buildServices(expert.services!)),
+                                    child: _buildServices(expert.services! )),
                               ),
-                              */
                               // Record Title
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),

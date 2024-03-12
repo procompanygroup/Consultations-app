@@ -11,6 +11,7 @@ import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_image.dart';
 import '../../widgets/record_and_play_screen.dart';
+import '../main_navigation_screen.dart';
 
 class OrderInfoScreen extends StatefulWidget {
   const OrderInfoScreen({super.key, required this.expertOrder});
@@ -84,12 +85,12 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                 height: 40,
                 child: Padding(
                   padding: const EdgeInsets.all(5),
-                  child: serviceValue.icon != null
+                  child: serviceValue.svgPath  != null
                       ? Container(
                           width: 30,
                           height: 30,
                           child: SvgPicture.network(
-                            serviceValue.icon!,
+                            serviceValue.svgPath!,
                             width: 30,
                             height: 30,
                             color: Colors.grey.shade400,
@@ -639,7 +640,15 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                             if(res == 1) {
                               BlocProvider.of<AudioFileCubit>(context)
                                   .loadAudioFile(null);
-                              //yasin
+
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          MainNavigationScreen()),
+                                      (route) =>
+                                  route.settings.name ==
+                                      '/mainNavigation');
                             }
                           },
                         )),
