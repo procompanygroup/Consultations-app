@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
@@ -17,11 +18,21 @@ class NotificationService {
       (int id, String? title, String? body, String? payload) async {});
 
     var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+      android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS);
+
+    // await notificationsPlugin.initialize(initializationSettings,
+    //     onSelectNotification: onSelectNotification);
+
+    // await notificationsPlugin.initialize(initializationSettings,
+    // onDidReceiveNotificationResponse:
+    // (NotificationResponse notificationResponse) async {});
 
     await notificationsPlugin.initialize(initializationSettings,
-    onDidReceiveNotificationResponse:
-    (NotificationResponse notificationResponse) async {});
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) async {
+              notificationResponseFunction(notificationResponse);
+            });
 
   }
 
@@ -37,7 +48,21 @@ class NotificationService {
 
     Future showNotification({int id=0, String? title, String? body, String? payload}) async {
           // await initNotification();
-          return notificationsPlugin.show(id, title, body, await notificationDetails());
+          return notificationsPlugin.show(id, title, body, await notificationDetails(),payload: payload);
     }
 
+
+
+  Future notificationResponseFunction(NotificationResponse notificationResponse) async {
+    if (notificationResponse.payload != null) {
+      print('notification payload: ' + notificationResponse.id!.toString());
+      print('notification payload: ' + notificationResponse.payload!);
+
+      //
+      // await Navigator.push(
+      //   context,
+      //   MaterialPageRoute<void>(builder: (context) =>
+      //       SecondScreen(payload)),);
+    }
+  }
 }
