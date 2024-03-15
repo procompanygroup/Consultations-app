@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Rouh',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Set Noto Kufi Arabic as the default app font.
