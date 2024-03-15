@@ -1,3 +1,4 @@
+import '../Services/notifi_service.dart';
 import '../constants/global.dart';
 import '../models/country.dart';
 import '../models/expert_model.dart';
@@ -7,7 +8,7 @@ import '../models/service_model.dart';
 import '../models/service_value_model.dart';
 
 Point globalPoint = Point();
-
+NotificationService globalNotificationService = NotificationService();
 //#region Country
 List<Country> globalCountryList = <Country>[];
 //#endregion
