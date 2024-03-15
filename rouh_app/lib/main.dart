@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/bloc/audio_file/audio_file_cubit.dart';
 import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
 import 'bloc/UserInformation/user_information_cubit.dart';
+import 'controllers/globalController.dart';
 import 'mystyle/constantsColors.dart';
 import 'screens/experts/experts_screen.dart';
 import 'screens/service/service_screen.dart';
@@ -15,6 +16,8 @@ import 'screens/main_navigation_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await globalNotificationService.initNotification();
 
   Stripe.publishableKey = 'pk_test_51OixcfJifccNTBbxp9uOqin9nVSx6UOb6KE6JaWDnMSbbsxAUICBdBByrXLa8G6sPAhO2PDtBFjTJudgRHOjQDP600pI5owy1m';
 
