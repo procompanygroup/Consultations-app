@@ -3,7 +3,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  
+
+
   Future<void> initNotification() async {
     AndroidInitializationSettings initializationSettingsAndroid = 
         const AndroidInitializationSettings('logo');
@@ -26,13 +27,16 @@ class NotificationService {
 
     notificationDetails() {
       return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-        importance: Importance.max),
+        android: AndroidNotificationDetails('NotificationChannelId', 'NotificationChannelName',
+        importance: Importance.max,
+            channelShowBadge:true,
+            enableVibration: true,
+            playSound: true),
         iOS: DarwinNotificationDetails());
     }
 
     Future showNotification({int id=0, String? title, String? body, String? payload}) async {
-    await initNotification();
+          // await initNotification();
           return notificationsPlugin.show(id, title, body, await notificationDetails());
     }
 
