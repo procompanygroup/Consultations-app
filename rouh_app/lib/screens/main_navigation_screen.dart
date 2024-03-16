@@ -1,13 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rouh_app/mystyle/constantsColors.dart';
-import 'package:rouh_app/screens/service/service_application_screen.dart';
+import '../Services/notifi_service.dart';
 import 'experts/experts_screen.dart';
 import 'profile/profile_screen.dart';
-import 'service/select_expert_screen.dart';
 import 'service/service_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'shop/purchase_shop_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
@@ -19,10 +18,76 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
 
+
+
+  void _configureDidReceiveLocalNotificationSubject() {
+    didReceiveLocalNotificationStream.stream
+        .listen((ReceivedNotification receivedNotification) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: receivedNotification.title != null
+              ? Text(receivedNotification.title!)
+              : null,
+          content: receivedNotification.body != null
+              ? Text(receivedNotification.body!)
+              : null,
+          actions: <Widget>[
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: true).pop();
+                await Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        SecondPage(title:  receivedNotification.payload!),
+                  ),
+                );
+              },
+              child: const Text('Ok'),
+            )
+          ],
+        ),
+      );
+    });
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationStream.stream.listen((String? payload) async {
+      await Navigator.of(context).push(MaterialPageRoute<void>(
+        builder: (BuildContext context) => SecondPage(title: payload!),
+      ));
+    });
+  }
+
+
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _configureDidReceiveLocalNotificationSubject();
+    _configureSelectNotificationSubject();
+
+    super.initState();
+
+
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    didReceiveLocalNotificationStream.close();
+    selectNotificationStream.close();
+
+    super.dispose();
   }
 
   @override
@@ -103,3 +168,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 }
+
+
+
