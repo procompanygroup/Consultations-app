@@ -5,9 +5,11 @@ import 'package:rouh_app_experts/screens/orders/order_info_screen.dart';
 import 'package:rouh_app_experts/widgets/rating_stars.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../controllers/converters.dart';
 import '../../controllers/globalController.dart';
 import '../../models/expert_model.dart';
 import '../../models/expert_order_model.dart';
+import '../../models/key_value_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_appbar.dart';
 
@@ -23,9 +25,11 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
   bool isLoadingOrderInfo = false;
   String _selectedState = "all";
 
-  List<String> stateList = [
-   "all", "no_answer", "wait" ,"reject" ,"agree"
-  ];
+  // List<String> stateList = [
+  //  "all", "no_answer", "wait" ,"reject" ,"agree"
+  // ];
+
+
 
   List<ExpertOrder> expertOrderList = <ExpertOrder>[];
 
@@ -106,14 +110,14 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
 
     ];
 */
-    _buildStates(List<String> states) {
+    _buildStates(List<KeyValue> states) {
       List<Widget> statesWidgetList = [];
-      states.forEach((String state) {
+      states.forEach((KeyValue state) {
         statesWidgetList.add(
           GestureDetector(
             onTap: () {
               setState(() {
-                _selectedState = state;
+                _selectedState = state.key;
                 print(_selectedState);
 
 
@@ -135,7 +139,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                       ),
                     ),
                     child: Text(
-                      state,
+                      state.value,
                       style: TextStyle(
                           fontSize: 14,
                           color: myprimercolor,
@@ -174,10 +178,16 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
               });
               if(resultOrder != null)
               {
+                var answerRecordPath = "";
+                if(order.answerState == "wait")
+                {
+                 var  expertAnswer= await globalExpertOrder.GetAnswer(selectedServiceId:   order.selectedServiceId!);
+                      answerRecordPath = expertAnswer.recordPath!;
+                }
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) =>
-                        OrderInfoScreen(expertOrder: resultOrder),
+                        OrderInfoScreen(expertOrder: resultOrder, answerRecordPath:answerRecordPath ),
                   ),
                 );
               }
@@ -258,7 +268,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.answerState! ,
+                                        OrderAnswerStateForCard(order.answerState!),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey.shade300,
@@ -315,7 +325,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.answerState! ,
+                                        OrderAnswerStateForCard(order.answerState!),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: myprimercolor,
@@ -360,7 +370,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.answerState! ,
+                                        OrderAnswerStateForCard(order.answerState!),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: mysecondarycolor,
@@ -404,7 +414,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       ),
                                       SizedBox(width: 5,),
                                       Text(
-                                        order.answerState! ,
+                                        OrderAnswerStateForCard(order.answerState!),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: myprimercolor,
@@ -548,7 +558,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                     left: 10, top: 0, right: 10, bottom: 0),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: _buildStates(stateList),
+                  child: _buildStates(converterListOrderAnswerState),
                 ),
               ),
 
