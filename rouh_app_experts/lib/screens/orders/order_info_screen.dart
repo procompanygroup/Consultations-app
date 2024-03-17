@@ -14,9 +14,10 @@ import '../../widgets/record_and_play_screen.dart';
 import '../main_navigation_screen.dart';
 
 class OrderInfoScreen extends StatefulWidget {
-  const OrderInfoScreen({super.key, required this.expertOrder});
+  const OrderInfoScreen({super.key, required this.expertOrder, required this.answerRecordPath});
 
   final ExpertOrder? expertOrder;
+  final String answerRecordPath;
 
   @override
   State<OrderInfoScreen> createState() => _OrderInfoScreenState();
@@ -598,6 +599,7 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                         // :Center(child: CircularProgressIndicator()),
                         ),
                   ),
+
                   // record response title
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -633,56 +635,74 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 30.0, vertical: 5.0),
-                    child: RecordAndPlayScreen(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50.0, vertical: 10.0),
-                    child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        child: TextButton(
-                          child: Text(
-                            'إرسال',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          style: bs_flatFill(context, myprimercolor),
-                          onPressed: () async {
-                                  if (hasRecordFile) {
-                                      var audio = context
-                                          .read<AudioFileCubit>()
-                                          .state.audioFile;
-                                  if (audio != null) {
-                                    var order = ExpertOrder();
-                                    var res = await order.UploadAnswer(selectedServiceId: widget.expertOrder!.selectedServiceId!,
-                                        audioFile: context.read<AudioFileCubit>().state.audioFile!);
-                                    //after save
-                                    if(res == 1) {
-                                      BlocProvider.of<AudioFileCubit>(context)
-                                          .loadAudioFile(null);
+                  widget.expertOrder!.answerState! == "wait"?
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 5.0),
+                        child: PlayRecordScreen(
+                            audioUrl: widget.answerRecordPath),
+                      ),
+                      SizedBox(height: 10,),
+                    ],
+                  ):
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 5.0),
+                        child: RecordAndPlayScreen(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50.0, vertical: 10.0),
+                        child: Container(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextButton(
+                              child: Text(
+                                'إرسال',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              style: bs_flatFill(context, myprimercolor),
+                              onPressed: () async {
+                                      if (hasRecordFile) {
+                                          var audio = context
+                                              .read<AudioFileCubit>()
+                                              .state.audioFile;
+                                      if (audio != null) {
+                                        var order = ExpertOrder();
+                                        var res = await order.UploadAnswer(selectedServiceId: widget.expertOrder!.selectedServiceId!,
+                                            audioFile: context.read<AudioFileCubit>().state.audioFile!);
+                                        //after save
+                                        if(res == 1) {
+                                          BlocProvider.of<AudioFileCubit>(context)
+                                              .loadAudioFile(null);
 
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  MainNavigationScreen()),
-                                              (route) =>
-                                          route.settings.name ==
-                                              '/mainNavigation');
-                                    }
-                                  } else {
-                                    //yasin
-                                  // ShowMessageDialog(context, "تحذير",
-                                  // "التسجيل الصوتي مطلوب");
-                                  }
-                                  }
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      MainNavigationScreen()),
+                                                  (route) =>
+                                              route.settings.name ==
+                                                  '/mainNavigation');
+                                        }
+                                      } else {
+                                        //yasin
+                                      // ShowMessageDialog(context, "تحذير",
+                                      // "التسجيل الصوتي مطلوب");
+                                      }
+                                      }
 
-                          },
-                        )),
+                              },
+                            )),
+                      ),
+                    ],
                   ),
+
+
                 ],
               ),
             ),
