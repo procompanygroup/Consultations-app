@@ -1,16 +1,14 @@
 import '../constants/global.dart';
 import '../models/expert_model.dart';
 import '../models/expert_order_model.dart';
+import '../models/key_value_model.dart';
 import '../models/service_model.dart';
 
 
 
 ExpertOrder globalExpertOrder = ExpertOrder();
 
-//#region Constant
-List<String> globallistMaritalStatus = ["Single", "Married", "Divorced", "Widowed"];
-List<String> globallistGender = ["Male", "Female"];
-//#endregion
+
 
 //#region Constant
 
