@@ -133,7 +133,8 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
 
     isRecorderReady = true;
     recorder.setSubscriptionDuration(
-      const Duration(milliseconds: 500),
+      // const Duration(milliseconds: 500),
+      const Duration(milliseconds: 1),
     );
   }
 
