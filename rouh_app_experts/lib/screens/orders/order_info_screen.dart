@@ -734,7 +734,7 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(80),
                   child: Image(
-                    image: NetworkImage(widget.expertOrder!.client!.image!),
+                    image: NetworkImage(widget.expertOrder!.client!.image_path!),
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
