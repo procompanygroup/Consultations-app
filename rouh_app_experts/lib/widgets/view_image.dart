@@ -29,7 +29,7 @@ class ViewImage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(50), topRight: Radius.circular(50)),
-                border: Border.all(color: Colors.grey),
+                // border: Border.all(color: Colors.grey),
                 color: Colors.white,
               ),
               child: Padding(
@@ -43,6 +43,7 @@ class ViewImage extends StatelessWidget {
                     Image(
                        image: NetworkImage(imagePath),
                       fit: BoxFit.fitWidth,
+                      height: bodyHeight * 0.80,
                       width: screenWidth,
                       errorBuilder:
                           (BuildContext context, Object exception, StackTrace? stackTrace) {
