@@ -40,10 +40,11 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
     // TODO: implement initState
     super.initState();
     expertId = context.read<ExpertInformationCubit>().state.fetchedExpert!.id!;
-    fillExpertOrderList();
+    // fillExpertOrderList();
+    fillExpertOrderListAsync();
 
   }
-
+/*
   Future<void> fillExpertOrderList() async {
     
     globalExpertOrder.GetOrders(expertId: expertId)
@@ -52,9 +53,16 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         print(response);
         expertOrderList =response;
         isLoadingExpertOrders =false;
-        // print("Test:" + isLoading.toString());
-
       });
+    });
+  }
+*/
+  Future<void> fillExpertOrderListAsync() async {
+
+    var response  = await globalExpertOrder.GetOrders(expertId: expertId);
+    setState(() {
+      expertOrderList = response;
+      isLoadingExpertOrders =false;
     });
   }
 
@@ -110,6 +118,9 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
 
     ];
 */
+    Future<void> _refresh() async{
+     await fillExpertOrderListAsync();
+    }
     _buildStates(List<KeyValue> states) {
       List<Widget> statesWidgetList = [];
       states.forEach((KeyValue state) {
@@ -470,125 +481,133 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
         );
       });
 
-      return Column(
+      // return RefreshIndicator(
+      //     onRefresh: _refresh,
+      //       child: Column(
+      //           children: orderWidgetList
+      //   )
+      // );
+        return Column(
         children: orderWidgetList,
       );
     }
-
-
     return Scaffold(
       body: Stack(
-        children: [
-          Column(
-            children: [
-              Container(
-                width: screenWidth,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25)),
-                    // border: Border.all(color: Colors.grey),
-                    gradient: LinearGradient(
-                      colors: [Color(0xff023056), myprimercolor],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    )),
-                child: SafeArea(
-                  child: Column(
-                    children: <Widget>[
-                      Stack(
-                        children: [
-                          // Top
-                          Container(
-                            width: screenWidth,
-                            height: (bodyHeight * 0.20) - 45, // service list,
-                            child: Align(
-                              alignment: AlignmentDirectional.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Text(
-                                  "Experts",
-                                  style: TextStyle(
-                                    // fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                      color: mysecondarycolor),
+          children: [
+            Column(
+              children: [
+                Container(
+                  width: screenWidth,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25)),
+                      // border: Border.all(color: Colors.grey),
+                      gradient: LinearGradient(
+                        colors: [Color(0xff023056), myprimercolor],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      )),
+                  child: SafeArea(
+                    child: Column(
+                      children: <Widget>[
+                        Stack(
+                          children: [
+                            // Top
+                            Container(
+                              width: screenWidth,
+                              height: (bodyHeight * 0.20) - 45, // service list,
+                              child: Align(
+                                alignment: AlignmentDirectional.bottomCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(
+                                    "Experts",
+                                    style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                        fontSize: 24,
+                                        color: mysecondarycolor),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            child: Align(
-                              alignment: AlignmentDirectional.topEnd,
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.only(
-                                  top: 20,
-                                  end: 20,
-                                ),
-                                child: ElevatedButton(
-                                  child: Icon(
-                                     Icons.notifications,
-                                    color: myprimercolor,
-                                    size: 35,
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              child: Align(
+                                alignment: AlignmentDirectional.topEnd,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.only(
+                                    top: 20,
+                                    end: 20,
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: CircleBorder(),
-                                    padding: EdgeInsets.all(5),
-                                    backgroundColor:
-                                    Colors.white, // <-- Button color
-                                    // foregroundColor: Colors.red, // <-- Splash color
-                                  ),
-                                  onPressed: () {
+                                  child: ElevatedButton(
+                                    child: Icon(
+                                       Icons.notifications,
+                                      color: myprimercolor,
+                                      size: 35,
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      shape: CircleBorder(),
+                                      padding: EdgeInsets.all(5),
+                                      backgroundColor:
+                                      Colors.white, // <-- Button color
+                                      // foregroundColor: Colors.red, // <-- Splash color
+                                    ),
+                                    onPressed: () {
 
-                                  },
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              // serviceList
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 10, top: 0, right: 10, bottom: 0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: _buildStates(converterListOrderAnswerState),
+                // serviceList
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10, top: 0, right: 10, bottom: 0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: _buildStates(converterListOrderAnswerState),
+                  ),
                 ),
-              ),
 
-              SizedBox(
-                height: 10,
-              ),
+                SizedBox(
+                  height: 10,
+                ),
 
-              // expertList
-              Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: _buildOrders(
-                             _selectedState == "all" ||   _selectedState == ""
-                                ?  expertOrderList!
-                                 : expertOrderList!
-                                .where((element) => element.answerState! == _selectedState)
-                                .toList()
-                            )),
-                  )),
-              SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
-          if (isLoadingExpertOrders || isLoadingOrderInfo)
-            Center(child: CircularProgressIndicator()),
-        ],
-      ),
+                // expertList
+                Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: RefreshIndicator(
+                        onRefresh:_refresh,
+                        child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            child: _buildOrders(
+                                 _selectedState == "all" ||   _selectedState == ""
+                                    ?  expertOrderList!
+                                     : expertOrderList!
+                                    .where((element) => element.answerState! == _selectedState)
+                                    .toList()
+                                )),
+                      ),
+                    )),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+            if (isLoadingExpertOrders || isLoadingOrderInfo)
+              Center(child: CircularProgressIndicator()),
+          ],
+        ),
     );
   }
 }
