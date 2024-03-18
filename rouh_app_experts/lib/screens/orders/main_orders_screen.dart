@@ -133,7 +133,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                       border: Border(
                         bottom: BorderSide(
                             width: 3,
-                            color: _selectedState == state
+                            color: _selectedState == state.key
                                 ? mysecondarycolor
                                 : Colors.transparent),
                       ),
