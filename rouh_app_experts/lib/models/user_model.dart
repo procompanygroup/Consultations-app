@@ -15,10 +15,11 @@ class User {
   String? marital_status;
   int? is_active;
   String? image;
+  String? image_path;
 
    DioManager dioManager= DioManager() ;
   //Constructor
-  User({ this.id,this.user_name,this.email,this.mobile,this.nationality,this.birthdate,this.gender,this.marital_status,this.is_active,this.image}) ;
+  User({ this.id,this.user_name,this.email,this.mobile,this.nationality,this.birthdate,this.gender,this.marital_status,this.is_active,this.image,this.image_path}) ;
   // {
   //   id = id;
   //   user_name = user_name;
@@ -44,6 +45,7 @@ class User {
         email: parsedJson['email'],
         gender: parsedJson['gender'],
         image: parsedJson['image'],
+        image_path: parsedJson['image_path'],
         is_active: parsedJson['is_active'],
         marital_status: parsedJson['marital_status'],
         nationality: parsedJson['nationality']
@@ -59,6 +61,7 @@ class User {
         'email': email,
         'gender': gender,
         'image': image,
+        'image_path': image_path,
         'is_active': is_active,
         'marital_status': marital_status,
         'nationality': nationality,
