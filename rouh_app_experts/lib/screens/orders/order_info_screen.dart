@@ -11,10 +11,12 @@ import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../widgets/custom_image.dart';
 import '../../widgets/record_and_play_screen.dart';
+import '../../widgets/show_dialog.dart';
 import '../main_navigation_screen.dart';
 
 class OrderInfoScreen extends StatefulWidget {
-  const OrderInfoScreen({super.key, required this.expertOrder, required this.answerRecordPath});
+  const OrderInfoScreen(
+      {super.key, required this.expertOrder, required this.answerRecordPath});
 
   final ExpertOrder? expertOrder;
   final String answerRecordPath;
@@ -71,8 +73,7 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
         setState(() {
           hasImageFile = true;
           serviceImages[ImageCount] = serviceValue.value!;
-          if(ImageCount<3)
-            ImageCount++;
+          if (ImageCount < 3) ImageCount++;
         });
       }
       iconWidgetList.add(
@@ -86,7 +87,7 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                 height: 40,
                 child: Padding(
                   padding: const EdgeInsets.all(5),
-                  child: serviceValue.svgPath  != null
+                  child: serviceValue.svgPath != null
                       ? Container(
                           width: 30,
                           height: 30,
@@ -140,8 +141,7 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
             // print("serviceValue.name: " +  serviceValue.name!);
             // print("serviceValue.value: " +  serviceValue.value!);
             // print(boolToTextConverter(bool.parse(serviceValue.value!)));
-            if (serviceValue.type == 'text' ||
-                serviceValue.type == 'list')
+            if (serviceValue.type == 'text' || serviceValue.type == 'list')
               return Container(
                 height: 40,
                 child: Padding(
@@ -353,7 +353,8 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                             Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      horizontal: 5, vertical: 5),
+                                                      horizontal: 5,
+                                                      vertical: 5),
                                               child: Text(
                                                 "الرسالة الصوتية",
                                                 style: TextStyle(
@@ -467,12 +468,13 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                           children: [
                                             Container(
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.all(Radius.circular(25)),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(25)),
                                                 color: mysecondarycolor,
                                               ),
                                               child: Padding(
-                                                padding: const EdgeInsets.all(7.5),
+                                                padding:
+                                                    const EdgeInsets.all(7.5),
                                                 child: SvgPicture.asset(
                                                   "assets/svg/camera-icon.svg",
                                                   width: 12.5,
@@ -481,12 +483,15 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 5, vertical: 5),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 5),
                                               child: Text(
                                                 "الصور",
                                                 style: TextStyle(
-                                                    fontSize: 16, color: myprimercolor),
+                                                    fontSize: 16,
+                                                    color: myprimercolor),
                                               ),
                                             ),
                                           ],
@@ -501,24 +506,30 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                           children: [
                                             GestureDetector(
                                               onTap: () async {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ViewImage( imagePath: serviceImages[0],),
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewImage(
+                                                      imagePath:
+                                                          serviceImages[0],
                                                     ),
-                                                  );
+                                                  ),
+                                                );
                                               },
                                               child: Container(
                                                 width: (screenWidth - 130) / 4,
                                                 height: (screenWidth - 130) / 4,
-                                                child:
-                                                CustomImage(url: serviceImages[0],
-                                                  height: (screenWidth - 130) / 4, width: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[0],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
                                                   radius: 20,
-                                                  borderColor:  Colors.grey.shade200,
-                                                  borderWidth:  1,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
                                                 ),
-
                                               ),
                                             ),
                                             GestureDetector(
@@ -526,21 +537,27 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        ViewImage( imagePath: serviceImages[1],),
+                                                        ViewImage(
+                                                      imagePath:
+                                                          serviceImages[1],
+                                                    ),
                                                   ),
                                                 );
                                               },
                                               child: Container(
                                                 width: (screenWidth - 130) / 4,
                                                 height: (screenWidth - 130) / 4,
-                                                child:
-                                                CustomImage(url: serviceImages[1],
-                                                  height: (screenWidth - 130) / 4, width: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[1],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
                                                   radius: 20,
-                                                  borderColor:  Colors.grey.shade200,
-                                                  borderWidth:  1,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
                                                 ),
-
                                               ),
                                             ),
                                             GestureDetector(
@@ -548,21 +565,27 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        ViewImage( imagePath: serviceImages[2],),
+                                                        ViewImage(
+                                                      imagePath:
+                                                          serviceImages[2],
+                                                    ),
                                                   ),
                                                 );
                                               },
                                               child: Container(
                                                 width: (screenWidth - 130) / 4,
                                                 height: (screenWidth - 130) / 4,
-                                                child:
-                                                CustomImage(url: serviceImages[2],
-                                                  height: (screenWidth - 130) / 4, width: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[2],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
                                                   radius: 20,
-                                                  borderColor:  Colors.grey.shade200,
-                                                  borderWidth:  1,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
                                                 ),
-
                                               ),
                                             ),
                                             GestureDetector(
@@ -570,21 +593,27 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        ViewImage( imagePath: serviceImages[3],),
+                                                        ViewImage(
+                                                      imagePath:
+                                                          serviceImages[3],
+                                                    ),
                                                   ),
                                                 );
                                               },
                                               child: Container(
                                                 width: (screenWidth - 130) / 4,
                                                 height: (screenWidth - 130) / 4,
-                                                child:
-                                                CustomImage(url: serviceImages[3],
-                                                  height: (screenWidth - 130) / 4, width: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[3],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
                                                   radius: 20,
-                                                  borderColor:  Colors.grey.shade200,
-                                                  borderWidth:  1,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
                                                 ),
-
                                               ),
                                             ),
                                           ],
@@ -593,7 +622,6 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                     ],
                                   )
                                 : SizedBox(),
-
                           ],
                         )
                         // :Center(child: CircularProgressIndicator()),
@@ -602,16 +630,15 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
 
                   // record response title
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: Row(
                       children: [
                         Container(
                           height: 27.5,
                           width: 27.5,
                           decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(25)),
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
                             color: mysecondarycolor,
                           ),
                           child: Padding(
@@ -628,81 +655,87 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                               horizontal: 5, vertical: 5),
                           child: Text(
                             "رد الخبير",
-                            style: TextStyle(
-                                fontSize: 16, color: myprimercolor),
+                            style:
+                                TextStyle(fontSize: 16, color: myprimercolor),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  widget.expertOrder!.answerState! == "wait"?
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 30.0, vertical: 5.0),
-                        child: PlayRecordScreen(
-                            audioUrl: widget.answerRecordPath),
-                      ),
-                      SizedBox(height: 10,),
-                    ],
-                  ):
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 30.0, vertical: 5.0),
-                        child: RecordAndPlayScreen(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50.0, vertical: 10.0),
-                        child: Container(
-                            width: double.infinity,
-                            height: 50,
-                            child: TextButton(
-                              child: Text(
-                                'إرسال',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              style: bs_flatFill(context, myprimercolor),
-                              onPressed: () async {
+                  widget.expertOrder!.answerState! == "wait"
+                      ? Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30.0, vertical: 5.0),
+                              child: PlayRecordScreen(
+                                  audioUrl: widget.answerRecordPath),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30.0, vertical: 5.0),
+                              child: RecordAndPlayScreen(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50.0, vertical: 10.0),
+                              child: Container(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: TextButton(
+                                    child: Text(
+                                      'إرسال',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    style: bs_flatFill(context, myprimercolor),
+                                    onPressed: () async {
                                       if (hasRecordFile) {
-                                          var audio = context
-                                              .read<AudioFileCubit>()
-                                              .state.audioFile;
-                                      if (audio != null) {
-                                        var order = ExpertOrder();
-                                        var res = await order.UploadAnswer(selectedServiceId: widget.expertOrder!.selectedServiceId!,
-                                            audioFile: context.read<AudioFileCubit>().state.audioFile!);
-                                        //after save
-                                        if(res == 1) {
-                                          BlocProvider.of<AudioFileCubit>(context)
-                                              .loadAudioFile(null);
+                                        var audio = context
+                                            .read<AudioFileCubit>()
+                                            .state
+                                            .audioFile;
+                                        if (audio != null) {
+                                          var order = ExpertOrder();
+                                          var res = await order.UploadAnswer(
+                                              selectedServiceId: widget
+                                                  .expertOrder!
+                                                  .selectedServiceId!,
+                                              audioFile: context
+                                                  .read<AudioFileCubit>()
+                                                  .state
+                                                  .audioFile!);
+                                          //after save
+                                          if (res == 1) {
+                                            BlocProvider.of<AudioFileCubit>(
+                                                    context)
+                                                .loadAudioFile(null);
 
-                                          Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      MainNavigationScreen()),
-                                                  (route) =>
-                                              route.settings.name ==
-                                                  '/mainNavigation');
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        MainNavigationScreen()),
+                                                (route) =>
+                                                    route.settings.name ==
+                                                    '/mainNavigation');
+                                          }
+                                        } else {
+                                          ShowMessageDialog(context, "تحذير",
+                                              "التسجيل الصوتي مطلوب");
                                         }
-                                      } else {
-                                        //yasin
-                                      // ShowMessageDialog(context, "تحذير",
-                                      // "التسجيل الصوتي مطلوب");
                                       }
-                                      }
-
-                              },
-                            )),
-                      ),
-                    ],
-                  ),
-
-
+                                    },
+                                  )),
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),
@@ -734,7 +767,8 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(80),
                   child: Image(
-                    image: NetworkImage(widget.expertOrder!.client!.image_path!),
+                    image:
+                        NetworkImage(widget.expertOrder!.client!.image_path!),
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
