@@ -7,6 +7,7 @@ import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../bloc/audio_file/audio_file_cubit.dart';
 import '../../bloc/service_inputs/service_input_cubit.dart';
 import '../../constants/global_variable.dart';
+import '../../controllers/converters.dart';
 import '../../controllers/globalController.dart';
 import '../../models/country.dart';
 import '../../models/service_model.dart';
@@ -101,7 +102,11 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
 
   // Widget buildForm(List<ServiceInput> _serviceInputs, List<ServiceValue> _serviceValues)
   Widget buildForm(List<ServiceValue> _serviceValues) {
+
+
+
     List<Widget> inputsWidgetList = [];
+    try{
     _serviceValues.forEach((ServiceValue serviceValue) {
       var serviceInput = serviceInputs
           .firstWhere((element) => element.id == serviceValue.inputservice_id);
@@ -470,14 +475,19 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                           contentPadding: EdgeInsetsDirectional.only(
                               start: 60, top: 5, end: 10, bottom: 5),
                           hintStyle: TextStyle(color: Colors.grey),
-                          hintText: "Country",
+                          hintText: serviceInput.input!.name!,
                           fillColor: Colors.grey.shade50),
                       items: serviceInput.input!.inputValues!
                           .map<DropdownMenuItem<InputValues>>(
                               (InputValues inputValues) {
                         return DropdownMenuItem<InputValues>(
                           value: inputValues,
-                          child: Text(inputValues.value!),
+                          // child: Text(inputValues.value!),
+                          child: serviceInput.input!.name! == "gender" ?
+                          Text(  converterGender( inputValues.value!))
+                         :serviceInput.input!.name! == "marital_status" ?
+                          Text(  converterMaritalStatus( inputValues.value!))
+                         : Text(inputValues.value!),
                         );
                       }).toList(),
                     ),
@@ -587,6 +597,11 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
         ),
       );
     });
+    }
+    catch(ex)
+    {
+
+    }
     return Column(
       children: inputsWidgetList,
     );
