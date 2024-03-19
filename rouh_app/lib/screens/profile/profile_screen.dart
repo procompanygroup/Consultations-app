@@ -5,8 +5,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:rouh_app/models/key_value_model.dart';
 
 import '../../bloc/UserInformation/user_information_cubit.dart';
+import '../../controllers/converters.dart';
 import '../../controllers/globalController.dart';
 import '../../models/country.dart';
 import '../../models/user_model.dart';
@@ -33,35 +35,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Country _selectedCountry = new Country(code: "",name: "", dialCode: "",flag: "");
   // late Country _selectedCountry;
   List<Country> listCountry = <Country>[];
-  late String _selectedGender = "Male";
-
+  late KeyValue _selectedGender = new KeyValue(key: "", value: "");
+  late KeyValue _selectedMaritalStatus = new KeyValue(key: "", value: "");
+  // late KeyValue _selectedGender ;
+  // late KeyValue _selectedMaritalStatus;
 
   @override
   void initState() {
     // TODO: implement initState
 
-    Country.readJson().then((response) => {
-      setState(() {
-        listCountry = response;
-        user = context.read<UserInformationCubit>().state.fetchedPerson!;
-        _selectedGender = user.gender == 1?"Male":"Female";
-        _selectedCountry = listCountry.firstWhere((element) => element.name == user.nationality);
+    setState(() {
+      listCountry = globalCountryList;
+      user = context.read<UserInformationCubit>().state.fetchedPerson!;
+      _selectedCountry = listCountry.firstWhere((element) => element.name == user.nationality);
+      _selectedGender = globalListGender.firstWhere((element) => element.key == user.gender.toString());
+      _selectedMaritalStatus = globalListMaritalStatus.firstWhere((element) => element.key == user.marital_status);
+      imagePath = user.image as String;
+      image = File(imagePath);
 
-        imagePath = user.image as String;
-        image = File(imagePath);
-
-        print(user.user_name);
-        print(imagePath);
-        print(user.image);
-      }),
+      print(user.user_name);
+      print(imagePath);
+      print(user.image);
     });
+
+
 
 
     super.initState();
     //
-
-
-
 
   }
 
@@ -495,7 +496,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10.0, vertical: 5.0),
-                                      child: DropdownButtonFormField<String>(
+                                      child: DropdownButtonFormField<KeyValue>(
                                         validator: (value) => value == null ? '' : null,
                                         //isDense: true,
                                         hint: const Text('Choose'),
@@ -509,11 +510,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         //   height: 2,
                                         //   color: Colors.grey,
                                         // ),
-                                        onChanged: (String? newValue) {
+                                        onChanged: (KeyValue? newValue) {
                                           setState(() {
                                             _selectedGender = newValue!;
-                                            user.gender =
-                                            _selectedGender == "Male" ? 1 : 2;
+                                            user.gender = int.parse(_selectedGender.key);
                                           });
                                         },
                                         decoration: InputDecoration(
@@ -538,11 +538,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             const TextStyle(color: Colors.grey),
                                             hintText: "Gender",
                                             fillColor: Colors.grey.shade50),
-                                        items: globallistGender.map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
+                                        items: globalListGender.map<DropdownMenuItem<KeyValue>>(
+                                                (KeyValue value) {
+                                              return DropdownMenuItem<KeyValue>(
                                                 value: value,
-                                                child: Text(value),
+                                                child: Text(converterGender(value.key)),
                                               );
                                             }).toList(),
                                       ),
@@ -580,19 +580,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10.0, vertical: 5.0),
-                                      child: DropdownButtonFormField<String>(
+                                      child: DropdownButtonFormField<KeyValue>(
                                         validator: (value) => value == null ? '' : null,
                                         //isDense: true,
                                         hint: const Text('Choose'),
-                                        value: user.marital_status,
+                                        value: _selectedMaritalStatus,
                                         icon: const Icon(Icons.arrow_drop_down),
                                         iconSize: 24,
                                         elevation: 16,
                                         isExpanded: true,
                                         style: const TextStyle(color: Colors.grey),
-                                        onChanged: (String? newValue) {
+                                        onChanged: (KeyValue? newValue) {
                                           setState(() {
-                                            user.marital_status = newValue!;
+                                            _selectedMaritalStatus = newValue!;
+                                            user.marital_status = _selectedMaritalStatus.key!;
                                           });
                                         },
                                         decoration: InputDecoration(
@@ -615,14 +616,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 bottom: 5),
                                             hintStyle:
                                             const TextStyle(color: Colors.grey),
-                                            hintText: "marital status",
+                                            hintText: "الحالة الاجتماعية",
                                             fillColor: Colors.grey.shade50),
-                                        items: globallistMaritalStatus
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
+                                            items: globalListMaritalStatus
+                                            .map<DropdownMenuItem<KeyValue>>(
+                                                (KeyValue value) {
+                                              return DropdownMenuItem<KeyValue>(
                                                 value: value,
-                                                child: Text(value),
+                                                child: Text(converterMaritalStatus(value.key)),
                                               );
                                             }).toList(),
                                       ),
