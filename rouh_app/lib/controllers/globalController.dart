@@ -2,6 +2,7 @@ import '../Services/notifi_service.dart';
 import '../constants/global.dart';
 import '../models/country.dart';
 import '../models/expert_model.dart';
+import '../models/key_value_model.dart';
 import '../models/point_model.dart';
 import '../models/service_input_model.dart';
 import '../models/service_model.dart';
@@ -13,8 +14,23 @@ NotificationService globalNotificationService = NotificationService();
 List<Country> globalCountryList = <Country>[];
 //#endregion
 //#region Constant
-List<String> globallistMaritalStatus = ["Single", "Married", "Divorced", "Widowed"];
-List<String> globallistGender = ["Male", "Female"];
+// List<String> globallistMaritalStatus = ["Single", "Married", "Divorced", "Widowed"];
+// List<String> globallistGender = ["Male", "Female"];
+//#endregion
+
+//#region Gender
+List<KeyValue> globalListGender = [
+  new KeyValue(key: "1", value: "ذكر"),
+  new KeyValue(key: "2", value: "أنثى"),
+];
+//#endregion
+//#region MaritalStatus
+List<KeyValue> globalListMaritalStatus = [
+  new KeyValue(key: "single", value: "اعزب"),
+  new KeyValue(key: "married", value: "متزوج"),
+  new KeyValue(key: "divorced", value: "مطلق"),
+  new KeyValue(key: "widower", value: "ارمل"),
+];
 //#endregion
 
 
