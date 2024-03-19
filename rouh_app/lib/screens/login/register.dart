@@ -5,10 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rouh_app/controllers/converters.dart';
 import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../controllers/dio_manager_controller.dart';
 import '../../controllers/globalController.dart';
 import '../../models/country.dart';
+import '../../models/key_value_model.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
@@ -29,8 +31,10 @@ class _RegisterState extends State<Register> {
   List<Country> listCountry = <Country>[];
 
   late Country _selectedCountry;
-  late String _selectedGender;
-  late String _selectedMaterialState;
+  // late String _selectedGender;
+  late KeyValue _selectedGender ;
+  late KeyValue _selectedMaritalStatus;
+  // late String _selectedMaterialState;
   late String _selectedDate = "Choose your birthday";
   bool isChecked = true;
   User user = User();
@@ -40,20 +44,20 @@ class _RegisterState extends State<Register> {
   @override
   void initState() {
     // TODO: implement initState
+
+
+    setState(() {
+      listCountry = globalCountryList;
+      _selectedCountry = listCountry.first;
+      user.nationality = _selectedCountry.name;
+      _selectedGender = globalListGender.first;
+      _selectedMaritalStatus = globalListMaritalStatus.first;
+    });
+
+
     super.initState();
     //
 
-    Country.readJson().then((response) => {
-          setState(() {
-            listCountry = response;
-            _selectedCountry = listCountry.first;
-            user.nationality = _selectedCountry.name;
-          }),
-          // print( listCountry[0].name)
-        });
-
-    _selectedGender = globallistGender[0];
-    _selectedMaterialState = globallistMaritalStatus[0];
   }
 
   @override
@@ -427,7 +431,7 @@ class _RegisterState extends State<Register> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),
-                                child: DropdownButtonFormField<String>(
+                                child: DropdownButtonFormField<KeyValue>(
                                   validator: (value) => value == null ? '' : null,
                                   //isDense: true,
                                   hint: const Text('Choose'),
@@ -441,11 +445,10 @@ class _RegisterState extends State<Register> {
                                   //   height: 2,
                                   //   color: Colors.grey,
                                   // ),
-                                  onChanged: (String? newValue) {
+                                  onChanged: (KeyValue? newValue) {
                                     setState(() {
                                       _selectedGender = newValue!;
-                                      user.gender =
-                                          _selectedGender == "Male" ? 1 : 2;
+                                      user.gender = int.parse(_selectedGender.key);
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -468,13 +471,13 @@ class _RegisterState extends State<Register> {
                                               bottom: 5),
                                       hintStyle:
                                           const TextStyle(color: Colors.grey),
-                                      hintText: "Gender",
+                                      hintText: "الجنس",
                                       fillColor: Colors.grey.shade50),
-                                  items: globallistGender.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
+                                  items: globalListGender.map<DropdownMenuItem<KeyValue>>(
+                                      (KeyValue value) {
+                                    return DropdownMenuItem<KeyValue>(
                                       value: value,
-                                      child: Text(value),
+                                      child: Text(converterGender(value.key)),
                                     );
                                   }).toList(),
                                 ),
@@ -512,21 +515,20 @@ class _RegisterState extends State<Register> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),
-                                child: DropdownButtonFormField<String>(
+                                child: DropdownButtonFormField<KeyValue>(
                                   validator: (value) => value == null ? '' : null,
                                   //isDense: true,
                                   hint: const Text('Choose'),
-                                  value: _selectedMaterialState,
+                                  value: _selectedMaritalStatus,
                                   icon: const Icon(Icons.arrow_drop_down),
                                   iconSize: 24,
                                   elevation: 16,
                                   isExpanded: true,
                                   style: const TextStyle(color: Colors.grey),
-                                  onChanged: (String? newValue) {
+                                  onChanged: (KeyValue? newValue) {
                                     setState(() {
-                                      _selectedMaterialState = newValue!;
-                                      user.marital_status =
-                                          _selectedMaterialState;
+                                      _selectedMaritalStatus = newValue!;
+                                      user.marital_status = _selectedMaritalStatus.key!;
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -549,14 +551,14 @@ class _RegisterState extends State<Register> {
                                               bottom: 5),
                                       hintStyle:
                                           const TextStyle(color: Colors.grey),
-                                      hintText: "marital status",
+                                      hintText: "الحالة الاجتماعية",
                                       fillColor: Colors.grey.shade50),
-                                  items: globallistMaritalStatus
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
+                                  items: globalListMaritalStatus
+                                      .map<DropdownMenuItem<KeyValue>>(
+                                          (KeyValue value) {
+                                    return DropdownMenuItem<KeyValue>(
                                       value: value,
-                                      child: Text(value),
+                                      child: Text(converterMaritalStatus(value.key)),
                                     );
                                   }).toList(),
                                 ),
