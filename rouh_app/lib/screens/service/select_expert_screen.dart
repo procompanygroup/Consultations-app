@@ -225,7 +225,7 @@ class _SelectExpertState extends State<SelectExpert> {
 
                 if (balance < expert.expert_services![0].points)
                   {
-                    ShowMessageDialog( context,
+                    await ShowMessageDialog( context,
                         "Error",
                         "you dont have enough point");
                   }
@@ -241,7 +241,7 @@ class _SelectExpertState extends State<SelectExpert> {
                      );
                      if(res?.message == "no balance")
                        {
-                         ShowMessageDialog( context,
+                         await ShowMessageDialog( context,
                              "Error",
                              "you dont have enough point");
                        }

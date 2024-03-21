@@ -329,18 +329,18 @@ class _LoginFormState extends State<LoginForm> {
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    ShowMessageDialog(context,
+                                    await ShowMessageDialog(context,
                                         "Error",
                                         "Connection Failed. Please Retry Later");
                                   } else if (verifyCode == 'noInternet') {
-                                    ShowMessageDialog( context,
+                                    await  ShowMessageDialog( context,
                                         "Error",
                                         "Internet Connection Error");
                                     setState(() {
                                       isLoading = false;
                                     });
                                   } else if (verifyCode == 'errorPhone') {
-                                    ShowMessageDialog( context,
+                                   await ShowMessageDialog( context,
                                         "Error",
                                         "Incorrect Phone Number");
                                     setState(() {

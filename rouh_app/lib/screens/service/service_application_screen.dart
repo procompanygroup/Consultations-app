@@ -1010,7 +1010,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                 style: TextStyle(fontSize: 18),
                               ),
                               style: bs_flatFill(context, myprimercolor),
-                              onPressed: () {
+                              onPressed: () async {
                                 bool canSave = false;
                                 if (_formKey.currentState!.validate()) {
                                   if (hasRecordFile) {
@@ -1021,7 +1021,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                     if (audio != null) {
                                       canSave = true;
                                     } else {
-                                      ShowMessageDialog(context, "تحذير",
+                                      await   ShowMessageDialog(context, "تحذير",
                                           "التسجيل الصوتي مطلوب");
                                     }
                                   }
@@ -1034,7 +1034,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                     }
 
                                     if (canSave == false) {
-                                      ShowMessageDialog(context, "تحذير",
+                                      await  ShowMessageDialog(context, "تحذير",
                                           "يجب ادخال صورة على الأقل");
                                     }
                                     //  var contain = serviceImages.contains( (element) => element != null);
