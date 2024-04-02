@@ -36,7 +36,9 @@ class _RecordAndPlayScreenState extends State<RecordAndPlayScreen> {
       duration = Duration.zero;
     });
     audioCounter++;
-    await recorder.startRecorder(toFile: 'audio_$audioCounter');
+    // await recorder.startRecorder(toFile: 'audio_$audioCounter');
+    // await recorder.startRecorder(toFile: 'audio_.mp4', codec: Codec.aacMP4);
+    await recorder.startRecorder(toFile:"audio_${audioCounter}.mp4", codec: Codec.aacMP4);
 
   }
   late File audioFile;
