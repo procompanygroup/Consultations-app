@@ -139,7 +139,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         constraints: BoxConstraints(
                                             maxHeight: 60, maxWidth: 45),
                                         height: (screenWidth - 80) / 6,
-                                        width: (screenWidth - 100) / 6,
+                                        width: (screenWidth - 100 - 2) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
@@ -190,7 +190,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         constraints: BoxConstraints(
                                             maxHeight: 60, maxWidth: 45),
                                         height: (screenWidth - 80) / 6,
-                                        width: (screenWidth - 100) / 6,
+                                        width: (screenWidth - 100 - 2) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
@@ -241,7 +241,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         constraints: BoxConstraints(
                                             maxHeight: 60, maxWidth: 45),
                                         height: (screenWidth - 80) / 6,
-                                        width: (screenWidth - 100) / 6,
+                                        width: (screenWidth - 100 - 2) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
@@ -292,7 +292,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         constraints: BoxConstraints(
                                             maxHeight: 60, maxWidth: 45),
                                         height: (screenWidth - 80) / 6,
-                                        width: (screenWidth - 100) / 6,
+                                        width: (screenWidth - 100 - 2) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
@@ -343,7 +343,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         constraints: BoxConstraints(
                                             maxHeight: 60, maxWidth: 45),
                                         height: (screenWidth - 80) / 6,
-                                        width: (screenWidth - 100) / 6,
+                                        width: (screenWidth - 100 - 2) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
@@ -394,7 +394,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                         constraints: BoxConstraints(
                                             maxHeight: 60, maxWidth: 45),
                                         height: (screenWidth - 80) / 6,
-                                        width: (screenWidth - 100) / 6,
+                                        width: (screenWidth - 100 - 2) / 6,
                                         child: TextFormField(
                                           onChanged: (value) {
                                             if (value.length == 1) {
