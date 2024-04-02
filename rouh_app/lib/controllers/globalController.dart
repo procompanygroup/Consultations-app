@@ -7,16 +7,25 @@ import '../models/point_model.dart';
 import '../models/service_input_model.dart';
 import '../models/service_model.dart';
 import '../models/service_value_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
+
+
+globalLaunchURL( String _url) async {
+  final Uri url = Uri.parse(_url);
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $_url');
+  }
+}
+
 
 Point globalPoint = Point();
 NotificationService globalNotificationService = NotificationService();
 //#region Country
 List<Country> globalCountryList = <Country>[];
 //#endregion
-//#region Constant
-// List<String> globallistMaritalStatus = ["Single", "Married", "Divorced", "Widowed"];
-// List<String> globallistGender = ["Male", "Female"];
-//#endregion
+
 
 //#region Gender
 List<KeyValue> globalListGender = [
@@ -24,6 +33,7 @@ List<KeyValue> globalListGender = [
   new KeyValue(key: "2", value: "أنثى"),
 ];
 //#endregion
+
 //#region MaritalStatus
 List<KeyValue> globalListMaritalStatus = [
   new KeyValue(key: "single", value: "اعزب"),
