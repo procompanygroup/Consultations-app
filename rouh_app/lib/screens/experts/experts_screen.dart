@@ -76,10 +76,8 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double bodyHeight = (MediaQuery.of(context).size.height //screen
-            -
-            MediaQuery.of(context).padding.top // safe area
-            -
-            AppBar().preferredSize.height //AppBar
+            -MediaQuery.of(context).padding.top // safe area
+            -AppBar().preferredSize.height //AppBar
         );
 
     //GetByServiceId
@@ -334,7 +332,9 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
         children: [
           Column(
             children: [
+              // Top
               Container(
+                height: bodyHeight * 0.20,
                 width: screenWidth,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -351,10 +351,9 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                     children: <Widget>[
                       Stack(
                         children: [
-                          // Top
                           Container(
                             width: screenWidth,
-                            height: (bodyHeight * 0.20) - 45, // service list,
+                            height: (bodyHeight * 0.20) - 50, // service list,
                             child: Align(
                               alignment: AlignmentDirectional.bottomCenter,
                               child: Padding(
@@ -421,7 +420,6 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
               SizedBox(
                 height: 10,
               ),
-
               // expertList
               Expanded(
                   child: Padding(
