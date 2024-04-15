@@ -15,9 +15,9 @@ import '../../models/service_value_model.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/custom_image_picker.dart';
-import '../../widgets/record_and_play_screen.dart';
-import '../../widgets/show_dialog.dart';
+import '../../components/custom_image_picker.dart';
+import '../../components/record_and_play_screen.dart';
+import '../../components/show_dialog.dart';
 import '../shop/purchase_shop_screen.dart';
 import 'select_expert_screen.dart';
 

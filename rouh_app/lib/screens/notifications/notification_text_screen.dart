@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/custom_appbar.dart';
+import '../../components/custom_appbar.dart';
 
 class NotificationTextScreen extends StatefulWidget {
   const NotificationTextScreen({super.key});

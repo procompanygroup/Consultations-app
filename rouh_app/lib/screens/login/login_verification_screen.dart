@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/screens/login/register.dart';
-import 'package:rouh_app/widgets/custom_appbar.dart';
+import 'package:rouh_app/components/custom_appbar.dart';
 
 import '../../controllers/phone_auth_controller.dart';
 import '../../models/user_model.dart';

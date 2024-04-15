@@ -8,7 +8,7 @@ import '../../controllers/phone_auth_controller.dart';
 import '../../models/country.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/show_dialog.dart';
+import '../../components/show_dialog.dart';
 import 'login_verification_screen.dart';
 
 class LoginForm extends StatefulWidget {

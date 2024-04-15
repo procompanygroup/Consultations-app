@@ -13,8 +13,8 @@ import '../../models/expert_service_model.dart';
 import '../../models/service_value_model.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/rating_stars.dart';
-import '../../widgets/show_dialog.dart';
+import '../../components/rating_stars.dart';
+import '../../components/show_dialog.dart';
 import '../main_navigation_screen.dart';
 import '../shop/purchase_shop_screen.dart';
 

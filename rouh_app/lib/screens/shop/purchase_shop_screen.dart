@@ -9,7 +9,7 @@ import '../../controllers/globalController.dart';
 import '../../models/point_model.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/custom_appbar.dart';
+import '../../components/custom_appbar.dart';
 
 class PurchaseShop extends StatefulWidget {
   const PurchaseShop({super.key});

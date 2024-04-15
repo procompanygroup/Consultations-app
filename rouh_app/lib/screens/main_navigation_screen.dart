@@ -2,10 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rouh_app/mystyle/constantsColors.dart';
 import '../Services/notifi_service.dart';
+import '../components/video_player/video_player.dart';
+import '../components/video_player_screen.dart';
+import '../components/view_video_screen.dart';
 import 'experts/experts_screen.dart';
 import 'profile/profile_screen.dart';
 import 'service/service_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'settings/settings_screen.dart';
 
 
 class MainNavigationScreen extends StatefulWidget {
@@ -104,7 +109,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       ServiceScreen(),
       ExpertsScreen(),
       ProfileScreen(),
-      Text("Settings")
+      SettingsScreen(),
+      // ViewVideoScreen(videoPath: 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
     ];
     return Scaffold(
       // appBar: AppBar(

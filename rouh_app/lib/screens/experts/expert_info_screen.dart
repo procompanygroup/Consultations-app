@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rouh_app/models/expert_model.dart';
-import 'package:rouh_app/widgets/rating_stars.dart';
-import 'package:rouh_app/widgets/record_and_play_screen.dart';
+import 'package:rouh_app/components/rating_stars.dart';
+import 'package:rouh_app/components/record_and_play_screen.dart';
 
 import '../../controllers/globalController.dart';
 import '../../models/comment_model.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/custom_image.dart';
-import '../../widgets/play_record_screen.dart';
+import '../../components/custom_image.dart';
+import '../../components/play_record_screen.dart';
 
 class ExpertInfo extends StatefulWidget {
   const ExpertInfo({super.key, required this.expert});
