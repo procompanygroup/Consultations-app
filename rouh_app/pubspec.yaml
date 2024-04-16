@@ -69,10 +69,14 @@ dependencies:
 
   lottie: ^3.1.0
   flutter_launcher_icons: ^0.13.1
+
+
+
   video_player: ^2.8.3
 #  wakelock: ^0.6.2
 #  wakelock: ^0.5.6
   wakelock_plus: ^1.1.4
+
 
 
 dev_dependencies:
@@ -88,7 +92,11 @@ dev_dependencies:
 
 
 
- 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: #FFFFFF
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
