@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'package:collection/collection.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 import '../../controllers/globalController.dart';
 import '../../controllers/phone_auth_controller.dart';
@@ -21,7 +25,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool isLoading = false;
 
-  List<Country> listCountry = <Country>[];
+   List<Country> listCountry = <Country>[];
   late Country _selectedCountry = new Country(code: "",name: "", dialCode: "",flag: "");
   // late Country _selectedCountry;
   late String _phoneNumber;
@@ -33,27 +37,66 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //
-
+    /*
     Country.readJson().then((response) => {
       // print(response),
       setState(() {
         listCountry = response;
         globalCountryList = listCountry;
+
         _selectedCountry = listCountry.first;
       }),
       // print( listCountry[0].name)
     });
+    */
+
+/*
+    Country.readJson().then((response) => {
+      // print(response),
+      setState(() {
+        listCountry = response;
+        globalCountryList = listCountry;
+        String ipLocation = '';
+        try {
+          http.get(Uri.parse('http://ip-api.com/json')).then((value) {
+            // print(json.decode(value.body)['countryCode'].toString());
+            ipLocation = json.decode(value.body)['countryCode'].toString();
+            print(ipLocation);
+          });
+          _selectedCountry =listCountry.firstWhere((element) => element.code == ipLocation);
+        } catch (err) {
+          //handleError
+          ipLocation = '';
+          _selectedCountry = listCountry.first;
+        }
+        // _selectedCountry = listCountry.first;
+      }),
+      // print( listCountry[0].name)
+      print(_selectedCountry)
+    });
+    */
+    print("globalCountryList.first:" + globalCountryList.first.code.toString());
+    print("globalCountryIp: " + globalCountryIp);
+    listCountry = globalCountryList;
+      setState(() {
+        // try {
+        Country? _selectedCountryIp = listCountry.firstWhereOrNull((element) => element.code == globalCountryIp);
+
+          _selectedCountry = globalCountryIp == "" || _selectedCountryIp == null ?
+              globalCountryList.first
+              : _selectedCountryIp;
+          print("_selectedCountry: " + _selectedCountry.code.toString());
+        // } catch (err) {
+        //   _selectedCountry = listCountry.first;
+        // }
+      });
   }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-
     super.dispose();
   }
-
-
 
   final _formKey = GlobalKey<FormState>();
 
@@ -314,7 +357,8 @@ class _LoginFormState extends State<LoginForm> {
                         onPressed: isLoading
                             ? () {}
                             : () async {
-                                if (_formKey.currentState!.validate()) {
+
+                            if (_formKey.currentState!.validate()) {
                                   setState(() {
                                     isLoading = true;
                                   });
@@ -379,8 +423,8 @@ class _LoginFormState extends State<LoginForm> {
                                   // }
                                   // ),
                                 }
-                                ;
-                              }),
+
+                          }),
                   ),
                 ),
               ],
