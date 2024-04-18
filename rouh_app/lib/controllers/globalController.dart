@@ -24,6 +24,8 @@ Point globalPoint = Point();
 NotificationService globalNotificationService = NotificationService();
 //#region Country
 List<Country> globalCountryList = <Country>[];
+String globalCountryIp = "";
+
 //#endregion
 
 
