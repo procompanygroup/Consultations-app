@@ -20,6 +20,9 @@ class Order {
   DateTime? orderAdminDate;
   double? answerSpeed;
   String? answerState;
+  String? comment;
+  DateTime? comment_date;
+  DateTime? rate_date;
 
   Expert? expert;
   List<ServiceValue>? serviceValues;
@@ -39,13 +42,19 @@ class Order {
     this.answerSpeed,
     this.answerState,
     this.expert,
-    this.serviceValues});
+    this.serviceValues,
+    this.comment,
+    this.comment_date,
+    this.rate_date,
+  });
 
   factory Order.fromJson(dynamic parsedJson) {
     var tmpOrderDate;
     var tmpOrderAdminDate;
     var tmpAnswerSpeed;
     var tmpServiceValues;
+    var tmpcommentDate;
+    var tmprateDate;
     if (parsedJson["order_date"] != null) {
       tmpOrderDate = DateTime.tryParse(parsedJson['order_date']);
     }
@@ -57,6 +66,13 @@ class Order {
     }
     if(parsedJson['valueservices'] != null) {
       tmpServiceValues = convertListToModel(ServiceValue.fromJson, parsedJson['valueservices']);
+    }
+
+    if (parsedJson["comment_date"] != null) {
+      tmpcommentDate = DateTime.tryParse(parsedJson['comment_date']);
+    }
+    if (parsedJson["rate_date"] != null) {
+      tmprateDate = DateTime.tryParse(parsedJson['rate_date']);
     }
     return Order(
       selectedServiceId: parsedJson['id'],
@@ -73,6 +89,13 @@ class Order {
       answerState: parsedJson['answer_state'],
       expert: Expert.fromJson(parsedJson['expert']),
       serviceValues: tmpServiceValues,
+
+      comment: parsedJson['comment'],
+      comment_date: tmpcommentDate,
+      rate_date:  tmprateDate ,
+
+
+
     );
   }
 
@@ -100,6 +123,49 @@ class Order {
       return Order();
     }
   }
+
+  Future<bool> AddComment({
+    required int selectedServiceId,
+    required String comment
+  }) async {
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId,
+      "comment": comment,
+    });
+    var response = await dioManager.dio.post('client/addcomment',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+
+    }
+    else {
+      return false;
+    }
+  }
+
+  Future<bool> AddRate({
+    required int selectedServiceId,
+    required  int rate
+  }) async {
+    var data = json.encode({
+      "selectedservice_id": selectedServiceId,
+      "rate": rate,
+    });
+    var response = await dioManager.dio.post('client/addrate',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+
+    }
+    else {
+      return false;
+    }
+  }
+
 }
 
 class ServiceValue {
