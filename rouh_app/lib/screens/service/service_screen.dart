@@ -6,9 +6,12 @@ import 'package:rouh_app/models/service_value_model.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../components/show_dialog.dart';
 import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/constantsColors.dart';
+import '../notifications/notification_text_screen.dart';
+import '../notifications/notifications_screen.dart';
 import 'callservice/call_experts.dart';
 import 'service_application_screen.dart';
 
@@ -307,7 +310,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 backgroundColor: Colors.white, // <-- Button color
                                 // foregroundColor: Colors.red, // <-- Splash color
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                try{
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                           NotificationsScreen(),
+                                    ),
+                                  );
+                                } catch (err) {
+                                  await ShowMessageDialog(context,
+                                  "Error",
+                                  err.toString());
+                                }
+
+                              },
                             ),
                           ),
                         ),
