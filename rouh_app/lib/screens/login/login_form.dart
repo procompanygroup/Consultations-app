@@ -79,16 +79,16 @@ class _LoginFormState extends State<LoginForm> {
     print("globalCountryIp: " + globalCountryIp);
     listCountry = globalCountryList;
       setState(() {
-        // try {
+         try {
         Country? _selectedCountryIp = listCountry.firstWhereOrNull((element) => element.code == globalCountryIp);
 
           _selectedCountry = globalCountryIp == "" || _selectedCountryIp == null ?
               globalCountryList.first
               : _selectedCountryIp;
           print("_selectedCountry: " + _selectedCountry.code.toString());
-        // } catch (err) {
-        //   _selectedCountry = listCountry.first;
-        // }
+         } catch (err) {
+           _selectedCountry = listCountry.first;
+         }
       });
   }
 
