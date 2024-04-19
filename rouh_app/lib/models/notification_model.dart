@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../controllers/dio_manager_controller.dart';
 import 'auth_model.dart';
 
-class Notification {
+class NotificationModel {
   //Instance variables
 
   int? id;
@@ -21,7 +21,7 @@ class Notification {
   DioManager dioManager = DioManager();
 
   //Constructor
-  Notification(
+  NotificationModel(
       { this.id,
         this.notificationId,
         this.title,
@@ -35,8 +35,8 @@ class Notification {
         this.createdAt,
         this.path});
 
-  factory Notification.fromJson(Map<String, dynamic> parsedJson) {
-    return Notification(
+  factory NotificationModel.fromJson(Map<String, dynamic> parsedJson) {
+    return NotificationModel(
         id: parsedJson['id'],
     notificationId : parsedJson['notification_id'],
         title: parsedJson['title'],
@@ -71,20 +71,20 @@ class Notification {
 
       };
 
-  Future<List<Notification>?> GetNotifylist({ required int clientId,}) async {
+  Future<List<NotificationModel>> GetNotifylist({ required int clientId,}) async {
     var data = json.encode({
       "id": clientId
     });
     var response = await dioManager.dio.post('client/getnotifylist',
       data: data,);
 
-    List<Notification> notifications;
+    List<NotificationModel> notifications;
     print(response.statusCode);
     if (response.statusCode == 200) {
-      notifications = convertListToModel<Notification>(Notification.fromJson,jsonDecode(response.data));
+      notifications = convertListToModel<NotificationModel>(NotificationModel.fromJson,jsonDecode(response.data));
     }
     else {
-      notifications = List<Notification>.empty();
+      notifications = List<NotificationModel>.empty();
     }
     return notifications;
   }
