@@ -3,6 +3,7 @@ import '../constants/global.dart';
 import '../models/country.dart';
 import '../models/expert_model.dart';
 import '../models/key_value_model.dart';
+import '../models/notification_model.dart';
 import '../models/point_model.dart';
 import '../models/service_input_model.dart';
 import '../models/service_model.dart';
@@ -21,6 +22,7 @@ globalLaunchURL( String _url) async {
 
 
 Point globalPoint = Point();
+NotificationModel globalNotification = NotificationModel();
 NotificationService globalNotificationService = NotificationService();
 //#region Country
 List<Country> globalCountryList = <Country>[];
