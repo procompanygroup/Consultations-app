@@ -14,7 +14,8 @@ class NotificationModel {
   String?  side;
   int? selectedServiceId;
   int? clientId;
-  int? isRead;
+  // int? isRead;
+  bool? isRead;
   DateTime?  readAt;
   DateTime?   createdAt;
   String? path;
@@ -36,6 +37,23 @@ class NotificationModel {
         this.path});
 
   factory NotificationModel.fromJson(Map<String, dynamic> parsedJson) {
+    var readAtTmp = null;
+    if(parsedJson['read_at'] != null)
+      readAtTmp = DateTime.tryParse(parsedJson['read_at']);
+
+    var createdAtTmp = null;
+    if(parsedJson['created_at'] != null)
+      createdAtTmp = DateTime.tryParse(parsedJson['created_at']);
+
+
+    var isReadTmp;
+    if(parsedJson['isread'] == null)
+      isReadTmp = false;
+    else if(parsedJson['isread'] != null) {
+      isReadTmp = parsedJson['isread'] == 0 ? false : true;
+      //tmpFav = bool.tryParse( parsedJson['is_favorite'].toString());
+    }
+
     return NotificationModel(
         id: parsedJson['id'],
     notificationId : parsedJson['notification_id'],
@@ -45,9 +63,9 @@ class NotificationModel {
     side: parsedJson['side'],
     selectedServiceId : parsedJson['selectedservice_id'],
         clientId: parsedJson['client_id'],
-        isRead : parsedJson['isread'],
-    readAt : parsedJson['read_at'],
-    createdAt: parsedJson['created_at'],
+        isRead : isReadTmp,
+    readAt : readAtTmp,
+    createdAt: createdAtTmp,
     path : parsedJson['path'],
 
        // price:double.tryParse( parsedJson['price']),
