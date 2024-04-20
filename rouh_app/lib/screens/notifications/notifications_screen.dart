@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../models/notification_model.dart';
+import '../../bloc/UserInformation/user_information_cubit.dart';
+import '../../components/show_dialog.dart';
+import '../../controllers/globalController.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../components/custom_appbar.dart';
 
@@ -12,6 +17,36 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  bool isLoadingNotifications = true;
+  bool isLoadingOrderInfo = false;
+  late int clientId;
+
+  List<NotificationModel> notificationList = <NotificationModel>[];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+     clientId = context.read<UserInformationCubit>().state.fetchedPerson!.id!;
+    fillNotificationListAsync();
+    print(clientId);
+
+     super.initState();
+  }
+  Future<void> fillNotificationListAsync() async {
+
+    var response  = await globalNotification.GetNotifylist(clientId: clientId);
+    setState(() {
+      notificationList = response;
+      isLoadingNotifications =false;
+    });
+    // notificationList.forEach((element) {
+    //   print(element.title.toString() + " - " + element.createdAt.toString() + " - " + element.body.toString()+ " - " + element.isRead.toString());
+    //
+    // });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -21,6 +56,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
 
     String _selectedNotification = "Notification_1";
+    /*
     List<ClassNotification> notificationList = [
       ClassNotification(
           id: 1,
@@ -94,37 +130,70 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
 
     ];
-
-    _buildNotifications(List<ClassNotification> notifications) {
+*/
+    _buildNotifications(List<NotificationModel> notifications) {
       List<Widget> notificationWidgetList = [];
 
 
-      notifications.forEach((ClassNotification notification) {
+      notifications.forEach((NotificationModel notification) {
         notificationWidgetList.add(
-          Column(
-            children: [
-              Container(
-                width: screenWidth - 60 ,
-                decoration: BoxDecoration(
-                  // border: Border.all(color: mysecondarycolor,width: 1),
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.grey.shade50,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: 20,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding:  EdgeInsetsDirectional.only(start: 25),
+          GestureDetector(
+              onTap: () {
+                  print("HelloWorld");
+
+              },
+            child: Column(
+              children: [
+                Container(
+                  width: screenWidth - 60 ,
+                  decoration: BoxDecoration(
+                    // border: Border.all(color: mysecondarycolor,width: 1),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.grey.shade50,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    child: Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: 20,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding:  EdgeInsetsDirectional.only(start: 25),
+                                      child: Text(
+                                        notification.title!,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: myprimercolor,
+                                          // fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    notification.createdAt!.toString().split(" ")[0] ,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade600,
+                                      // fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Container(
+                              height: 40,
+                              child: Expanded(
+                                child: Container(
+                                  child: Align(
+                                    alignment: AlignmentDirectional.topStart,
                                     child: Text(
-                                      "Duis aute irure dolor in reprehenderit" ,
+                                      notification.body!,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey.shade600,
@@ -133,47 +202,30 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  "2022/22/22" ,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey.shade600,
-                                    // fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            child: Expanded(
-                              child: Text(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." ,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade600,
-                                  // fontWeight: FontWeight.bold
-                                ),
                               ),
                             ),
+                          ],
+                        ),
+                        Padding(
+                          padding:  EdgeInsetsDirectional.only(top: 3),
+                          child: Icon(
+                            notification.isRead!? Icons.circle_outlined
+                            :Icons.circle,
+                            size: 15,
+                            color: mysecondarycolor,
                           ),
-                        ],
-                      ),
-                      Icon(
-                        Icons.circle,
-                        size: 15,
-                        color: mysecondarycolor,
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 40, top: 5, right: 40, bottom: 5),
-                child: Divider(color: Colors.grey.shade300),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 40, top: 5, right: 40, bottom: 5),
+                  child: Divider(color: Colors.grey.shade300),
+                ),
+              ],
+            ),
           ),
         );
       });
@@ -194,6 +246,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           Padding(
             padding: EdgeInsets.only(top: bodyHeight * 0.20),
             child: Container(
+              width: screenWidth,
               height: bodyHeight * 0.80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -235,13 +288,15 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
             ),
           ),
+          if (isLoadingNotifications)
+            Center(child: CircularProgressIndicator()),
         ],
       ),
     );
   }
 }
 
-
+/*
 class ClassNotification{
  int id;
  String title;
@@ -251,3 +306,4 @@ class ClassNotification{
 
  ClassNotification({ required this.id, required this.title, required this.body, required this.created_at,required this.isread});
 }
+*/
