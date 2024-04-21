@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../components/view_image_screen.dart';
+import '../../components/view_text_screen.dart';
+import '../../components/view_video_screen.dart';
 import '../../models/notification_model.dart';
 import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../components/show_dialog.dart';
@@ -139,7 +142,46 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         notificationWidgetList.add(
           GestureDetector(
               onTap: () {
-                  print("HelloWorld");
+                try{
+                  print(notification.type!);
+
+                  if(notification.type! == 'text')
+                    {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ViewTextScreen(text: notification.body!,)
+                        ),
+                      );
+                    }
+                  else if(notification.type! == 'image')
+                  {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ViewImageScreen(imagePath: notification.path!,)
+                      ),
+                    );
+                  }
+                  else if(notification.type! == 'video')
+                  {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ViewVideoScreen(videoPath: notification.path!,)
+                      ),
+                    );
+                  }
+
+
+                } catch (err) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Audio uploaded.'),
+                      )
+                  );
+                }
+
 
               },
             child: Column(
@@ -241,7 +283,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       body: Stack(
         children: [
           // top
-          const CustomAppBar(title: "Notifications"),
+          const CustomAppBar(title: "سجل التنبيهات"),
           // Body
           Padding(
             padding: EdgeInsets.only(top: bodyHeight * 0.20),
