@@ -30,18 +30,22 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   void initState() {
     // TODO: implement initState
 
-     clientId = context.read<UserInformationCubit>().state.fetchedPerson!.id!;
+    clientId = context
+        .read<UserInformationCubit>()
+        .state
+        .fetchedPerson!
+        .id!;
     fillNotificationListAsync();
     print(clientId);
 
-     super.initState();
+    super.initState();
   }
-  Future<void> fillNotificationListAsync() async {
 
-    var response  = await globalNotification.GetNotifylist(clientId: clientId);
+  Future<void> fillNotificationListAsync() async {
+    var response = await globalNotification.GetNotifylist(clientId: clientId);
     setState(() {
       notificationList = response;
-      isLoadingNotifications =false;
+      isLoadingNotifications = false;
     });
     // notificationList.forEach((element) {
     //   print(element.title.toString() + " - " + element.createdAt.toString() + " - " + element.body.toString()+ " - " + element.isRead.toString());
@@ -52,8 +56,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double bodyHeight = (MediaQuery.of(context).size.height //screen
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double bodyHeight = (MediaQuery
+        .of(context)
+        .size
+        .height //screen
         // - MediaQuery.of(context).padding.top // safe area
         // - AppBar().preferredSize.height //AppBar
     );
@@ -141,60 +151,73 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       notifications.forEach((NotificationModel notification) {
         notificationWidgetList.add(
           GestureDetector(
-              onTap: () {
-                try{
-                  print(notification.type!);
+            onTap: () {
 
-                  if(notification.type! == 'text')
-                    {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ViewTextScreen(text: notification.body!,)
-                        ),
-                      );
-                    }
-                  else if(notification.type! == 'image')
-                  {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ViewImageScreen(imagePath: notification.path!,)
-                      ),
-                    );
-                  }
-                  else if(notification.type! == 'video')
-                  {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ViewVideoScreen(videoPath: notification.path!,)
-                      ),
-                    );
-                  }
+              try {
+                print(notification.isRead!);
+                if (!notification.isRead!)
+                {
+                  globalNotification.SetToRead(id: notification.id!);
+                setState(() {
+                  notification.isRead = true;
+                });
+                }
+              } catch (err) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(err.toString()),
+                    )
+                );
+              }
 
-
-                } catch (err) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Audio uploaded.'),
-                      )
+              try {
+                print(notification.type!);
+                if (notification.type! == 'text') {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewTextScreen(text: notification.body!,)
+                    ),
                   );
                 }
+                else if (notification.type! == 'image') {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewImageScreen(imagePath: notification.path!,)
+                    ),
+                  );
+                }
+                else if (notification.type! == 'video') {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewVideoScreen(videoPath: notification.path!,)
+                    ),
+                  );
+                }
+              } catch (err) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(err.toString()),
+                    )
+                );
+              }
 
-
-              },
+            },
             child: Column(
               children: [
                 Container(
-                  width: screenWidth - 60 ,
+                  width: screenWidth - 60,
                   decoration: BoxDecoration(
                     // border: Border.all(color: mysecondarycolor,width: 1),
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey.shade50,
+                    color: notification.isRead! ? Colors.white : Colors.grey
+                        .shade50,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 5),
                     child: Stack(
                       children: [
                         Column(
@@ -205,7 +228,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 children: [
                                   Expanded(
                                     child: Padding(
-                                      padding:  EdgeInsetsDirectional.only(start: 25),
+                                      padding: EdgeInsetsDirectional.only(
+                                          start: 25),
                                       child: Text(
                                         notification.title!,
                                         style: TextStyle(
@@ -217,7 +241,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     ),
                                   ),
                                   Text(
-                                    notification.createdAt!.toString().split(" ")[0] ,
+                                    notification.createdAt!.toString().split(
+                                        " ")[0],
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey.shade600,
@@ -249,10 +274,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           ],
                         ),
                         Padding(
-                          padding:  EdgeInsetsDirectional.only(top: 3),
+                          padding: EdgeInsetsDirectional.only(top: 3),
                           child: Icon(
-                            notification.isRead!? Icons.circle_outlined
-                            :Icons.circle,
+                            notification.isRead! ? Icons.circle_outlined
+                                : Icons.circle,
                             size: 15,
                             color: mysecondarycolor,
                           ),
@@ -292,7 +317,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               height: bodyHeight * 0.80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50)),
                 border: Border.all(color: Colors.grey),
                 color: Colors.white,
               ),
