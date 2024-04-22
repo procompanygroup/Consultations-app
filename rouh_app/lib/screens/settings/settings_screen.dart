@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:rouh_app/models/key_value_model.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../controllers/converters.dart';
@@ -31,9 +32,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
+    checkNotificationPermissions();
+
     super.initState();
     //
 
+  }
+  Future<void> checkNotificationPermissions() async {
+    final PermissionStatus status = await Permission.notification.request();
+    if (status.isGranted) {
+      setState(() {
+        isActiveNotification = true;
+      });
+
+    }
+  }
+
+  Future<void> requestNotificationPermissions() async {
+    final PermissionStatus status = await Permission.notification.request();
+    if (status.isGranted) {
+      // Notification permissions granted
+    } else if (status.isDenied) {
+      // Notification permissions denied
+    } else if (status.isPermanentlyDenied) {
+      // Notification permissions permanently denied, open app settings
+      await openAppSettings();
+    }
   }
 
   @override
@@ -43,6 +68,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         -MediaQuery.of(context).padding.top // safe area
         -AppBar().preferredSize.height //AppBar
     );
+
+
+
+
 
     return Scaffold(
       body: Stack(
@@ -188,10 +217,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           fit: BoxFit.fill,
                                           child:Switch(
                                             value: isActiveNotification,
-                                            onChanged: (value) {
-                                              setState(() {
+                                            onChanged: (value) async {
+                                              setState(()  {
                                                 isActiveNotification = value;
                                               });
+
+                                              try{
+                                                await requestNotificationPermissions();
+                                              } catch (err) {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(err.toString()),
+                                                    )
+                                                );
+                                              }
                                             },
                                           ),
                                         ),
