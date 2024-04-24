@@ -185,6 +185,27 @@ class Expert {
       return throw Exception();
     }
   }
+
+  //getwallet
+  Future<Expert> GetWallet({
+    required int expertId,
+  }) async {
+    var data = json.encode({
+      "expert_id": expertId
+    });
+
+    var response = await dioManager.dio.post('expert/getwallet',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return Expert.fromJson(jsonDecode(response.data));
+
+    }
+    else {
+      return throw Exception();
+    }
+  }
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
       T Function(Map<String, dynamic> map) fromJson, List data) {
