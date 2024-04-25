@@ -10,7 +10,6 @@ import '../../components/show_dialog.dart';
 import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/constantsColors.dart';
-import '../notifications/notification_text_screen.dart';
 import '../notifications/notifications_screen.dart';
 import 'callservice/call_experts.dart';
 import 'service_application_screen.dart';
@@ -311,6 +310,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 // foregroundColor: Colors.red, // <-- Splash color
                               ),
                               onPressed: () async {
+
                                 try{
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -323,6 +323,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   "Error",
                                   err.toString());
                                 }
+
 
                               },
                             ),
