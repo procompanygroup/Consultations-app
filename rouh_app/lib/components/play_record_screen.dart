@@ -74,6 +74,9 @@ class _PlayRecordScreenState extends State<PlayRecordScreen> {
     // audioRecord = Record();
     // TODO: implement initState
     super.initState();
+    try{
+
+
 
     initRecorder();
 
@@ -117,6 +120,13 @@ class _PlayRecordScreenState extends State<PlayRecordScreen> {
     // });
 
     stopRecord();
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(err.toString()),
+          )
+      );
+    }
   }
 
   Future initRecorder() async {
