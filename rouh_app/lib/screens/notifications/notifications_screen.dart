@@ -11,6 +11,7 @@ import '../../components/show_dialog.dart';
 import '../../controllers/globalController.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../components/custom_appbar.dart';
+import 'replied_message_screen.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -151,7 +152,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       notifications.forEach((NotificationModel notification) {
         notificationWidgetList.add(
           GestureDetector(
-            onTap: () {
+            onTap: () async {
 
               try {
                 print(notification.isRead!);
@@ -169,8 +170,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     )
                 );
               }
-
+              /*
               try {
+                */
+
                 print(notification.type!);
                 if (notification.type! == 'text') {
                   Navigator.of(context).push(
@@ -196,6 +199,37 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     ),
                   );
                 }
+                else if (notification.type! == 'order')
+                 {
+                    setState(() {
+                      isLoadingOrderInfo = true;
+                    });
+
+                    var resultOrder = await globalOrder.GetOrderWithAnswer(selectedServiceId: notification.selectedServiceId!);
+                    // var resultOrder = await globalOrder.GetOrderWithAnswer(selectedServiceId: 70);
+
+
+                    setState(() {
+                      isLoadingOrderInfo = false;
+                    });
+                    print("resultOrder != null");
+                    print(resultOrder != null);
+                    if(resultOrder != null)
+                    {
+                      print("resultOrder");
+                      print(resultOrder);
+                      print(resultOrder.client_id);
+
+                       Navigator.of(context).push(
+                         MaterialPageRoute(
+                           builder: (context) =>
+                               RepliedMessageScreen(order: resultOrder ),
+                         ),
+                       );
+                    }
+
+                }
+                /*
               } catch (err) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -203,6 +237,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     )
                 );
               }
+              */
 
             },
             child: Column(
@@ -356,7 +391,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
             ),
           ),
-          if (isLoadingNotifications)
+          if (isLoadingNotifications || isLoadingOrderInfo)
             Center(child: CircularProgressIndicator()),
         ],
       ),
