@@ -49,16 +49,25 @@ class Order {
   });
 
   factory Order.fromJson(dynamic parsedJson) {
+    // print('parsedJson' + parsedJson );
+
+    print('start fromJson');
+
     var tmpOrderDate;
     var tmpOrderAdminDate;
     var tmpAnswerSpeed;
     var tmpServiceValues;
     var tmpcommentDate;
     var tmprateDate;
-    if (parsedJson["order_date"] != null) {
+    print('start fromJson 2');
+    print(parsedJson['order_date'].toString());
+    print('start fromJson 3');
+    if (parsedJson['order_date'] != null) {
       tmpOrderDate = DateTime.tryParse(parsedJson['order_date']);
     }
-    if (parsedJson["order_admin_date"] != null) {
+    print('start fromJson 4');
+
+    if (parsedJson['order_admin_date'] != null) {
       tmpOrderAdminDate = DateTime.tryParse(parsedJson['order_admin_date']);
     }
     if (parsedJson['answer_speed'] != null) {
@@ -67,13 +76,14 @@ class Order {
     if(parsedJson['valueservices'] != null) {
       tmpServiceValues = convertListToModel(ServiceValue.fromJson, parsedJson['valueservices']);
     }
-
-    if (parsedJson["comment_date"] != null) {
+    if (parsedJson['comment_date'] != null) {
       tmpcommentDate = DateTime.tryParse(parsedJson['comment_date']);
     }
-    if (parsedJson["rate_date"] != null) {
+    if (parsedJson['rate_date'] != null) {
       tmprateDate = DateTime.tryParse(parsedJson['rate_date']);
     }
+
+
     return Order(
       selectedServiceId: parsedJson['id'],
       expert_id: parsedJson['expert_id'],
@@ -116,8 +126,14 @@ class Order {
     );
 
     if (response.statusCode == 200) {
-      return Order.fromJson(json.decode(response.data));
+      print('parsedJson' + response.data.toString() );
+      // print(json.decode(response.data['order_date'].toString()));
 
+      // var services = convertListToModel<Service>(Service.fromJson,jsonDecode(response.data));
+      // return Order.fromJson(json.decode(response.data));
+
+      var order = convertListToModel<Order>(Order.fromJson,jsonDecode(response.data));
+      return order.first;
     }
     else {
       return Order();
