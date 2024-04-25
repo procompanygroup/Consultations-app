@@ -7,6 +7,7 @@ import '../models/notification_model.dart';
 import '../models/point_model.dart';
 import '../models/service_input_model.dart';
 import '../models/service_model.dart';
+import '../models/order_model.dart' as OrderModel;
 import '../models/service_value_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,6 +23,7 @@ globalLaunchURL( String _url) async {
 
 
 Point globalPoint = Point();
+OrderModel.Order globalOrder = OrderModel.Order();
 NotificationModel globalNotification = NotificationModel();
 NotificationService globalNotificationService = NotificationService();
 //#region Country
@@ -30,6 +32,16 @@ String globalCountryIp = "";
 
 //#endregion
 
+//#region Constant
+
+String boolToTextConverter(String state)
+{
+  if(state=="True" || state == "1")
+    return "نعم";
+  else
+    return "لا";
+}
+//#endregion
 
 //#region Gender
 List<KeyValue> globalListGender = [
