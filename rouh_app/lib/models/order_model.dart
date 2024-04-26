@@ -26,7 +26,7 @@ class Order {
 
   Expert? expert;
   List<ServiceValue>? serviceValues;
-
+  List<AnswerModel>? answers;
   DioManager dioManager = DioManager();
   //Constructor
   Order({ this.selectedServiceId,
@@ -46,6 +46,7 @@ class Order {
     this.comment,
     this.comment_date,
     this.rate_date,
+    this.answers,
   });
 
   factory Order.fromJson(dynamic parsedJson) {
@@ -59,6 +60,7 @@ class Order {
     var tmpServiceValues;
     var tmpcommentDate;
     var tmprateDate;
+    var tmpAnswers;
     print('start fromJson 2');
     print(parsedJson['order_date'].toString());
     print('start fromJson 3');
@@ -82,7 +84,9 @@ class Order {
     if (parsedJson['rate_date'] != null) {
       tmprateDate = DateTime.tryParse(parsedJson['rate_date']);
     }
-
+    if(parsedJson['answers'] != null) {
+      tmpAnswers = convertListToModel(AnswerModel.fromJson, parsedJson['answers']);
+    }
 
     return Order(
       selectedServiceId: parsedJson['id'],
@@ -103,7 +107,7 @@ class Order {
       comment: parsedJson['comment'],
       comment_date: tmpcommentDate,
       rate_date:  tmprateDate ,
-
+      answers: tmpAnswers,
 
 
     );
@@ -235,3 +239,32 @@ class ServiceValue {
     );
   }
 }
+  class AnswerModel {
+  int? id;
+  String? answer_state;
+  int? selectedservice_id;
+  DateTime? answer_admin_date;
+  String? record_path;
+
+//Constructor
+  AnswerModel(
+  { this.id,
+  this.answer_state,
+  this.selectedservice_id,
+  this.answer_admin_date,
+  this.record_path,
+  });
+  factory AnswerModel.fromJson(dynamic parsedJson) {
+  var tmpAnswerAdminDate;
+  if (parsedJson["answer_admin_date"] != null) {
+  tmpAnswerAdminDate = DateTime.tryParse(parsedJson['answer_admin_date']);
+  }
+  return AnswerModel(
+  id: parsedJson['id'],
+  answer_state: parsedJson['answer_state'],
+  selectedservice_id: parsedJson['selectedservice_id'],
+  answer_admin_date:tmpAnswerAdminDate,
+  record_path: parsedJson['record_path'],
+  );
+  }
+  }
