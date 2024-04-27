@@ -7,11 +7,14 @@ import '../../components/rating_stars.dart';
 import '../../components/view_image_screen.dart';
 import '../../controllers/globalController.dart';
 import '../../models/order_model.dart';
+import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 
 class RepliedMessageScreen extends StatefulWidget {
   const RepliedMessageScreen({super.key, this.order});
+
   final Order? order;
+
   /*
    final String answerRecordPath;
    */
@@ -26,6 +29,8 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
   bool hasImageFile = false;
   int ImageCount = 0;
   List<String> serviceImages = ["", "", "", ""];
+  String commentText = "";
+  bool isSavingComment = false;
 
   // int RecordInputServiceId = 0;
   // int ImageInputServiceId = 0;
@@ -59,139 +64,136 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
     List<Widget> titleWidgetList = [];
     List<Widget> valueWidgetList = [];
     _serviceValues.forEach((ServiceValue serviceValue) {
-      try{
+      try {
+        print('serviceValue.type: ' + serviceValue.type.toString());
 
-      print('serviceValue.type: ' + serviceValue.type.toString());
-
-      if (serviceValue.type == 'record') {
-        setState(() {
-          hasRecordFile = true;
-          RecordPath = serviceValue.value!;
-        });
-      } else if (serviceValue.type == 'image') {
-        setState(() {
-          hasImageFile = true;
-          serviceImages[ImageCount] = serviceValue.value!;
-          if (ImageCount < 3) ImageCount++;
-        });
+        if (serviceValue.type == 'record') {
+          setState(() {
+            hasRecordFile = true;
+            RecordPath = serviceValue.value!;
+          });
+        } else if (serviceValue.type == 'image') {
+          setState(() {
+            hasImageFile = true;
+            serviceImages[ImageCount] = serviceValue.value!;
+            if (ImageCount < 3) ImageCount++;
+          });
+        }
+        iconWidgetList.add(
+          Builder(
+            builder: (context) {
+              if (serviceValue.type == 'text' ||
+                  serviceValue.type == 'date' ||
+                  serviceValue.type == 'list' ||
+                  serviceValue.type == 'bool')
+                return Container(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: serviceValue.svgPath != null
+                        ? Container(
+                            width: 30,
+                            height: 30,
+                            child: SvgPicture.network(
+                              serviceValue.svgPath!,
+                              width: 30,
+                              height: 30,
+                              color: Colors.grey.shade400,
+                            ),
+                          )
+                        : Icon(
+                            Icons.account_circle,
+                            size: 30,
+                            color: Colors.grey.shade400,
+                          ),
+                  ),
+                );
+              else
+                return SizedBox();
+            },
+          ),
+        );
+        titleWidgetList.add(
+          Builder(
+            builder: (context) {
+              if (serviceValue.type == 'text' ||
+                  serviceValue.type == 'date' ||
+                  serviceValue.type == 'list' ||
+                  serviceValue.type == 'bool')
+                return Container(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Text(
+                      serviceValue.name!,
+                      style: TextStyle(
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                  ),
+                );
+              else
+                return SizedBox();
+            },
+          ),
+        );
+        valueWidgetList.add(
+          Builder(
+            builder: (context) {
+              // print("serviceValue.type: " +  serviceValue.type!);
+              // print("serviceValue.name: " +  serviceValue.name!);
+              // print("serviceValue.value: " +  serviceValue.value!);
+              // print(boolToTextConverter(bool.parse(serviceValue.value!)));
+              if (serviceValue.type == 'text' || serviceValue.type == 'list')
+                return Container(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Text(
+                      serviceValue.value!,
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ),
+                );
+              else if (serviceValue.type == 'date')
+                return Container(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Text(
+                      serviceValue.value!.toString().split(" ")[0],
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ),
+                );
+              else if (serviceValue.type == 'bool')
+                return Container(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    // boolToTextConverter(bool.parse(serviceValue.value!)
+                    child: Text(
+                      boolToTextConverter(serviceValue.value!),
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ),
+                );
+              else
+                return SizedBox();
+            },
+          ),
+        );
+      } catch (err) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(err.toString()),
+        ));
       }
-      iconWidgetList.add(
-        Builder(
-          builder: (context) {
-            if (serviceValue.type == 'text' ||
-                serviceValue.type == 'date' ||
-                serviceValue.type == 'list' ||
-                serviceValue.type == 'bool')
-              return Container(
-                height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: serviceValue.svgPath != null
-                      ? Container(
-                    width: 30,
-                    height: 30,
-                    child: SvgPicture.network(
-                      serviceValue.svgPath!,
-                      width: 30,
-                      height: 30,
-                      color: Colors.grey.shade400,
-                    ),
-                  )
-                      : Icon(
-                    Icons.account_circle,
-                    size: 30,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-              );
-            else
-              return SizedBox();
-          },
-        ),
-      );
-      titleWidgetList.add(
-        Builder(
-          builder: (context) {
-            if (serviceValue.type == 'text' ||
-                serviceValue.type == 'date' ||
-                serviceValue.type == 'list' ||
-                serviceValue.type == 'bool')
-              return Container(
-                height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Text(
-                    serviceValue.name!,
-                    style: TextStyle(
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                ),
-              );
-            else
-              return SizedBox();
-          },
-        ),
-      );
-      valueWidgetList.add(
-        Builder(
-          builder: (context) {
-            // print("serviceValue.type: " +  serviceValue.type!);
-            // print("serviceValue.name: " +  serviceValue.name!);
-            // print("serviceValue.value: " +  serviceValue.value!);
-            // print(boolToTextConverter(bool.parse(serviceValue.value!)));
-            if (serviceValue.type == 'text' || serviceValue.type == 'list')
-              return Container(
-                height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Text(
-                    serviceValue.value!,
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ),
-              );
-            else if (serviceValue.type == 'date')
-              return Container(
-                height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Text(
-                    serviceValue.value!.toString().split(" ")[0],
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ),
-              );
-            else if (serviceValue.type == 'bool')
-              return Container(
-                height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  // boolToTextConverter(bool.parse(serviceValue.value!)
-                  child: Text(
-                    boolToTextConverter(serviceValue.value!),
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ),
-              );
-            else
-              return SizedBox();
-          },
-        ),
-      );
-    } catch (err) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(err.toString()),
-          )
-      );
-    }
     });
     // return Column(
     //   children: inputsWidgetList,
@@ -232,7 +234,7 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                 ),
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Text(
@@ -261,10 +263,11 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
     double bodyHeight = (MediaQuery.of(context).size.height //screen
         // -MediaQuery.of(context).padding.top // safe area
         // -AppBar().preferredSize.height //AppBar
-    );
+        );
 
     return Scaffold(
       //backgroundColor: const Color(0xff022440),
+      resizeToAvoidBottomInset: false,
       body: Stack(children: [
         //Top
         Container(
@@ -272,10 +275,10 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
           width: screenWidth,
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xff015DAC), Color(0xff022440)],
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-              )),
+            colors: [Color(0xff015DAC), Color(0xff022440)],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+          )),
           child: Padding(
             padding: EdgeInsetsDirectional.only(bottom: bodyHeight * 0.05),
             child: Row(
@@ -309,7 +312,7 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
             ),
             child: Padding(
               padding:
-              EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+                  EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
               child: Column(
                 children: [
                   SizedBox(
@@ -325,27 +328,27 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                   ),
                   // RatingStars
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical:5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Container(
                         width: 125,
                         child: Center(
                             child: RatingStars(
-                                rating: widget.order!.expert!.rates!, size: 20))),
+                                rating: widget.order!.expert!.rates!,
+                                size: 20))),
                   ),
                   // answers
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 30.0, vertical: 5.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
                     child: PlayRecordScreen(
-                        audioUrl: 'widget.order!.answers'),
+                        audioUrl: widget.order!.answers!.first!.record_path!),
                   ),
                   // Form title
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
@@ -353,8 +356,8 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                               height: 27.5,
                               width: 27.5,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(25)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25)),
                                 color: mysecondarycolor,
                               ),
                               child: Padding(
@@ -372,22 +375,19 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                               child: Text(
                                 "رسالتك إلى الخبير",
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    color: myprimercolor),
+                                    fontSize: 16, color: myprimercolor),
                               ),
                             ),
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: Text(
                             // widget.order!.orderDate!
                             //     .toString()
                             //     .split(" ")[0],
                             '',
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.grey),
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
                           ),
                         ),
                       ],
@@ -397,10 +397,9 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                     child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child:
-                        // !isLoading?
-                        Column(
+                            // !isLoading?
+                            Column(
                           children: [
-
                             // form
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 5),
@@ -415,8 +414,8 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: buildForm(
-                                      widget.order!.serviceValues!),
+                                  child:
+                                      buildForm(widget.order!.serviceValues!),
                                 ),
                               ),
                             ),
@@ -429,241 +428,241 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                                     .toList(),
                                 (screenWidth - 70)),
 
-
                             hasRecordFile
                                 ? Column(
-                              children: [
-                                // record title
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Row(
                                     children: [
-                                      Container(
-                                        height: 27.5,
-                                        width: 27.5,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
-                                          color: mysecondarycolor,
-                                        ),
-                                        child: Padding(
-                                          padding:
-                                          const EdgeInsets.all(7.5),
-                                          child: SvgPicture.asset(
-                                            "assets/svg/microphone-icon.svg",
-                                            width: 12.5,
-                                            color: Colors.white,
-                                          ),
+                                      // record title
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: 27.5,
+                                              width: 27.5,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(25)),
+                                                color: mysecondarycolor,
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(7.5),
+                                                child: SvgPicture.asset(
+                                                  "assets/svg/microphone-icon.svg",
+                                                  width: 12.5,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 5),
+                                              child: Text(
+                                                "الرسالة الصوتية",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: myprimercolor),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 5,
-                                            vertical: 5),
-                                        child: Text(
-                                          "الرسالة الصوتية",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: myprimercolor),
-                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 30.0, vertical: 5.0),
+                                        child: PlayRecordScreen(
+                                            audioUrl: RecordPath),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 30.0, vertical: 5.0),
-                                  child: PlayRecordScreen(
-                                      audioUrl: RecordPath),
-                                ),
-                              ],
-                            )
+                                  )
                                 : SizedBox(),
 
                             hasImageFile
                                 ? Column(
-                              children: [
-                                // image title
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Row(
                                     children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(25)),
-                                          color: mysecondarycolor,
-                                        ),
-                                        child: Padding(
-                                          padding:
-                                          const EdgeInsets.all(7.5),
-                                          child: SvgPicture.asset(
-                                            "assets/svg/camera-icon.svg",
-                                            width: 12.5,
-                                            color: Colors.white,
-                                          ),
+                                      // image title
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(25)),
+                                                color: mysecondarycolor,
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(7.5),
+                                                child: SvgPicture.asset(
+                                                  "assets/svg/camera-icon.svg",
+                                                  width: 12.5,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 5),
+                                              child: Text(
+                                                "الصور",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: myprimercolor),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 5,
-                                            vertical: 5),
-                                        child: Text(
-                                          "الصور",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: myprimercolor),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 25.0, vertical: 5.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewImageScreen(
+                                                      imagePath:
+                                                          serviceImages[0],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: (screenWidth - 130) / 4,
+                                                height: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[0],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
+                                                  radius: 20,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewImageScreen(
+                                                      imagePath:
+                                                          serviceImages[1],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: (screenWidth - 130) / 4,
+                                                height: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[1],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
+                                                  radius: 20,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewImageScreen(
+                                                      imagePath:
+                                                          serviceImages[2],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: (screenWidth - 130) / 4,
+                                                height: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[2],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
+                                                  radius: 20,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewImageScreen(
+                                                      imagePath:
+                                                          serviceImages[3],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: (screenWidth - 130) / 4,
+                                                height: (screenWidth - 130) / 4,
+                                                child: CustomImage(
+                                                  url: serviceImages[3],
+                                                  height:
+                                                      (screenWidth - 130) / 4,
+                                                  width:
+                                                      (screenWidth - 130) / 4,
+                                                  radius: 20,
+                                                  borderColor:
+                                                      Colors.grey.shade200,
+                                                  borderWidth: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 25.0, vertical: 5.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ViewImageScreen(
-                                                    imagePath:
-                                                    serviceImages[0],
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: (screenWidth - 130) / 4,
-                                          height: (screenWidth - 130) / 4,
-                                          child: CustomImage(
-                                            url: serviceImages[0],
-                                            height:
-                                            (screenWidth - 130) / 4,
-                                            width:
-                                            (screenWidth - 130) / 4,
-                                            radius: 20,
-                                            borderColor:
-                                            Colors.grey.shade200,
-                                            borderWidth: 1,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ViewImageScreen(
-                                                    imagePath:
-                                                    serviceImages[1],
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: (screenWidth - 130) / 4,
-                                          height: (screenWidth - 130) / 4,
-                                          child: CustomImage(
-                                            url: serviceImages[1],
-                                            height:
-                                            (screenWidth - 130) / 4,
-                                            width:
-                                            (screenWidth - 130) / 4,
-                                            radius: 20,
-                                            borderColor:
-                                            Colors.grey.shade200,
-                                            borderWidth: 1,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ViewImageScreen(
-                                                    imagePath:
-                                                    serviceImages[2],
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: (screenWidth - 130) / 4,
-                                          height: (screenWidth - 130) / 4,
-                                          child: CustomImage(
-                                            url: serviceImages[2],
-                                            height:
-                                            (screenWidth - 130) / 4,
-                                            width:
-                                            (screenWidth - 130) / 4,
-                                            radius: 20,
-                                            borderColor:
-                                            Colors.grey.shade200,
-                                            borderWidth: 1,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ViewImageScreen(
-                                                    imagePath:
-                                                    serviceImages[3],
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: (screenWidth - 130) / 4,
-                                          height: (screenWidth - 130) / 4,
-                                          child: CustomImage(
-                                            url: serviceImages[3],
-                                            height:
-                                            (screenWidth - 130) / 4,
-                                            width:
-                                            (screenWidth - 130) / 4,
-                                            radius: 20,
-                                            borderColor:
-                                            Colors.grey.shade200,
-                                            borderWidth: 1,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
+                                  )
                                 : SizedBox(),
                           ],
                         )
-                      // :Center(child: CircularProgressIndicator()),
-                    ),
+                        // :Center(child: CircularProgressIndicator()),
+                        ),
                   ),
 
-                  // record response title
+                  // comment title
                   Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 5),
                     child: Row(
                       children: [
                         Container(
                           height: 27.5,
                           width: 27.5,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(25)),
                             color: mysecondarycolor,
                           ),
                           child: Padding(
@@ -680,40 +679,91 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                               horizontal: 5, vertical: 5),
                           child: Text(
                             "رأيك بالخبير",
-                            style:
-                            TextStyle(fontSize: 16, color: myprimercolor),
+                            style: TextStyle(
+                                fontSize: 16, color: myprimercolor),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  /*
-                  widget.order!.answerState! == "wait"
-                      ? Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 30.0, vertical: 5.0),
-                        child: PlayRecordScreen(
-                            audioUrl: widget.answerRecordPath),
+                  // comment
+                  widget.order!.comment_state == 'agree'?
+                  // comment text show
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Container(
+                      width: screenWidth - 70,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade200, width: 1),
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.grey.shade50,
                       ),
-                      SizedBox(
-                        height: 10,
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            'widget.order!.comment!',
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
                       ),
-                    ],
+                    ),
                   )
-                      : Column(
+                  :
+                  Column(
                     children: [
+
+                      // comment text
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 30.0, vertical: 5.0),
-                        child: RecordAndPlayScreen(),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Container(
+                          // width: screenWidth - 70,
+                          width: screenWidth - 70,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: TextFormField(
+                              maxLines: 2,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              onChanged: (value) {
+                                commentText = value;
+                                // print(serviceValue.value);
+                              },
+                              decoration: InputDecoration(
+                                  errorStyle: TextStyle(fontSize: 0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey.shade300,
+                                      // width: 2.0,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  // contentPadding: EdgeInsetsDirectional.only( start: 60, top: 15, end: 15, bottom: 15,),
+                                  contentPadding: EdgeInsetsDirectional.only(
+                                      start: 20, top: 10, end: 20, bottom: 10),
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  // labelText: "Country",
+                                  hintText: 'أضف رأيك بالخبير..',
+                                  fillColor: Colors.grey.shade50),
+                            ),
+                          ),
+                        ),
                       ),
+                      // button send
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 50.0, vertical: 10.0),
                         child: Container(
                             width: double.infinity,
+                            // width: screenWidth - 160,
                             height: 50,
                             child: TextButton(
                               child: Text(
@@ -722,47 +772,41 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                               ),
                               style: bs_flatFill(context, myprimercolor),
                               onPressed: () async {
-                                if (hasRecordFile) {
-                                  var audio = context
-                                      .read<AudioFileCubit>()
-                                      .state
-                                      .audioFile;
-                                  if (audio != null) {
-                                    var order = Order();
-                                    var res = await order.UploadAnswer(
-                                        selectedServiceId: widget
-                                            .order!
-                                            .selectedServiceId!,
-                                        audioFile: context
-                                            .read<AudioFileCubit>()
-                                            .state
-                                            .audioFile!);
-                                    //after save
-                                    if (res == 1) {
-                                      BlocProvider.of<AudioFileCubit>(
-                                          context)
-                                          .loadAudioFile(null);
-
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  MainNavigationScreen()),
-                                              (route) =>
-                                          route.settings.name ==
-                                              '/mainNavigation');
-                                    }
+                                try {
+                                  print('commentText');
+                                  print(commentText);
+                                  if (commentText != null &&
+                                      commentText.isNotEmpty) {
+                                    setState(() {
+                                      isSavingComment = true;
+                                    });
+                                    await globalOrder.AddComment(
+                                        selectedServiceId:
+                                            widget.order!.selectedServiceId!,
+                                        comment: commentText);
+                                    setState(() {
+                                      isSavingComment = false;
+                                    });
                                   } else {
-                                    ShowMessageDialog(context, "تحذير",
-                                        "التسجيل الصوتي مطلوب");
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text('يجب إضافة تعليق أولاً'),
+                                    ));
                                   }
+                                } catch (err) {
+                                  setState(() {
+                                    isSavingComment = false;
+                                  });
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(err.toString()),
+                                  ));
                                 }
                               },
                             )),
                       ),
                     ],
                   ),
-                  */
                 ],
               ),
             ),
@@ -794,8 +838,7 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(80),
                   child: Image(
-                    image:
-                    NetworkImage(widget.order!.expert!.image!),
+                    image: NetworkImage(widget.order!.expert!.image!),
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
@@ -810,6 +853,8 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
             ]),
           ),
         ),
+
+        if (isSavingComment) Center(child: CircularProgressIndicator()),
       ]),
     );
   }
