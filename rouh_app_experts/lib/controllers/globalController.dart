@@ -3,8 +3,15 @@ import '../models/expert_model.dart';
 import '../models/expert_order_model.dart';
 import '../models/key_value_model.dart';
 import '../models/service_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
+globalLaunchURL( String _url) async {
+  final Uri url = Uri.parse(_url);
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $_url');
+  }
+}
 
 ExpertOrder globalExpertOrder = ExpertOrder();
 
