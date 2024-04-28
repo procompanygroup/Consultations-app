@@ -5,6 +5,7 @@ import 'package:rouh_app_experts/screens/orders/main_orders_screen.dart';
 
 import 'experts/experts_screen.dart';
 import 'profile/profile_screen.dart';
+import 'settings/settings_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       MainOrdersScreen(),
       ExpertsScreen(),
       ProfileScreen(),
-      Text("Page4"),
+      SettingsScreen(),
     ];
     return Scaffold(
       // appBar: AppBar(
