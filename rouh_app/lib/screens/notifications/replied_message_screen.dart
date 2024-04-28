@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../components/custom_image.dart';
 import '../../components/play_record_screen.dart';
 import '../../components/rating_stars.dart';
+import '../../components/rating_stars_action.dart';
 import '../../components/view_image_screen.dart';
 import '../../controllers/globalController.dart';
 import '../../models/order_model.dart';
@@ -31,6 +32,8 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
   List<String> serviceImages = ["", "", "", ""];
   String commentText = "";
   bool isSavingComment = false;
+  bool isSavingRate = false;
+  bool isSavingFavorite = false;
 
   // int RecordInputServiceId = 0;
   // int ImageInputServiceId = 0;
@@ -256,6 +259,34 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
     );
   }
 
+  Future<void> AddRateFunction(int val) async {
+     print('AddRateFunction ' + val.toString());
+    try {
+        setState(() {
+          isSavingRate = true;
+        });
+        await globalOrder.AddRate(
+            selectedServiceId:
+            widget.order!.selectedServiceId!,
+            rate: val);
+
+        setState(() {
+          widget.order!.rate = val;
+          isSavingRate = false;
+        });
+
+
+    } catch (err) {
+      setState(() {
+        isSavingComment = false;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(
+        content: Text(err.toString()),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -264,6 +295,8 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
         // -MediaQuery.of(context).padding.top // safe area
         // -AppBar().preferredSize.height //AppBar
         );
+
+
 
     return Scaffold(
       //backgroundColor: const Color(0xff022440),
@@ -294,6 +327,26 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                       onTap: () {
                         Navigator.pop(context);
                       }),
+                ),
+
+
+                ElevatedButton(
+                  child:  SvgPicture.asset(
+                    "assets/svg/share-icon.svg",
+                    color: myprimercolor,
+                    width: 25,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(5),
+                    backgroundColor:
+                    Colors.white, // <-- Button color
+                    // foregroundColor: Colors.red, // <-- Splash color
+                  ),
+                  onPressed: () {
+                    setState(() {
+                    });
+                  },
                 ),
               ],
             ),
@@ -326,7 +379,7 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                         fontSize: 20,
                         color: mysecondarycolor),
                   ),
-                  // RatingStars
+                  // RatingExpert
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Container(
@@ -651,6 +704,64 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                         ),
                   ),
 
+                  // Rate title
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 5),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 27.5,
+                          width: 27.5,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(25)),
+                            color: mysecondarycolor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(7.5),
+                            child: SvgPicture.asset(
+                              "assets/svg/three-stars-icon.svg",
+                              width: 12.5,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 5),
+                          child: Text(
+                            "تقييمك",
+                            style: TextStyle(
+                                fontSize: 16, color: myprimercolor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  widget.order!.rate! == 0?
+                  // RatingStars
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Container(
+                        width: 150,
+                        child: Center(
+                            child: RatingStarsAction(
+                                function:AddRateFunction ,
+                                size: 30))),
+                  )
+                  :
+                  // RatingStars
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Container(
+                        width: 150,
+                        child: Center(
+                            child: RatingStars(
+                                rating: widget.order!.rate!.toDouble(),
+                                size: 30))),
+                  ),
+
                   // comment title
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -704,7 +815,7 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(5),
                           child: Text(
-                            'widget.order!.comment!',
+                            widget.order!.comment!,
                             style: TextStyle(
                               color: Colors.grey.shade600,
                             ),
@@ -716,7 +827,6 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                   :
                   Column(
                     children: [
-
                       // comment text
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -785,6 +895,8 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                                             widget.order!.selectedServiceId!,
                                         comment: commentText);
                                     setState(() {
+                                      widget.order!.comment_state = 'agree';
+                                      widget.order!.comment = commentText;
                                       isSavingComment = false;
                                     });
                                   } else {
@@ -850,11 +962,55 @@ class _RepliedMessageScreenState extends State<RepliedMessageScreen> {
                   ),
                 ),
               ),
+
+              // isFavorite
+              Positioned(
+                right: 5,
+                bottom: 5,
+                child: GestureDetector(
+                  onTap: () {
+                    if(!isSavingFavorite)
+                    {
+
+                      setState(() {
+                        isSavingFavorite = true;
+                      });
+                      bool newfavoriteState =
+                      widget.order!.expert!.isFavorite! ? false : true;
+
+                      globalExpert.SaveFavorite(
+                        clientId: widget.order!.client_id!,
+                        expertId: widget.order!.expert!.id!,
+                        isFavorite: newfavoriteState,
+                      ).then((value) => {
+                        setState(() {
+                          widget.order!.expert!.isFavorite = newfavoriteState;
+                          isSavingFavorite = false;
+                        })
+                      });
+                    }
+
+                  },
+                  child:Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(150),
+                        border: Border.all(color: Colors.grey.shade300, width: 3),
+                        color: Colors.white),
+                    child:Icon( widget.order!.expert!.isFavorite!?  Icons.favorite :Icons.favorite_border  ,
+                      color: mysecondarycolor,
+                      size: 25,
+                    ),
+                  ),
+                ),
+              ),
             ]),
           ),
         ),
 
-        if (isSavingComment) Center(child: CircularProgressIndicator()),
+        if (isSavingComment || isSavingRate|| isSavingFavorite)
+          Center(child: CircularProgressIndicator()),
       ]),
     );
   }
