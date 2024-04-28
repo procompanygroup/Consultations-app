@@ -7,7 +7,7 @@ import '../../controllers/globalController.dart';
 import '../../models/expert_model.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/rating_stars.dart';
+import '../../components/rating_stars.dart';
 import 'expert_info_screen.dart';
 
 class ExpertsScreen extends StatefulWidget {

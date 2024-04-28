@@ -7,9 +7,9 @@ import '../../models/expert_model.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/custom_image.dart';
-import '../../widgets/play_record_screen.dart';
-import '../../widgets/rating_stars.dart';
+import '../../components/custom_image.dart';
+import '../../components/play_record_screen.dart';
+import '../../components/rating_stars.dart';
 
 class ExpertInfo extends StatefulWidget {
   const ExpertInfo({super.key, required this.expert});

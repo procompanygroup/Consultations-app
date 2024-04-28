@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rouh_app_experts/widgets/play_record_screen.dart';
-import 'package:rouh_app_experts/widgets/view_image.dart';
+import 'package:rouh_app_experts/components/play_record_screen.dart';
+import 'package:rouh_app_experts/components/view_image.dart';
 
 import '../../bloc/audio_file/audio_file_cubit.dart';
 import '../../controllers/globalController.dart';
 import '../../models/expert_order_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/custom_image.dart';
-import '../../widgets/record_and_play_screen.dart';
-import '../../widgets/show_dialog.dart';
+import '../../components/custom_image.dart';
+import '../../components/record_and_play_screen.dart';
+import '../../components/show_dialog.dart';
 import '../main_navigation_screen.dart';
 
 class OrderInfoScreen extends StatefulWidget {

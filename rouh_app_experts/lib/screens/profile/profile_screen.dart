@@ -12,8 +12,8 @@ import '../../models/expert_model.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/rating_stars.dart';
-import '../../widgets/record_and_play_screen.dart';
+import '../../components/rating_stars.dart';
+import '../../components/record_and_play_screen.dart';
 import '../login/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {

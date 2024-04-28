@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rouh_app_experts/bloc/expert/expert_information_cubit.dart';
 import 'package:rouh_app_experts/screens/orders/order_info_screen.dart';
-import 'package:rouh_app_experts/widgets/rating_stars.dart';
+import 'package:rouh_app_experts/components/rating_stars.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../controllers/converters.dart';
@@ -11,7 +11,7 @@ import '../../models/expert_model.dart';
 import '../../models/expert_order_model.dart';
 import '../../models/key_value_model.dart';
 import '../../mystyle/constantsColors.dart';
-import '../../widgets/custom_appbar.dart';
+import '../../components/custom_appbar.dart';
 
 class MainOrdersScreen extends StatefulWidget {
   const MainOrdersScreen({super.key});
