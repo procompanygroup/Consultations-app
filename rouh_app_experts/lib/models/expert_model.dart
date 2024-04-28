@@ -32,7 +32,7 @@ class Expert {
   List<ExpertService>? expert_services;
   List<Service>? services;
   List<ExpertComment>? selectedServices;
-  //bool? isFavorite;
+  bool? isFavorite;
 
   DioManager dioManager = DioManager();
 
