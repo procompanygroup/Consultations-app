@@ -219,6 +219,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       print("resultOrder");
                       print(resultOrder);
                       print(resultOrder.client_id);
+                      print('resultOrder.selectedServiceId');
+                      print(resultOrder.selectedServiceId);
 
                        Navigator.of(context).push(
                          MaterialPageRoute(
