@@ -15,13 +15,14 @@ class Service {
   int? is_active;
   String? image;
   String? message;
+  int? is_callservice;
   // List<ServiceInput>? serviceInputs;
 
   DioManager dioManager = DioManager();
 
   //Constructor
   Service(
-      {this.id, this.name, this.desc, this.icon, this.is_active, this.image,this.message,}) ;
+      {this.id, this.name, this.desc, this.icon, this.is_active, this.image,this.message,this.is_callservice,}) ;
 
   factory Service.fromJson(dynamic parsedJson) {
     var tmpServiceInputs;
@@ -34,6 +35,7 @@ class Service {
     image: parsedJson['image'],
      is_active: parsedJson['is_active'],
     message: parsedJson['message'],
+      is_callservice: parsedJson['is_callservice'],
      );
   }
 
@@ -45,6 +47,7 @@ class Service {
         'icon': icon,
         'is_active': is_active,
         'image': image,
+        'is_callservice':is_callservice,
       };
 
   Future<List<Service>> allServices() async {

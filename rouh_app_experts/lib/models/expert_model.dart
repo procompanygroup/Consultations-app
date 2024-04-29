@@ -50,6 +50,7 @@ class Expert {
         this.expert_services,
         this.services,
       this.selectedServices,
+       this.isFavorite,
       });
 
   factory Expert.fromJson(Map<String, dynamic> parsedJson) {
@@ -61,7 +62,7 @@ class Expert {
     var tmpCashBalanceTodate;
     var tmpRates;
     var tmpAnswerSpeed;
-
+     var tmpFav;
     if(parsedJson["experts_services"] != null)
     {
       tmpExpertServices = convertListToModel(ExpertService.fromJson, parsedJson["experts_services"]);
@@ -90,8 +91,11 @@ class Expert {
     if(parsedJson['answer_speed'] != null) {
       tmpAnswerSpeed = double.tryParse( parsedJson['answer_speed']);
     }
-
-
+     if(parsedJson['is_favorite'] == null)
+       tmpFav = false;
+     else if(parsedJson['is_favorite'] != null) {
+       tmpFav = parsedJson['is_favorite'] == 0 ? false : true;
+     }
     return Expert(
       id: parsedJson['id'],
       expert_name: parsedJson['user_name'],
@@ -112,13 +116,13 @@ class Expert {
       desc:  parsedJson['desc'],
       record:  parsedJson['record'],
       points_balance:  parsedJson['points_balance'],
-      rates:  tmpRates,
+      rates:tmpRates,
       expert_services: tmpExpertServices,
       services: tmpServices,
       selectedServices: tmpSelectedServices,
+        isFavorite:tmpFav,
     );
   }
-
 
   Future<String?> login({
     required String userName,
@@ -206,6 +210,53 @@ class Expert {
       return throw Exception();
     }
   }
+
+  Future<List<Expert>> GetWithFavorite({
+    required int expertId,
+  }) async {
+    var data = json.encode({
+      "expert_id": expertId
+    });
+    var response = await dioManager.dio.post('expert/getwithfav',
+      data: data,
+    );
+
+    List<Expert> experts;
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print((response.data));
+      experts = convertListToModel<Expert>(Expert.fromJson,jsonDecode(response.data));
+    }
+    else {
+      experts = List<Expert>.empty();
+    }
+    return experts;
+  }
+
+  Future<bool> SaveFavorite({
+    required int loginExpertId,
+    required int expertId,
+    required bool isFavorite
+  }) async {
+    var data = json.encode({
+      "login_expert_id": loginExpertId,
+      "expert_id": expertId,
+      "is_favorite": isFavorite,
+    });
+
+    var response = await dioManager.dio.post('expert/savefav',
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+
+    }
+    else {
+      return false;
+    }
+  }
+
   // used  for convert a List of value
   static List<T> convertListToModel<T>(
       T Function(Map<String, dynamic> map) fromJson, List data) {
