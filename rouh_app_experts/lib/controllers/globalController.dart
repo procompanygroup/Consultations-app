@@ -2,6 +2,7 @@ import '../constants/global.dart';
 import '../models/expert_model.dart';
 import '../models/expert_order_model.dart';
 import '../models/key_value_model.dart';
+import '../models/notification_model.dart';
 import '../models/service_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +18,7 @@ globalLaunchURL( String _url) async {
 
 ExpertOrder globalExpertOrder = ExpertOrder();
 StatisticModel globalStatistic = StatisticModel();
-
+NotificationModel globalNotification = NotificationModel();
 
 
 //#region Constant
@@ -113,7 +114,7 @@ List<Expert> globalExpertWithFavoriteList = <Expert>[];
 Future<List<Expert>> getGlobalExpertWithFavoriteList(int expertId) async {
   if(globalExpertWithFavoriteList.isEmpty)
   {
-    // globalExpertWithFavoriteList = await globalExpert.GetWithFavorite(expertId:expertId);
+     globalExpertWithFavoriteList = await globalExpert.GetWithFavorite(expertId:expertId);
   }
   return globalExpertWithFavoriteList;
 }
