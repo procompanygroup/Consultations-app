@@ -24,7 +24,15 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Expert expert = Expert();
+  Expert expert = Expert(
+      expert_name: '',
+    rates: 0,
+    answer_speed: 0,
+    mobile: '',
+    email: '',
+    desc: '',
+    services:  <Service>[],
+  );
   var image = File('');
   String imagePath = "";
   final picker = ImagePicker();
@@ -39,10 +47,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
+    print('start');
+
     Country.readJson().then((response) => {
       setState(() {
+        print('start1');
         listCountry = response;
         expert = context.read<ExpertInformationCubit>().state.fetchedExpert!;
+        print('expert');
+        print(expert);
         _selectedGender = expert.gender == 1?"Male":"Female";
         // _selectedCountry = listCountry.firstWhere((element) => element.name == expert.nationality);
         _selectedCountry = listCountry.first;
@@ -52,7 +66,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         print(expert.expert_name);
         print(imagePath);
+        print('expert.image');
         print(expert.image);
+        print('expert.services!');
+        print(expert.services!);
+
+
       }),
     });
 
@@ -174,7 +193,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: SingleChildScrollView(
                           child:   Column(
                             children: [
-
                               // expert_name
                               Text(expert.expert_name!,
                                 style: TextStyle(
@@ -576,6 +594,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ]),
               ),
             ),
+
           ]
       ),
     );
