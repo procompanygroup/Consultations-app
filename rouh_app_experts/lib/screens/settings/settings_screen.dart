@@ -15,6 +15,8 @@ import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../login/login_screen.dart';
+import 'statistic_screen.dart';
+import 'wallet_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -244,7 +246,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               // wallet
                               GestureDetector(
                                 onTap: () {
-                                  print("wallet");
+
+                                  try{
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            WalletScreen(),
+                                      ),
+                                    );
+
+                                  } catch (err) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(err.toString()),
+                                        )
+                                    );
+                                  }
+
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -281,7 +299,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               // statistic
                               GestureDetector(
                                 onTap: () {
-                                  print("statistic");
+                                  try{
+                                    print('open StatisticScreen');
+
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            StatisticScreen(),
+                                      ),
+                                    );
+
+                                  } catch (err) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(err.toString()),
+                                        )
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   mainAxisAlignment:
