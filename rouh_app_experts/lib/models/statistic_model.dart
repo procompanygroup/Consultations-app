@@ -63,7 +63,7 @@ class ServiceStatistics {
 int? service_id;
 String? name;
 String? icon;
-int? rate;
+double? rate;
 String? comment;
 
 //Constructor
@@ -75,11 +75,16 @@ String? comment;
       this.comment,
   });
   factory ServiceStatistics.fromJson(dynamic parsedJson) {
+    var rateTmp;
+    if(parsedJson['rate'] != null) {
+      rateTmp = double.tryParse( parsedJson['rate'].toString());
+    }
     return ServiceStatistics(
+
       service_id: parsedJson['service_id'],
       name: parsedJson['name'],
       icon: parsedJson['icon'],
-      rate: parsedJson['rate'],
+      rate: rateTmp,
       comment: parsedJson['comment'],
     );
   }
