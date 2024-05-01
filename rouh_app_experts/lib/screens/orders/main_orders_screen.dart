@@ -12,6 +12,7 @@ import '../../models/expert_order_model.dart';
 import '../../models/key_value_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../components/custom_appbar.dart';
+import '../notifications/notifications_screen.dart';
 
 class MainOrdersScreen extends StatefulWidget {
   const MainOrdersScreen({super.key});
@@ -77,47 +78,6 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
     );
 
 
-/*
-    String _selectedOrder = "Order_1";
-    List<ClassOrder> orderList = [
-      // close - waitConfirm -rejected - waitResponce
-      ClassOrder(
-        id: 1,
-        title: "Duis aute irure dolor",
-        state: "close",
-        created_date: DateTime.now(),
-        answer_speed: 45.6,
-        rate: 12,
-      ),
-      ClassOrder(
-        id: 2,
-        title: "Duis aute irure dolor",
-        state: "waitConfirm",
-        created_date: DateTime.now(),
-        answer_speed: 0,
-        rate: 0,
-      ),
-      ClassOrder(
-        id: 3,
-        title: "Duis aute irure dolor",
-        state: "rejected",
-        created_date: DateTime.now(),
-        answer_speed: 0,
-        rate: 0,
-      ),
-      ClassOrder(
-        id: 4,
-        title: "Duis aute irure dolor",
-        state: "waitResponce",
-        created_date: DateTime.now(),
-        answer_speed: 0,
-        rate: 0,
-      ),
-
-
-
-    ];
-*/
     Future<void> _refresh() async{
      await fillExpertOrderListAsync();
     }
@@ -130,8 +90,6 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
               setState(() {
                 _selectedState = state.key;
                 print(_selectedState);
-
-
 
               });
             },
@@ -555,7 +513,24 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                       // foregroundColor: Colors.red, // <-- Splash color
                                     ),
                                     onPressed: () {
+                                      try{
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                NotificationsScreen()
+                                        ),
+                                      );
 
+
+
+
+                                      } catch (err) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(err.toString()),
+                                            )
+                                        );
+                                      }
                                     },
                                   ),
                                 ),
