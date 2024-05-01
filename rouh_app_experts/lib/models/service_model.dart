@@ -51,8 +51,7 @@ class Service {
       };
 
   Future<List<Service>> allServices() async {
-
-    var response = await dioManager.dio.post('client/service/viewall', );
+    var response = await dioManager.dio.post('expert/service/viewall', );
 
     if (response.statusCode == 200) {
       var services = convertListToModel<Service>(Service.fromJson,jsonDecode(response.data));
