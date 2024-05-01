@@ -170,9 +170,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     )
                 );
               }
-              /*
               try {
-                */
 
                 print(notification.type!);
                 if (notification.type! == 'text') {
@@ -231,7 +229,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     }
 
                 }
-                /*
               } catch (err) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -239,12 +236,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     )
                 );
               }
-              */
 
             },
             child: Column(
               children: [
                 Container(
+                  height: 80,
                   width: screenWidth - 60,
                   decoration: BoxDecoration(
                     // border: Border.all(color: mysecondarycolor,width: 1),
