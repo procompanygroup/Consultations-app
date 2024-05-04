@@ -43,7 +43,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
   int ImageCount = 0;
 
   bool hasImageFile = false;
-  Service service = Service();
+  // Service service = Service();
   List<ServiceInput> serviceInputs = <ServiceInput>[];
   List<ServiceValue> serviceValues = <ServiceValue>[];
   User user = User();
@@ -752,6 +752,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
+                                                // color: Colors.red,
                                                   width:
                                                       (screenWidth - 100) / 4,
                                                   height:
@@ -1132,7 +1133,18 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(5),
-                    child: Icon(
+                    child: widget.service.icon != null
+                        ? Container(
+                      width: 25,
+                      height: 25,
+                      child: SvgPicture.network(
+                        widget.service.icon!,
+                        width: 25,
+                        height: 25,
+                        color: mysecondarycolor,
+                      ),
+                    )
+                        :Icon(
                       Icons.favorite,
                       color: mysecondarycolor,
                       size: 25,
