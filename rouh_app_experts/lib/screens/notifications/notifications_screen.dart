@@ -140,18 +140,44 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           )),
                     );
                   }
-                  else if ( notification.orderType! == 'answer-reject'|| notification.orderType! == 'answer-wait') {
+                  else if ( notification.orderType! == 'answer-reject'|| notification.orderType! == 'answer-wait')
+                  {
                     setState(() {
                       isLoadingOrderInfo = true;
                     });
 
                     var resultOrder = await globalExpertOrder.GetOrderById(selectedServiceId: notification.selectedServiceId!);
 
-                    setState(() {
-                      isLoadingOrderInfo = false;
-                    });
+
                     if(resultOrder != null)
                     {
+                      if(resultOrder.answerState != "agree")
+                        {
+
+                      var answerRecordPath = "";
+                      if(resultOrder.answerState == "wait")
+                      {
+                        var  expertAnswer= await globalExpertOrder.GetAnswer(selectedServiceId:   resultOrder.selectedServiceId!);
+                        answerRecordPath = expertAnswer.recordPath!;
+                      }
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              OrderInfoScreen(expertOrder: resultOrder, answerRecordPath:answerRecordPath ),
+                        ),
+                      );
+                        }
+                      else
+                      {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => ViewTextScreen(
+                                text: notification.body!,
+                              )),
+                        );
+                      }
+
+                      /*
                       // To ensure that the request is still being enable to responded
                       if(resultOrder.answerState  != "agree")
                         {
@@ -174,17 +200,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               OrderInfoScreen(expertOrder: resultOrder, answerRecordPath:answerRecordPath ),
                         ),
                       );
+
                     }
-                      else
-                        {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => ViewTextScreen(
-                                  text: notification.body!,
-                                )),
-                          );
-                        }
+                      */
                     }
+
+                    setState(() {
+                      isLoadingOrderInfo = false;
+                    });
                   }
                 }
               } catch (err) {
