@@ -121,10 +121,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child:
-                            // Image(
-                            //   image: NetworkImage(service.image!),
-                            //   fit: BoxFit.fitHeight,
-                            // ),
                             Image(
                               image: NetworkImage(service.image!),
                               fit: BoxFit.fitHeight,
