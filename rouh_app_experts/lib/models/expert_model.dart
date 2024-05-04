@@ -173,7 +173,7 @@ class Expert {
     required int expertId,
   }) async {
     var data = json.encode({
-      "id": expertId
+      "expert_id": expertId
     });
 
     var response = await dioManager.dio.post('expert/getwithcomments',
