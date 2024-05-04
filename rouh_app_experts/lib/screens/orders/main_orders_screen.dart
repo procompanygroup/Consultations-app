@@ -147,6 +147,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
               });
               if(resultOrder != null)
               {
+
                 var answerRecordPath = "";
                 if(order.answerState == "wait")
                 {
@@ -159,6 +160,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                         OrderInfoScreen(expertOrder: resultOrder, answerRecordPath:answerRecordPath ),
                   ),
                 );
+
               }
 
                  }
