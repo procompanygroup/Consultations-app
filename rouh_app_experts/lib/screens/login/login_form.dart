@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/expert/expert_information_cubit.dart';
 import '../../models/country.dart';
 import '../../models/expert_model.dart';
+import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
 import '../../mystyle/constantsColors.dart';
 import '../main_navigation_screen.dart';
@@ -274,6 +276,14 @@ class _LoginFormState extends State<LoginForm> {
                                 BlocProvider.of<ExpertInformationCubit>(
                                     context)
                                     .addProfile(userInfo!);
+
+                                final String? firetoken=await FirebaseMessaging.instance.getToken();
+                            debugPrint(firetoken);
+                                User userfire = User();
+                                userfire.saveToken(expertId: userInfo.id!, token: firetoken!);
+
+
+
 
                                 Navigator.pushAndRemoveUntil(
                                     context,
