@@ -155,7 +155,7 @@ class User {
       }
   }
 
-  Future<String?> saveToken({  required int expertId,required string token }) async {
+  Future<String?> saveToken({  required int expertId,required String token }) async {
 
   var data = json.encode({
     "expert_id": expertId,
