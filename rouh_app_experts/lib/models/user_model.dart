@@ -154,4 +154,26 @@ class User {
         return throw Exception();
       }
   }
+
+  Future<String?> saveToken({  required int expertId,required string token }) async {
+
+  var data = json.encode({
+    "expert_id": expertId,
+    "token": token,
+
+  });
+  var response = await dioManager.dio.post(
+    'expert/savetoken',
+    data: data,
+  );
+  print(response.statusCode);
+  //print(response.data);
+  if (response.statusCode == 200) {
+    return response.data;
+  } else {
+    return throw Exception();
+  }
+}
+
+
 }
