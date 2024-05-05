@@ -111,6 +111,25 @@ class NotificationModel {
     }
     return notifications;
   }
+
+
+  Future<NotificationModel?> GetNotifyById({ required int id,}) async {
+    var data = json.encode({
+      "id": id
+    });
+    var response = await dioManager.dio.post('expert/getnotifybyid',
+      data: data,);
+    NotificationModel notification;
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return NotificationModel.fromJson(json.decode(response.data));
+    }
+    else {
+      return throw Exception();
+    }
+  }
+
+
   Future<bool> SetToRead({
     required int id
   }) async {
