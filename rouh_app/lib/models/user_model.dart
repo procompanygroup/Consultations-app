@@ -169,26 +169,28 @@ class User {
       return throw Exception();
     }
   }
-}
 
-Future<String?> saveToken({  required int clientId,required string token }) async {
+  Future<String?> saveToken({  required int clientId,required String token }) async {
 
-  var data = json.encode({
-    "client_id": clientId,
-    "token": token,
+    var data = json.encode({
+      "client_id": clientId,
+      "token": token,
 
-  });
-  var response = await dioManager.dio.post(
-    'client/savetoken',
-    data: data,
-  );
-  print(response.statusCode);
-  //print(response.data);
-  if (response.statusCode == 200) {
-    return response.data;
-  } else {
-    return throw Exception();
+    });
+    var response = await dioManager.dio.post(
+      'client/savetoken',
+      data: data,
+    );
+    print(response.statusCode);
+    //print(response.data);
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      return throw Exception();
+    }
   }
-}
 
 }
+
+
+
