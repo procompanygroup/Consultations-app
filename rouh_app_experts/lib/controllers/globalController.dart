@@ -7,6 +7,7 @@ import '../models/service_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/statistic_model.dart';
+import 'local_notification_service.dart';
 
 
 globalLaunchURL( String _url) async {
@@ -19,6 +20,7 @@ globalLaunchURL( String _url) async {
 ExpertOrder globalExpertOrder = ExpertOrder();
 StatisticModel globalStatistic = StatisticModel();
 NotificationModel globalNotification = NotificationModel();
+LocalNotificationService globalLocalNotificationService = LocalNotificationService();
 
 
 //#region Constant
