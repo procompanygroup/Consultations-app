@@ -1,10 +1,13 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rouh_app/mystyle/constantsColors.dart';
-import '../Services/notifi_service.dart';
 import '../components/video_player/video_player.dart';
 import '../components/video_player_screen.dart';
 import '../components/view_video_screen.dart';
+import '../controllers/globalController.dart';
+import '../controllers/local_notification_service.dart';
+import '../models/firebase_notificaton_model.dart';
 import 'experts/experts_screen.dart';
 import 'profile/profile_screen.dart';
 import 'service/service_screen.dart';
@@ -42,12 +45,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               isDefaultAction: true,
               onPressed: () async {
                 Navigator.of(context, rootNavigator: true).pop();
-                await Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        SecondPage(title:  receivedNotification.payload!),
-                  ),
-                );
+
+                // await Navigator.of(context).push(
+                //   MaterialPageRoute<void>(
+                //     builder: (BuildContext context) =>
+                //         SecondPage(title:  receivedNotification.payload!),
+                //   ),
+                // );
+
+                await globalLocalNotificationService.NotificationForwardPage(receivedNotification.payload!,context);
+
+
               },
               child: const Text('Ok'),
             )
@@ -56,16 +64,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       );
     });
   }
-
   void _configureSelectNotificationSubject() {
     selectNotificationStream.stream.listen((String? payload) async {
-      await Navigator.of(context).push(MaterialPageRoute<void>(
-        builder: (BuildContext context) => SecondPage(title: payload!),
-      ));
+
+      // await Navigator.of(context).push(MaterialPageRoute<void>(
+      //   builder: (BuildContext context) => SecondPage(title: payload!),
+      // ));
+      await globalLocalNotificationService.NotificationForwardPage(payload,context);
+
     });
   }
-
-
 
   void _onItemTapped(int index) {
     setState(() {
@@ -81,9 +89,50 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
 
+    FirebaseMessagingListenForground();
+/*
+    static final AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('mipmap/ic_launcher');
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(androidChannel);
+    flutterLocalNotificationsPlugin.initialize(
+      InitializationSettings(android: initializationSettingsAndroid, iOS: null),
+    );
+
+    */
     super.initState();
 
 
+  }
+
+  void FirebaseMessagingListenForground()
+  {
+    try{
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print(message);
+        print('Handling a forground message ${message.messageId}');
+        print(message.data);
+
+        FirebaseNotificatonModel firebaseNotificaton = FirebaseNotificatonModel();
+        firebaseNotificaton = FirebaseNotificatonModel.fromJson(message.data);
+        print('firebaseNoti');
+        print(firebaseNotificaton);
+        print('firebaseNoti.id');
+        print(firebaseNotificaton.id);
+
+        globalLocalNotificationService.showNotification(title: firebaseNotificaton.title, body: firebaseNotificaton.body ,payload: firebaseNotificaton.id.toString());
+
+      });
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(err.toString()),
+          )
+      );
+    }
   }
 
   @override
