@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../controllers/globalController.dart';
 import '../../controllers/phone_auth_controller.dart';
@@ -36,6 +37,8 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     // TODO: implement initState
+    requestNotificationPermissions();
+
     super.initState();
     /*
     Country.readJson().then((response) => {
@@ -91,6 +94,29 @@ class _LoginFormState extends State<LoginForm> {
          }
       });
   }
+
+
+  Future<void> requestNotificationPermissions() async {
+    try{
+    final PermissionStatus status = await Permission.notification.request();
+    if (status.isGranted) {
+      // Notification permissions granted
+    } else if (status.isDenied) {
+      // Notification permissions denied
+    } else if (status.isPermanentlyDenied) {
+      // Notification permissions permanently denied, open app settings
+      await openAppSettings();
+    }
+
+  } catch (err) {
+  ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+  content: Text(err.toString()),
+  )
+  );
+  }
+
+}
 
   @override
   void dispose() {
