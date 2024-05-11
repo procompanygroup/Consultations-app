@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1005936827413",
+    "project_id": "rouh-app",
+    "storage_bucket": "rouh-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005936827413:android:85012f8df3bcd39df3421c",
+        "android_client_info": {
+          "package_name": "com.example.rouh_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw8V_KqPW-c4cB368mLbOyqZdXZQcGVIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005936827413:android:b3130ae863da4e90f3421c",
+        "android_client_info": {
+          "package_name": "com.example.rouh_app_experts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw8V_KqPW-c4cB368mLbOyqZdXZQcGVIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005936827413:android:70e53aae4084a383f3421c",
+        "android_client_info": {
+          "package_name": "com.example.untitled"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw8V_KqPW-c4cB368mLbOyqZdXZQcGVIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
