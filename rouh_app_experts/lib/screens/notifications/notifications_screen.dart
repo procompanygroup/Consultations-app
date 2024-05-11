@@ -216,111 +216,121 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ));
               }
             },
-            child: Column(
-              children: [
-                Container(
-                  height: 80,
-                  width: screenWidth - 60,
-                  decoration: BoxDecoration(
-                    // border: Border.all(color: mysecondarycolor,width: 1),
-                    borderRadius: BorderRadius.circular(20),
-                    color: notification.isRead!
-                        ? Colors.white
-                        : Colors.grey.shade50,
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    child: Stack(
-                      children: [
-                        Column(
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    height: 80,
+                    width: screenWidth - 60,
+                    decoration: BoxDecoration(
+                      // border: Border.all(color: mysecondarycolor,width: 1),
+                      borderRadius: BorderRadius.circular(20),
+                      color: notification.isRead!
+                          ? Colors.white
+                          : Colors.grey.shade50,
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      child: Container(
+                        child: Stack(
                           children: [
-                            Container(
-                              height: 20,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsetsDirectional.only(start: 25),
-                                      child: Text(
-                                        notification.title!,
+                            Column(
+                              children: [
+                                Container(
+                                  height: 20,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.only(start: 25),
+                                          child: Text(
+                                            notification.title!,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: myprimercolor,
+                                              // fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        notification.createdAt!
+                                            .toString()
+                                            .split(" ")[0],
                                         style: TextStyle(
-                                          fontSize: 14,
-                                          color: myprimercolor,
+                                          fontSize: 12,
+                                          color: Colors.grey.shade600,
                                           // fontWeight: FontWeight.bold
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Text(
-                                    notification.createdAt!
-                                        .toString()
-                                        .split(" ")[0],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade600,
-                                      // fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              height: 40,
-                              child: Expanded(
-                                child: Container(
-                                  child: Align(
-                                    alignment: AlignmentDirectional.topStart,
-                                    child: Text(
-                                      notification.body!,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey.shade600,
-                                        // fontWeight: FontWeight.bold
-                                      ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 40,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: Align(
+                                            alignment: AlignmentDirectional.topStart,
+                                            child: Text(
+                                              notification.body!,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey.shade600,
+                                                // fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.only(top: 3),
-                          child: notification.orderType! == 'answer-reject'
-                              ? SvgPicture.asset(
-                                  "assets/svg/rejected_close.svg",
-                                  width: 12,
-                                  color: mysecondarycolor,
-                                )
-                              : notification.orderType! == 'answer-agree'
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(top: 3),
+                              child: notification.orderType! == 'answer-reject'
                                   ? SvgPicture.asset(
-                                      "assets/svg/done_check.svg",
+                                      "assets/svg/rejected_close.svg",
                                       width: 12,
                                       color: mysecondarycolor,
                                     )
-                                  // :notification.type! == 'answer-wait'?
-                                  // notification.type! == 'comment'?
-                                  : SvgPicture.asset(
-                                      "assets/svg/wait_circle.svg",
-                                      width: 12,
-                                      color: mysecondarycolor,
-                                    ),
+                                  : notification.orderType! == 'answer-agree'
+                                      ? SvgPicture.asset(
+                                          "assets/svg/done_check.svg",
+                                          width: 12,
+                                          color: mysecondarycolor,
+                                        )
+                                      // :notification.type! == 'answer-wait'?
+                                      // notification.type! == 'comment'?
+                                      : SvgPicture.asset(
+                                          "assets/svg/wait_circle.svg",
+                                          width: 12,
+                                          color: mysecondarycolor,
+                                        ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 40, top: 5, right: 40, bottom: 5),
-                  child: Divider(color: Colors.grey.shade300),
-                ),
-              ],
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 40, top: 5, right: 40, bottom: 5),
+                      child: Divider(color: Colors.grey.shade300),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
