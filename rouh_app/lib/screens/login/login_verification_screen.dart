@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/screens/login/register.dart';
 import 'package:rouh_app/components/custom_appbar.dart';
 
+import '../../controllers/globalController.dart';
 import '../../controllers/phone_auth_controller.dart';
 import '../../models/user_model.dart';
 import '../../mystyle/button_style.dart';
@@ -519,6 +522,30 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                             .addProfile(userInfo!);
                                        // profileCubit.addProfile(userInfo!);
                                        //print( context.read<UserInformationCubit>().state.fetchedPerson?.id);
+
+                                        //#region firbase notification token
+                                        try
+                                        {
+                                        // if(Platform.isAndroid){
+                                          final String? firbasetoken=await FirebaseMessaging.instance.getToken();
+                                          debugPrint(firbasetoken);
+                                        // }
+
+                                        globalUser.saveToken(clientId: userInfo.id!, token: firbasetoken!);
+
+
+                                        } catch (err) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(err.toString()),
+                                              )
+                                          );
+                                        }
+
+                                        //#endregion
+
+                                        
+                                       
                                         setState(() {
                                           isLoading = false;
                                         });
