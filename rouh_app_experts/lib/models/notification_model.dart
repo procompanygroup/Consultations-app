@@ -104,7 +104,11 @@ class NotificationModel {
     List<NotificationModel> notifications;
     print(response.statusCode);
     if (response.statusCode == 200) {
+      print('response.data');
+      print(response.data);
+
       notifications = convertListToModel<NotificationModel>(NotificationModel.fromJson,jsonDecode(response.data));
+
     }
     else {
       notifications = List<NotificationModel>.empty();
