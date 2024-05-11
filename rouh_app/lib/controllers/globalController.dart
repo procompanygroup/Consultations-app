@@ -1,4 +1,3 @@
-import '../Services/notifi_service.dart';
 import '../constants/global.dart';
 import '../models/country.dart';
 import '../models/expert_model.dart';
@@ -11,6 +10,9 @@ import '../models/order_model.dart' as OrderModel;
 import '../models/service_value_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../models/user_model.dart';
+import 'local_notification_service.dart';
+
 
 
 
@@ -21,11 +23,11 @@ globalLaunchURL( String _url) async {
   }
 }
 
-
+User globalUser = User();
 Point globalPoint = Point();
 OrderModel.Order globalOrder = OrderModel.Order();
 NotificationModel globalNotification = NotificationModel();
-NotificationService globalNotificationService = NotificationService();
+LocalNotificationService globalLocalNotificationService = LocalNotificationService();
 //#region Country
 List<Country> globalCountryList = <Country>[];
 String globalCountryIp = "";
