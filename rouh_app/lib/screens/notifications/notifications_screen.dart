@@ -238,94 +238,108 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               }
 
             },
-            child: Column(
-              children: [
-                Container(
-                  height: 80,
-                  width: screenWidth - 60,
-                  decoration: BoxDecoration(
-                    // border: Border.all(color: mysecondarycolor,width: 1),
-                    borderRadius: BorderRadius.circular(20),
-                    color: notification.isRead! ? Colors.white : Colors.grey
-                        .shade50,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 5),
-                    child: Stack(
-                      children: [
-                        Column(
+            child: Container(
+              // color: Colors.purple,
+              child: Column(
+                children: [
+                  Container(
+                    height: 80,
+                    width: screenWidth - 60,
+                    decoration: BoxDecoration(
+                      // border: Border.all(color: mysecondarycolor,width: 1),
+                      borderRadius: BorderRadius.circular(20),
+                      color: notification.isRead! ? Colors.white : Colors.grey
+                          .shade50,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: Container(
+                        // color: Colors.yellow,
+                        child: Stack(
                           children: [
-                            Container(
-                              height: 20,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.only(
-                                          start: 25),
-                                      child: Text(
-                                        notification.title!,
+                            Column(
+                              children: [
+                                Container(
+                                  height: 20,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsetsDirectional.only(
+                                              start: 25),
+                                          child: Text(
+                                            notification.title!,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: myprimercolor,
+                                              // fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        notification.createdAt!.toString().split(
+                                            " ")[0],
                                         style: TextStyle(
-                                          fontSize: 14,
-                                          color: myprimercolor,
+                                          fontSize: 12,
+                                          color: Colors.grey.shade600,
                                           // fontWeight: FontWeight.bold
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Text(
-                                    notification.createdAt!.toString().split(
-                                        " ")[0],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade600,
-                                      // fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 10,),
-                            Container(
-                              height: 40,
-                              child: Expanded(
-                                child: Container(
-                                  child: Align(
-                                    alignment: AlignmentDirectional.topStart,
-                                    child: Text(
-                                      notification.body!,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey.shade600,
-                                        // fontWeight: FontWeight.bold
-                                      ),
-                                    ),
+                                    ],
                                   ),
                                 ),
+                                SizedBox(height: 10,),
+                                Container(
+                                  // color: Colors.red,
+                                  height: 40,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: Align(
+                                            alignment: AlignmentDirectional.topStart,
+                                            child: Text(
+                                              notification.body!,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey.shade600,
+                                                // fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(top: 3),
+                              child: Icon(
+                                notification.isRead! ? Icons.circle_outlined
+                                    : Icons.circle,
+                                size: 15,
+                                color: mysecondarycolor,
                               ),
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.only(top: 3),
-                          child: Icon(
-                            notification.isRead! ? Icons.circle_outlined
-                                : Icons.circle,
-                            size: 15,
-                            color: mysecondarycolor,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 40, top: 5, right: 40, bottom: 5),
-                  child: Divider(color: Colors.grey.shade300),
-                ),
-              ],
+                  Container(
+                    // color: Colors.green,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 40, top: 5, right: 40, bottom: 5),
+                      child: Divider(color: Colors.grey.shade300),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
