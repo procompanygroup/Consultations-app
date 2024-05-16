@@ -189,6 +189,20 @@ class User {
       return throw Exception();
     }
   }
+  Future<int?> getGift({ required int clientId}) async {
+    var data = json.encode({
+      "client_id": clientId
+    });
+    var response = await dioManager.dio.post(
+      'client/getgift',
+      data: data,
+    );
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      return throw Exception();
+    }
+  }
 
 }
 
