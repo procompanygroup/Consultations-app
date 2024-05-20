@@ -315,9 +315,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     ),
                                   );
                                 } catch (err) {
-                                  await ShowMessageDialog(context,
-                                  "Error",
-                                  err.toString());
+                                  // await ShowMessageDialog(context,
+                                  // "Error",
+                                  // err.toString());
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(err.toString()),
+                                      )
+                                  );
                                 }
 
 

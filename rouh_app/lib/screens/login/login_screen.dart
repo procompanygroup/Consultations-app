@@ -112,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                             ],
 
                           ),
-                          child:  LoginForm()),
+                          child:  LoginForm(screenWidth: screenWidth,)),
                   ),
                 )
               ],

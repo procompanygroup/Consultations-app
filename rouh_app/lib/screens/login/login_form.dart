@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../components/show_dialog/show_dialog_ok.dart';
 import '../../controllers/globalController.dart';
 import '../../controllers/phone_auth_controller.dart';
 import '../../models/country.dart';
@@ -17,8 +18,8 @@ import '../../components/show_dialog.dart';
 import 'login_verification_screen.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
-
+  const LoginForm({Key? key, required this.screenWidth}) : super(key: key);
+  final double screenWidth;
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
@@ -399,24 +400,63 @@ class _LoginFormState extends State<LoginForm> {
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    await ShowMessageDialog(context,
-                                        "Error",
-                                        "Connection Failed. Please Retry Later");
-                                  } else if (verifyCode == 'noInternet') {
-                                    await  ShowMessageDialog( context,
-                                        "Error",
-                                        "Internet Connection Error");
+                                    // await ShowMessageDialog(context,
+                                    //     "Error",
+                                    //     "Connection Failed. Please Retry Later");
+
+                                    ShowDialogOk(
+                                      context,
+                                      200,
+                                      widget.screenWidth * 0.8,
+                                      "Connection Failed. Please Retry Later",
+                                      "Ok",
+                                          () => {
+                                        print('Ok!')
+                                      },
+                                    );
+
+                                  }
+                                  else if (verifyCode == 'noInternet') {
+                                    // await  ShowMessageDialog( context,
+                                    //     "Error",
+                                    //     "Internet Connection Error");
+
+                                    ShowDialogOk(
+                                      context,
+                                      200,
+                                      widget.screenWidth * 0.8,
+                                      "Internet Connection Error",
+                                      "Ok",
+                                          () => {
+                                        print('Ok!')
+                                      },
+                                    );
+
                                     setState(() {
                                       isLoading = false;
                                     });
-                                  } else if (verifyCode == 'errorPhone') {
-                                   await ShowMessageDialog( context,
-                                        "Error",
-                                        "Incorrect Phone Number");
+                                  }
+                                  else if (verifyCode == 'errorPhone') {
+                                   // await ShowMessageDialog( context,
+                                   //      "Error",
+                                   //      "Incorrect Phone Number");
+
+                                   ShowDialogOk(
+                                     context,
+                                     200,
+                                     widget.screenWidth * 0.8,
+                                     "Incorrect Phone Number",
+                                     "Ok",
+                                         () => {
+                                       print('Ok!')
+                                     },
+                                   );
+
                                     setState(() {
                                       isLoading = false;
                                     });
-                                  } else {
+                                  }
+                                  else {
                                     setState(() {
                                       isLoading = false;
                                     });

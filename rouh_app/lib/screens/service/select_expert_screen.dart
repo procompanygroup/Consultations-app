@@ -4,8 +4,10 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/bloc/audio_file/audio_file_cubit.dart';
 import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
+import 'package:rouh_app/components/show_dialog/show_dialog_ok_cancel.dart';
 import 'package:rouh_app/models/service_model.dart';
 import '../../bloc/UserInformation/user_information_cubit.dart';
+import '../../components/show_dialog/show_dialog_ok.dart';
 import '../../constants/global_variable.dart';
 import '../../controllers/globalController.dart';
 import '../../models/expert_model.dart';
@@ -225,9 +227,26 @@ class _SelectExpertState extends State<SelectExpert> {
 
                 if (balance < expert.expert_services![0].points)
                   {
-                    await ShowMessageDialog( context,
-                        "Error",
-                        "you dont have enough point");
+                    // await ShowMessageDialog( context,
+                    //     "Error",
+                    //     "you dont have enough point");
+
+                    ShowDialogOkCancel(
+                      context,
+                      200,
+                      screenWidth * 0.8,
+                      "رصيد الحالي غير كافي الرجاء إعادة التعبئة من متجر روح",
+                      "متجر روح",
+                      "إلغاء",
+                          () => {
+                          Navigator.of(context).push(
+                          MaterialPageRoute(
+                          builder: (context) =>
+                          PurchaseShop(),
+                          ),
+                          )
+                      },
+                    );
                   }
                  else
                    {
@@ -241,9 +260,27 @@ class _SelectExpertState extends State<SelectExpert> {
                      );
                      if(res?.message == "no balance")
                        {
-                         await ShowMessageDialog( context,
-                             "Error",
-                             "you dont have enough point");
+                         // await ShowMessageDialog( context,
+                         //     "Error",
+                         //     "you dont have enough point");
+
+                         ShowDialogOkCancel(
+                           context,
+                           200,
+                           screenWidth * 0.8,
+                           "رصيد الحالي غير كافي الرجاء إعادة التعبئة من متجر روح",
+                           "متجر روح",
+                           "إلغاء",
+                               () => {
+                             Navigator.of(context).push(
+                               MaterialPageRoute(
+                                 builder: (context) =>
+                                     PurchaseShop(),
+                               ),
+                             )
+                           },
+                         );
+
                        }
                      else
                        {
@@ -256,18 +293,29 @@ class _SelectExpertState extends State<SelectExpert> {
                              .loadServiceValues(null,null,null);
 
 
-                         await ShowMessageDialog( context,
-                             "نجاح",
-                             "تمت العملية بنجاح");
+                         // await ShowMessageDialog( context,
+                         //     "نجاح",
+                         //     "تمت العملية بنجاح");
 
-                         Navigator.pushAndRemoveUntil(
-                             context,
-                             MaterialPageRoute(
-                                 builder: (_) =>
-                                     MainNavigationScreen()),
-                                 (route) =>
-                             route.settings.name ==
-                                 '/mainNavigation');
+                         ShowDialogOk(
+                           context,
+                           200,
+                           screenWidth * 0.8,
+                           "تمت العملية بنجاح",
+                           "تم",
+                               () => {
+                               Navigator.pushAndRemoveUntil(
+                               context,
+                               MaterialPageRoute(
+                               builder: (_) =>
+                               MainNavigationScreen()),
+                               (route) =>
+                               route.settings.name ==
+                               '/mainNavigation')
+                           },
+                         );
+
+
                        }
                    }
                   setState(() {

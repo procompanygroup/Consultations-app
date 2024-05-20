@@ -6,6 +6,7 @@ import 'package:rouh_app/models/service_input_model.dart';
 import '../../bloc/UserInformation/user_information_cubit.dart';
 import '../../bloc/audio_file/audio_file_cubit.dart';
 import '../../bloc/service_inputs/service_input_cubit.dart';
+import '../../components/show_dialog/show_dialog_ok.dart';
 import '../../constants/global_variable.dart';
 import '../../controllers/converters.dart';
 import '../../controllers/globalController.dart';
@@ -1022,8 +1023,18 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                     if (audio != null) {
                                       canSave = true;
                                     } else {
-                                      await   ShowMessageDialog(context, "تحذير",
-                                          "التسجيل الصوتي مطلوب");
+                                      // await   ShowMessageDialog(context, "تحذير",
+                                      //     "التسجيل الصوتي مطلوب");
+
+                                      ShowDialogOk(
+                                        context,
+                                        200,
+                                        screenWidth * 0.8,
+                                        "التسجيل الصوتي مطلوب",
+                                        "موافق",
+                                            () => {},
+                                      );
+
                                     }
                                   }
                                   if (hasImageFile && canSave) {
@@ -1035,8 +1046,16 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                     }
 
                                     if (canSave == false) {
-                                      await  ShowMessageDialog(context, "تحذير",
-                                          "يجب ادخال صورة على الأقل");
+                                      // await  ShowMessageDialog(context, "تحذير",
+                                      //     "يجب ادخال صورة على الأقل");
+                                      ShowDialogOk(
+                                        context,
+                                        200,
+                                        screenWidth * 0.8,
+                                        "يجب ادخال صورة على الأقل",
+                                        "موافق",
+                                            () => {},
+                                      );
                                     }
                                     //  var contain = serviceImages.contains( (element) => element != null);
                                     // // print(contain);
