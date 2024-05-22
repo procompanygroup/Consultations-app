@@ -5,6 +5,8 @@ import 'package:rouh_app_experts/components/play_record_screen.dart';
 import 'package:rouh_app_experts/components/view_image.dart';
 
 import '../../bloc/audio_file/audio_file_cubit.dart';
+import '../../components/show_dialog/show_dialog_ok.dart';
+import '../../components/show_dialog/show_dialog_ok_cancel.dart';
 import '../../controllers/globalController.dart';
 import '../../models/expert_order_model.dart';
 import '../../mystyle/button_style.dart';
@@ -727,8 +729,17 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                                     '/mainNavigation');
                                           }
                                         } else {
-                                          ShowMessageDialog(context, "تحذير",
-                                              "التسجيل الصوتي مطلوب");
+                                          // ShowMessageDialog(context, "تحذير",
+                                          //     "التسجيل الصوتي مطلوب");
+
+                                          await ShowDialogOk(
+                                            context,
+                                            200,
+                                            screenWidth * 0.8,
+                                            "التسجيل الصوتي مطلوب",
+                                            "Ok",
+                                                () => {},
+                                          );
                                         }
                                       }
                                     },
