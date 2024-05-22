@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rouh_app/bloc/audio_file/audio_file_cubit.dart';
 import 'package:rouh_app/bloc/service_inputs/service_input_cubit.dart';
+import 'package:rouh_app/components/show_dialog/show_dialog_expert_select.dart';
 import 'package:rouh_app/components/show_dialog/show_dialog_ok_cancel.dart';
 import 'package:rouh_app/models/service_model.dart';
 import '../../bloc/UserInformation/user_information_cubit.dart';
@@ -17,6 +18,7 @@ import '../../models/user_model.dart';
 import '../../mystyle/constantsColors.dart';
 import '../../components/rating_stars.dart';
 import '../../components/show_dialog.dart';
+import '../experts/expert_info_screen.dart';
 import '../main_navigation_screen.dart';
 import '../shop/purchase_shop_screen.dart';
 
@@ -32,6 +34,7 @@ class _SelectExpertState extends State<SelectExpert> {
   User user = User();
   var balance;
   bool isLoadingExperts = false;
+  bool isLoadingExpertInfo = false;
   List<Expert> expertList = <Expert>[];
 
 
@@ -222,9 +225,26 @@ class _SelectExpertState extends State<SelectExpert> {
           children: List.generate(experts.length, (index) {
             Expert expert = experts[index];
 
+
             return GestureDetector(
                 onTap: () async {
-
+                  bool isConfirmSelect = false;
+                  String bodyMessage = "لقد قمت باختيار سميرة مجدي قيمة الطلب " +expert.expert_services![0].points.toString()+" روح هل تود المتابعة؟";
+                  await  ShowDialogExpertSelect(
+                    context,
+                    250,
+                    screenWidth * 0.8,
+                      bodyMessage,
+                    "متابعة",
+                    "إلغاء",
+                        () => {
+                          isConfirmSelect = true
+                    },
+                      expert!.image!
+                  );
+                  print(isConfirmSelect);
+                  if(isConfirmSelect)
+                  {
                 if (balance < expert.expert_services![0].points)
                   {
                     // await ShowMessageDialog( context,
@@ -318,6 +338,7 @@ class _SelectExpertState extends State<SelectExpert> {
 
                        }
                    }
+
                   setState(() {
                     balance = user.balance;
                     BlocProvider.of<UserInformationCubit>(context)
@@ -325,6 +346,10 @@ class _SelectExpertState extends State<SelectExpert> {
                     // _selectedExpert = expert.expert_name!;
                     // print(_selectedExpert);
                   });
+
+
+                    }
+
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -466,7 +491,41 @@ class _SelectExpertState extends State<SelectExpert> {
                             top: ((screenWidth - 65) / 2.5) - 15,
                           ),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () async {
+                              try{
+
+
+                                setState(() {
+                                  isLoadingExpertInfo = true;
+                                });
+                                var expertInfo =  await globalExpert.GetExpertWithComments(expertId: expert.id!);
+                                print("expertInfo != null:" + (expertInfo != null).toString());
+                                setState(() {
+                                  isLoadingExpertInfo = false;
+                                });
+
+                                if(expertInfo != null)
+                                {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ExpertInfo(expert: expertInfo),
+                                    ),
+                                  );
+                                }
+
+
+
+
+                              } catch (err) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(err.toString()),
+                                    )
+                                );
+                              }
+
+                            },
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(90.0)),
@@ -642,6 +701,8 @@ class _SelectExpertState extends State<SelectExpert> {
             ),
           ),
         ),
+        if (isLoadingExpertInfo)
+          Center(child: CircularProgressIndicator()),
       ]),
     );
   }
