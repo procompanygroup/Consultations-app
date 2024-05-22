@@ -404,7 +404,7 @@ class _LoginFormState extends State<LoginForm> {
                                     //     "Error",
                                     //     "Connection Failed. Please Retry Later");
 
-                                    ShowDialogOk(
+                                    await  ShowDialogOk(
                                       context,
                                       200,
                                       widget.screenWidth * 0.8,
@@ -421,7 +421,7 @@ class _LoginFormState extends State<LoginForm> {
                                     //     "Error",
                                     //     "Internet Connection Error");
 
-                                    ShowDialogOk(
+                                    await  ShowDialogOk(
                                       context,
                                       200,
                                       widget.screenWidth * 0.8,
@@ -441,7 +441,7 @@ class _LoginFormState extends State<LoginForm> {
                                    //      "Error",
                                    //      "Incorrect Phone Number");
 
-                                   ShowDialogOk(
+                                    await  ShowDialogOk(
                                      context,
                                      200,
                                      widget.screenWidth * 0.8,
