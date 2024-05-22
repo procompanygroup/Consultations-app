@@ -21,22 +21,49 @@ class PurchaseShop extends StatefulWidget {
 class _PurchaseShopState extends State<PurchaseShop> {
   User user = User();
   var balance;
+  int? balanceGift = 0;
   bool isLoadingPoints = false;
   List<Point> pointList = <Point>[];
 
   @override
   void initState() {
     // TODO: implement initState
+    try{
 
-    setState(() {
+      setState(() {
       user = context.read<UserInformationCubit>().state.fetchedPerson!;
       balance = user.balance;
       //print(user.balance);
     });
 
-    fillPointList();
+      try{
+      globalUser.getGift(clientId: user.id!).then((response) => {
+            setState(() {
+              print('clientId: user.id!');
+              print(user.id!);
+              print('balanceGift');
+              print(balanceGift);
 
+              balanceGift = response;
+            })
+          });
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(err.toString()),
+          )
+      );
+    }
 
+      fillPointList();
+
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(err.toString()),
+          )
+      );
+    }
     super.initState();
     //
   }
@@ -306,29 +333,86 @@ class _PurchaseShopState extends State<PurchaseShop> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SvgPicture.asset(
-                          "assets/svg/money.svg",
-                          color: myprimercolor,
-                          width: 25,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Text(
-                            "Balance",
-                            style: TextStyle(
-                              fontSize: 18,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/svg/money.svg",
                               color: myprimercolor,
-                              // fontWeight: FontWeight.bold
+                              width: 22,
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                "الرصيد الحالي",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: myprimercolor,
+                                  // fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                            Text(
+                              balance.toString(),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: mysecondarycolor,
+                                // fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            SizedBox(width: 5,),
+                            SvgPicture.asset(
+                              'assets/svg/logo.svg',
+                              // width: screenWidth,
+                              fit: BoxFit.fitHeight,
+                              height: 30,
+                              color: mysecondarycolor,
+                              //colorBlendMode: BlendMode.overlay,
+                            ),
+                          ],
                         ),
-                        Text(
-                          balance.toString(),
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: mysecondarycolor,
-                            // fontWeight: FontWeight.bold
-                          ),
+                        Builder(
+                          builder: (context) {
+                            if (balanceGift!>0) //
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(width: 10,),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Text(
+                                      "مجاني",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: myprimercolor,
+                                        // fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    balanceGift.toString(),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: mysecondarycolor,
+                                      // fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  SvgPicture.asset(
+                                    'assets/svg/logo.svg',
+                                    // width: screenWidth,
+                                    fit: BoxFit.fitHeight,
+                                    height: 30,
+                                    color: mysecondarycolor,
+                                    //colorBlendMode: BlendMode.overlay,
+                                  ),
+                                ],
+                              );
+                            else
+                              return Container();
+                          },
                         ),
                       ],
                     ),
