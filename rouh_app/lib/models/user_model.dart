@@ -197,7 +197,13 @@ class User {
       'client/getgift',
       data: data,
     );
+    print('getGift');
+    print('response.statusCode');
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
+      print('response.data');
+      print(response.data);
       return response.data;
     } else {
       return throw Exception();
