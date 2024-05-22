@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rouh_app/components/show_dialog/show_dialog_ok.dart';
 import 'package:rouh_app/models/service_value_model.dart';
 
 // import 'package:record/record.dart';
@@ -7,6 +8,7 @@ import 'package:rouh_app/models/service_value_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../components/show_dialog.dart';
+import '../../components/show_dialog/show_dialog_expert_select.dart';
 import '../../controllers/globalController.dart';
 import '../../models/service_model.dart';
 import '../../mystyle/constantsColors.dart';
@@ -307,6 +309,26 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ),
                               onPressed: () async {
 
+
+
+                                await  ShowDialogExpertSelect(
+                                  context,
+                                  250,
+                                  screenWidth * 0.8,
+                                  "you dont have enough point ",
+                                  "Ok",
+                                  "Cancel",
+                                      () => {
+                                    print('HelloWorld!')
+                                  },
+                                  ""
+                                );
+
+                                print("HelloWorld!End");
+
+
+
+                                /*
                                 try{
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -325,7 +347,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       )
                                   );
                                 }
-
+                                */
 
                               },
                             ),
