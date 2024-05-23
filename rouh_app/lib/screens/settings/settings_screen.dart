@@ -28,6 +28,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
 
   bool isActiveNotification = true;
+  int? balance=0;
 
   @override
   void initState() {
@@ -35,6 +36,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     checkNotificationPermissions();
 
+    try{
+    setState(() {
+      balance = context.read<UserInformationCubit>().state.fetchedPerson!.balance;
+    });
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(err.toString()),
+          )
+      );
+    }
     super.initState();
     //
 
@@ -279,7 +291,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 2),
-                                            child: Text("115",
+                                            child: Text(balance.toString(),
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.white),
