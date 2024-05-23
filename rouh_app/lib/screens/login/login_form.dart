@@ -140,9 +140,9 @@ class _LoginFormState extends State<LoginForm> {
               //crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Login",
+                  "تسجيل الدخول",
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      // fontWeight: FontWeight.bold,
                       fontSize: 24,
                       color: mysecondarycolor),
                 ),
@@ -194,7 +194,7 @@ class _LoginFormState extends State<LoginForm> {
                                 start: 60, top: 5, end: 10, bottom: 5),
                             hintStyle: TextStyle(color: Colors.grey),
                             // labelText: "Country",
-                            hintText: "Country",
+                            hintText: "البلد",
                             fillColor: Colors.grey.shade50),
                         items: listCountry
                             .map<DropdownMenuItem<Country>>((Country value) {
@@ -282,7 +282,7 @@ class _LoginFormState extends State<LoginForm> {
                               hintStyle:
                                   TextStyle(color: Colors.grey, fontSize: 12),
                               // labelText: "Phone Number",
-                              hintText: "Phone Number",
+                              hintText: "رقم الموبايل",
                               fillColor: Colors.grey.shade50,
                             ),
                             keyboardType: TextInputType.number,
@@ -375,7 +375,7 @@ class _LoginFormState extends State<LoginForm> {
                     height: 50,
                     child: TextButton(
                         child: Text(
-                          'LOGIN',
+                          'تسجيل',
                           style: TextStyle(fontSize: 18),
                         ),
                         style: bs_flatFill(context,myprimercolor),

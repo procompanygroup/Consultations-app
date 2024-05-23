@@ -307,7 +307,7 @@ class _PurchaseShopState extends State<PurchaseShop> {
       body: Stack(
         children: [
           // top
-          const CustomAppBar(title: "Purchase Shop"),
+          const CustomAppBar(title: "متجر روح"),
           // Body
           Padding(
             padding: EdgeInsets.only(top: bodyHeight * 0.20),

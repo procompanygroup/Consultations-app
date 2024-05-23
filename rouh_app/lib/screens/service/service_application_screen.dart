@@ -173,7 +173,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                     child: DropdownButtonFormField<Country>(
                       validator: (value) => value == null ? '' : null,
                       //isDense: true,
-                      hint: Text('Choose'),
+                      hint: Text('اختر'),
                       value: _selectedCountry,
                       icon: Icon(Icons.arrow_drop_down),
                       iconSize: 24,
@@ -442,7 +442,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                     child: DropdownButtonFormField<InputValues>(
                       validator: (value) => value == null ? '' : null,
                       //isDense: true,
-                      hint: Text('Choose'),
+                      hint: Text('اختر'),
                       value:inputValue,
                       // value: serviceValue.value != "" ?  serviceValue.value.toString() : InputValues(),
                       icon: Icon(Icons.arrow_drop_down),
@@ -715,7 +715,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                         Padding(
                                           padding: const EdgeInsets.all(5),
                                           child: Text(
-                                            "Record Audio",
+                                            "أدخل رسالتك الصوتية",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14,
@@ -738,7 +738,7 @@ class _ServiceApplicationScreenState extends State<ServiceApplicationScreen> {
                                         Padding(
                                           padding: const EdgeInsets.all(5),
                                           child: Text(
-                                            "Add Image",
+                                            "أضف الصور",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14,

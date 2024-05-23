@@ -83,7 +83,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          const CustomAppBar(title: "Activate App"),
+          const CustomAppBar(title: "تفعيل التطبيق"),
           Padding(
             padding: EdgeInsets.only(top: bodyHeight * 0.20),
             child: Container(
@@ -117,7 +117,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                 horizontal: 30, vertical: 10),
                             child: Center(
                               child: Text(
-                                "Please enter the verification code for the number",
+                                "الرجاء إدخال رمز التحقق الخاص بالرقم",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: myprimercolor,
@@ -461,7 +461,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                           ),
                           TextButton(
                             child: Text(
-                              "Resend verification code",
+                              "إعادة إرسال رمز التحقق",
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 18,
@@ -489,7 +489,7 @@ class _LoginVerificationScreenState extends State<LoginVerificationScreen> {
                                 builder:(context,state) {
                                   return TextButton(
                                     child: Text(
-                                      'Confirm',
+                                      'تأكيد',
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     style: bs_flatFill(context,myprimercolor),

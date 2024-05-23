@@ -122,7 +122,7 @@ Future<List<Service>> getGlobalServiceWithoutCallWithAllList() async {
     {
   globalServiceWithoutCallWithAllList.clear();
   globalServiceWithoutCallWithAllList.add(
-      Service(id: 0, name: "All", image: "")
+      Service(id: 0, name: "الكل", image: "")
   );
     await getGlobalServiceWithoutCallList();
     globalServiceWithoutCallWithAllList.addAll(globalServiceWithoutCallList);

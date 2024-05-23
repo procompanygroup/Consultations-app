@@ -433,7 +433,7 @@ class _SelectExpertState extends State<SelectExpert> {
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
-                                        "Response "+expert.answer_speed!.toString(),
+                                        "سرعة الرد "+expert.answer_speed!.toString(),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -588,7 +588,7 @@ class _SelectExpertState extends State<SelectExpert> {
                     Padding(
                       padding:  EdgeInsetsDirectional.only(start: 75),
                       child: Text(
-                        "Experts",
+                        "اختر الخبير",
                         style: TextStyle(
                           // fontWeight: FontWeight.bold,
                             fontSize: 24,
@@ -661,7 +661,7 @@ class _SelectExpertState extends State<SelectExpert> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: Text(
-                          "Balance",
+                          "الرصيد الحالي",
                           style: TextStyle(
                             fontSize: 18,
                             color: myprimercolor,

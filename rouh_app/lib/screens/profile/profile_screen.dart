@@ -688,7 +688,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           }
                                         },
                                         child: Text(
-                                          'Save',
+                                          'حفظ',
                                           style: TextStyle(fontSize: 18),
                                         ),
                                       );
