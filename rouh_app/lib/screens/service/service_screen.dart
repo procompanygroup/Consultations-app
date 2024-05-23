@@ -309,26 +309,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ),
                               onPressed: () async {
 
-
-
-                                await  ShowDialogExpertSelect(
-                                  context,
-                                  250,
-                                  screenWidth * 0.8,
-                                  "you dont have enough point ",
-                                  "Ok",
-                                  "Cancel",
-                                      () => {
-                                    print('HelloWorld!')
-                                  },
-                                  ""
-                                );
-
-                                print("HelloWorld!End");
-
-
-
-                                /*
                                 try{
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -347,7 +327,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       )
                                   );
                                 }
-                                */
 
                               },
                             ),
