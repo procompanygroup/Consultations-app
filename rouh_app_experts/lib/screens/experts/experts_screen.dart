@@ -158,12 +158,6 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                 }
 
 
-
-
-
-
-
-
               },
               child:
               Container(
@@ -253,7 +247,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
-                                      "Response " +
+                                      "سرعة الرد " +
                                           expert.answer_speed!.toString(),
                                       style: TextStyle(
                                         fontSize: 12,
@@ -360,7 +354,7 @@ class _ExpertsScreenState extends State<ExpertsScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Text(
-                                  "Experts",
+                                  "الخبراء",
                                   style: TextStyle(
                                       // fontWeight: FontWeight.bold,
                                       fontSize: 24,

@@ -482,7 +482,7 @@ class _MainOrdersScreenState extends State<MainOrdersScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Text(
-                                    "Experts",
+                                    "الرئيسية",
                                     style: TextStyle(
                                       // fontWeight: FontWeight.bold,
                                         fontSize: 24,

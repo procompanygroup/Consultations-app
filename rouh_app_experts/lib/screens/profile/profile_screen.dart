@@ -215,7 +215,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Spacer(),
-                                  Text(expert.expert_name!,
+                                  Text("سرعة الرد",
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey.shade500),
@@ -502,7 +502,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       catch (e) {}
                                   },
                                   child: Text(
-                                    'Save',
+                                    'جفظ',
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 );

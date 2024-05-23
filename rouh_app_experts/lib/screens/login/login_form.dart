@@ -80,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
               //crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Login",
+                  "تسجيل الدخول",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -131,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                                   start: 60, top: 5, end: 10, bottom: 5),
                               hintStyle: TextStyle(color: Colors.grey),
                               // labelText: "Country",
-                              hintText: "userPassword",
+                              hintText: "اسم المستخدم",
                               fillColor: Colors.grey.shade50),
 
                         ),
@@ -203,7 +203,7 @@ class _LoginFormState extends State<LoginForm> {
                                   start: 60, top: 5, end: 10, bottom: 5),
                               hintStyle: TextStyle(color: Colors.grey),
                               // labelText: "Country",
-                              hintText: "UserPassword",
+                              hintText: "كلمة المرور",
                               fillColor: Colors.grey.shade50),
                         ),
                       ),
@@ -246,7 +246,7 @@ class _LoginFormState extends State<LoginForm> {
                     builder:(context,state) {
                       return TextButton(
                           child: Text(
-                            'LOGIN',
+                            'دخول',
                             style: TextStyle(fontSize: 18),
                           ),
                           style: bs_flatFill(context, myprimercolor),

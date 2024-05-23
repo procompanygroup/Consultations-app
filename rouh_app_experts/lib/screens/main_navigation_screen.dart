@@ -183,7 +183,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   color:
                       _selectedIndex == 0 ? mysecondarycolor : Colors.black26,
                 ),
-                label: 'home',
+                label: 'الرئيسية',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -191,7 +191,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   color:
                       _selectedIndex == 1 ? mysecondarycolor : Colors.black26,
                 ),
-                label: 'experts',
+                label: 'الخبراء',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -199,7 +199,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   color:
                       _selectedIndex == 2 ?mysecondarycolor : Colors.black26,
                 ),
-                label: 'profile',
+                label: 'الملف الشخصي',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -207,7 +207,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   color:
                       _selectedIndex == 3 ? mysecondarycolor : Colors.black26,
                 ),
-                label: 'settings',
+                label: 'الإعدادات',
               ),
             ],
             type: BottomNavigationBarType.fixed,
