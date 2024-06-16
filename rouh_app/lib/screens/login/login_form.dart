@@ -414,7 +414,7 @@ class _LoginFormState extends State<LoginForm> {
                                         print('Ok!')
                                       },
                                     );
-
+                                    return;
                                   }
                                   else if (verifyCode == 'noInternet') {
                                     // await  ShowMessageDialog( context,
@@ -435,6 +435,7 @@ class _LoginFormState extends State<LoginForm> {
                                     setState(() {
                                       isLoading = false;
                                     });
+                                    return;
                                   }
                                   else if (verifyCode == 'errorPhone') {
                                    // await ShowMessageDialog( context,
@@ -455,6 +456,7 @@ class _LoginFormState extends State<LoginForm> {
                                     setState(() {
                                       isLoading = false;
                                     });
+                                    return;
                                   }
                                   else {
                                     setState(() {
