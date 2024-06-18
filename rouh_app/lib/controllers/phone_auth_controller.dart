@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 
 import '/constants/global.dart';
@@ -18,6 +19,8 @@ class PhoneAuthController {
   }
 
   Future<String> sendSMS({required String toPhoneNumber}) async {
+    debugPrint('toPhoneNumber: => $toPhoneNumber');
+
     try {
       final sendSMSRes = await twilioFlutter.sendSMS(
         toNumber: toPhoneNumber,
@@ -36,6 +39,7 @@ class PhoneAuthController {
 
   String _handleSendSMSError(dynamic error) {
     final errorMessage = error.toString();
+    debugPrint('SendSMSError: => $error');
 
     switch (errorMessage) {
       case "Connection timed out":
