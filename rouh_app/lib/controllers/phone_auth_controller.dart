@@ -1,52 +1,49 @@
-// import 'dart:js_util';
-import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
-import '../constants/global.dart';
 
-class PhoneAuthController  {
-  late TwilioFlutter twilioFlutter;
+import '/constants/global.dart';
 
-  Future<String> sendSMS({required toPhoneNumber}) async {
-    twilioFlutter = TwilioFlutter(
-        accountSid:accountSid, // replace it with your account SID
-        authToken: authToken, // replace it with your auth token
-        twilioNumber: twilioNumber // replace it with your purchased twilioNumber
+class PhoneAuthController {
+  late final TwilioFlutter twilioFlutter;
 
-        );
-
-    var rnd = new Random();
-
-    var digits = rnd.nextInt(900000) + 100000;
-
-    // lets print otp as well
-   // print(toPhoneNumber);
-    toPhoneNumber = "+963959353886";
-String res ="";
-    try {
-
-      var sendSMSRes = await twilioFlutter.sendSMS(
-          toNumber: toPhoneNumber,
-          messageBody: smsBody + ' $digits');
-
-      if (sendSMSRes == 201)
-        res = digits.toString();
-      // else if (sendSMSRes == "Sending Failed")
-      //   res =  "errorPhone";
-
-    }
-    catch (e,s){
-      //print(e.toString());
-      if(e.toString() == "Connection timed out")
-        res = "timedOut";
-      else if(e.toString() == "Failed host lookup: 'api.twilio.com'")
-        res = "noInternet";
-      else
-      res =  "errorPhone";
-
-    }
-    return res;
+  PhoneAuthController() {
+    _initializeTwilio();
   }
 
+  void _initializeTwilio() {
+    twilioFlutter = TwilioFlutter(
+      accountSid: accountSid, // replace it with your account SID
+      authToken: authToken, // replace it with your auth token
+      twilioNumber: twilioNumber, // replace it with your purchased twilioNumber
+    );
+  }
+
+  Future<String> sendSMS({required String toPhoneNumber}) async {
+    try {
+      final sendSMSRes = await twilioFlutter.sendSMS(
+        toNumber: toPhoneNumber,
+        messageBody: smsBody,
+      );
+
+      return _handleSendSMSResponse(sendSMSRes);
+    } catch (e) {
+      return _handleSendSMSError(e);
+    }
+  }
+
+  String _handleSendSMSResponse(int responseCode) {
+    return responseCode == 201 ? 'success' : 'errorPhone';
+  }
+
+  String _handleSendSMSError(dynamic error) {
+    final errorMessage = error.toString();
+
+    switch (errorMessage) {
+      case "Connection timed out":
+        return "timedOut";
+      case "Failed host lookup: 'api.twilio.com'":
+        return "noInternet";
+      default:
+        return "errorPhone";
+    }
+  }
 }
