@@ -3,11 +3,9 @@
 const String baseUrl = 'https://oras.orasweb.com/api/';
 
 // Sms Settings
- const String accountSid = 'ACd0dac3942d72e08c1b0a4e1eceae8d4f'; // replace it with your account SID
- const String authToken = 'f39dc96e430bf32a85e8c365b3f449cd'; // replace it with your auth token
- const String twilioNumber = '+12062021682'; // replace it with your purchased twilioNumber
- const String smsBody ='Hello This is 6 digit code to verify phone';
-
-
-
-
+// replace it with your account SID
+const String accountSid = 'AC2e78dccff97bb5ebb8965e374c681fa0';
+// replace it with your auth token
+const String authToken = 'e8b2e49cedde3ca76913a76a83f95b30';
+// replace it with your purchased twilioNumber
+const String twilioNumber = '+12078478067';

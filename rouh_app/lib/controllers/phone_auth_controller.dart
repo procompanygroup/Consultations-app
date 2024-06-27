@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:otp/otp.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 
 import '/constants/global.dart';
@@ -12,9 +16,9 @@ class PhoneAuthController {
 
   void _initializeTwilio() {
     twilioFlutter = TwilioFlutter(
-      accountSid: accountSid, // replace it with your account SID
-      authToken: authToken, // replace it with your auth token
-      twilioNumber: twilioNumber, // replace it with your purchased twilioNumber
+      accountSid: accountSid,
+      authToken: authToken,
+      twilioNumber: twilioNumber,
     );
   }
 
@@ -22,9 +26,17 @@ class PhoneAuthController {
     debugPrint('toPhoneNumber: => $toPhoneNumber');
 
     try {
+      const storage = FlutterSecureStorage();
+      final otp = OTP.generateTOTPCodeString(
+        "$toPhoneNumber${Random().nextInt(toPhoneNumber.length)}",
+        7,
+        length: 4,
+      );
+      await storage.write(key: 'otp', value: otp);
+
       final sendSMSRes = await twilioFlutter.sendSMS(
         toNumber: toPhoneNumber,
-        messageBody: smsBody,
+        messageBody: "ROUH account verification code: $otp",
       );
 
       return _handleSendSMSResponse(sendSMSRes);
